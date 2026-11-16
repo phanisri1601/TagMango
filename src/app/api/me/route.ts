@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { id, now, PLANS, tx, type Plan } from "@/lib/db";
-import { currentUser } from "@/lib/auth";
+import { currentUser, selfView } from "@/lib/auth";
+import { isAdminUser } from "@/lib/admin";
 
 const PLAN_PRICE: Record<Plan, number> = { basic: 0, pro: 5000, advanced: 15000, ultimate: 35000 };
 
 export async function GET() {
   const user = await currentUser();
   if (!user) return NextResponse.json({ error: "Not logged in" }, { status: 401 });
-  return NextResponse.json({ user: { plan: "basic", ...user } });
+  return NextResponse.json({ user: { ...selfView(user), isAdmin: isAdminUser(user) } });
 }
 
 /** Update profile fields: name, about, kycDone, bank, settings (merged), plan (test-mode upgrade), whiteLabel. */
@@ -52,7 +53,7 @@ export async function PATCH(req: Request) {
         u.whiteLabel = true;
         (db.rows.invoices ||= []).push({ id: id(), userId: u.id, createdAt: now(), number: `TM-${Date.now().toString().slice(-8)}`, product: "Freedom Setup", amount: Math.round(24999 * 1.18), status: "Paid (test)" });
       }
-      return { plan: "basic", ...u };
+      return selfView(u);
     });
     return NextResponse.json({ user });
   } catch (e) {

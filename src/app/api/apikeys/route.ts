@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { tx } from "@/lib/db";
-import { currentUser } from "@/lib/auth";
+import { currentUser, selfView } from "@/lib/auth";
 
 /** Generate (or rotate) an API key for Zapier / Pabbly. Stored on the user's settings. */
 export async function POST(req: Request) {
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   const user = await tx((db) => {
     const u = db.users.find((x) => x.id === me.id)!;
     u.settings = { ...u.settings, apiKeys: { ...((u.settings?.apiKeys as object) || {}), [provider]: { key, createdAt: new Date().toISOString() } } };
-    return { plan: "basic", ...u };
+    return selfView(u);
   });
   return NextResponse.json({ user });
 }

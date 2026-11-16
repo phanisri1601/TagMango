@@ -39,7 +39,7 @@ export default function LoginForm() {
     setLoading(false);
     if (r.error) return setError(r.error);
     const back = params.get("afterLoginRedirectTo");
-    router.push(back && back.startsWith("/web/dashboard") ? back : r.next);
+    router.push(back && (back.startsWith("/web/dashboard") || back.startsWith("/admin")) ? back : r.next);
     router.refresh();
   }
 

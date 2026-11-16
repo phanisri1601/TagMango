@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const booking = await tx((db) => {
       const ev = (db.rows.events || []).find((e) => e.id === body.eventId && e.active !== false);
-      if (!ev) throw new Error("This event isn't available");
+      if (!ev || db.users.find((u) => u.id === ev.userId)?.suspended) throw new Error("This event isn't available");
       const slots = (ev.slots as string[]) || [];
       if (!slots.includes(body.slot)) throw new Error("Pick one of the available slots");
       if (new Date(body.slot).getTime() < Date.now()) throw new Error("That slot is in the past");

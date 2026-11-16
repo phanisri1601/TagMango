@@ -56,6 +56,44 @@
         "overlappingSlots": true,
         "maxDevices": 1
       }
+    },
+    {
+      "id": "kVMp3psppNlW",
+      "name": "Platform Admin",
+      "email": "admin@example.test",
+      "phone": "9100000001",
+      "marketingOptIn": false,
+      "createdAt": "2026-11-16T06:36:19.908Z"
+    },
+    {
+      "id": "TKbeoFhaeJAS",
+      "name": "Asha Rao",
+      "email": "asha8900@example.test",
+      "phone": "9289000001",
+      "marketingOptIn": false,
+      "createdAt": "2026-11-16T06:36:56.836Z",
+      "kycDone": true,
+      "bank": {
+        "holder": "Asha Rao",
+        "account": "123456789012",
+        "ifsc": "HDFC0001234"
+      },
+      "adminNote": "Called, all good"
+    },
+    {
+      "id": "ZreWeLO1PYuQ",
+      "name": "Bala Singh",
+      "email": "bala8900@example.test",
+      "phone": "9289000002",
+      "marketingOptIn": false,
+      "createdAt": "2026-11-16T06:36:56.867Z",
+      "bank": {
+        "holder": "Bala Singh",
+        "account": "998877665544",
+        "ifsc": "ICIC0004321"
+      },
+      "plan": "advanced",
+      "kycDone": true
     }
   ],
   "sessions": [
@@ -88,11 +126,75 @@
       "ip": "::1"
     },
     {
-      "token": "a3bf70d1bd50850ce39553c509ce379f45e255ec6265cce9da9733d89a1eaf4c",
+      "token": "78f312ac83e9012d24fe003c8a9a80402fbb4fba508d53301d39c960b610a8c4",
       "userId": "Qqa2EMtffISj",
-      "createdAt": "2026-11-16T05:08:01.896Z",
-      "lastSeen": "2026-11-16T05:08:01.896Z",
+      "createdAt": "2026-11-16T06:10:52.609Z",
+      "lastSeen": "2026-11-16T06:10:52.609Z",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+      "ip": "::1"
+    },
+    {
+      "token": "4809c6d7cf250f1dc5fc4a77e58691e1ac0b62f497b7cf363a4c27de5109eee6",
+      "userId": "kVMp3psppNlW",
+      "createdAt": "2026-11-16T06:36:19.910Z",
+      "lastSeen": "2026-11-16T06:36:19.910Z",
+      "userAgent": "Python-urllib/3.14",
+      "ip": "::1"
+    },
+    {
+      "token": "d526bcde26f4f1bfa4727c95bba899365c900ae03c56e7b434cd58777160b05a",
+      "userId": "kVMp3psppNlW",
+      "createdAt": "2026-11-16T06:36:54.886Z",
+      "lastSeen": "2026-11-16T06:36:54.886Z",
+      "userAgent": "Python-urllib/3.14",
+      "ip": "::1"
+    },
+    {
+      "token": "51aef3a95402de79aadbf4f89ce5fe62b8ae5abdd1698ff705c420b8f4702979",
+      "userId": "kVMp3psppNlW",
+      "createdAt": "2026-11-16T06:36:56.793Z",
+      "lastSeen": "2026-11-16T06:36:56.793Z",
+      "userAgent": "Python-urllib/3.14",
+      "ip": "::1"
+    },
+    {
+      "token": "747eb445654aebd50df7fa610df9c9f59f080ed223d1af129b4152f5684f78b3",
+      "userId": "TKbeoFhaeJAS",
+      "createdAt": "2026-11-16T06:36:56.838Z",
+      "lastSeen": "2026-11-16T06:36:56.838Z",
+      "userAgent": "Python-urllib/3.14",
+      "ip": "::1"
+    },
+    {
+      "token": "e6f97723d8803cf2b1e09f707fb404f2be20ddfc38225ecae41d58fa4e8208ed",
+      "userId": "ZreWeLO1PYuQ",
+      "createdAt": "2026-11-16T06:36:56.869Z",
+      "lastSeen": "2026-11-16T06:36:56.869Z",
+      "userAgent": "Python-urllib/3.14",
+      "ip": "::1"
+    },
+    {
+      "token": "daf0d68c78d69be7abe321ea7784eab5341b171919648480d8dcb64dd76e2531",
+      "userId": "kVMp3psppNlW",
+      "createdAt": "2026-11-16T06:37:09.714Z",
+      "lastSeen": "2026-11-16T06:37:09.714Z",
+      "userAgent": "Python-urllib/3.14",
+      "ip": "::1"
+    },
+    {
+      "token": "f87f17e5cb658b9a38c9ff552522425dd3a95aff1e1390d336d8d6f71aa2a14c",
+      "userId": "kVMp3psppNlW",
+      "createdAt": "2026-11-16T06:37:43.284Z",
+      "lastSeen": "2026-11-16T06:37:43.284Z",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Claude/5.11492.5 Chrome/156.0.8078.75 Safari/537.36",
+      "ip": "::1"
+    },
+    {
+      "token": "c4b3666eaa4f8ec70034f8c225e1cd0d520b775aeb6ea303ceb1f82f894c417d",
+      "userId": "kVMp3psppNlW",
+      "createdAt": "2026-11-16T06:43:01.825Z",
+      "lastSeen": "2026-11-16T06:43:01.825Z",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
       "ip": "::1"
     }
   ],
@@ -137,6 +239,33 @@
         "id": "nUsdEPjM9sKh",
         "userId": "YI3xg_Qr51j1",
         "createdAt": "2026-11-16T05:07:37.179Z"
+      },
+      {
+        "title": "Yoga 101",
+        "type": "One-time",
+        "price": 1000,
+        "active": true,
+        "id": "y1vRpbeEcVLn",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.324Z"
+      },
+      {
+        "title": "Excel Mastery",
+        "type": "One-time",
+        "price": 2500,
+        "active": true,
+        "id": "EPQC-N0AVBcw",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.334Z"
+      },
+      {
+        "title": "Pilates",
+        "type": "One-time",
+        "price": 100,
+        "active": true,
+        "id": "BRCubyDb7Jj7",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.962Z"
       }
     ],
     "coupons": [
@@ -227,6 +356,71 @@
         "method": "Test checkout",
         "status": "Success",
         "expires": null
+      },
+      {
+        "id": "5af6SSUPd-ck",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.346Z",
+        "customer": "Ravi",
+        "email": "ravi8900@buyer.test",
+        "phone": "",
+        "mango": "Yoga 101",
+        "mangoId": "y1vRpbeEcVLn",
+        "amount": 1000,
+        "quantity": 1,
+        "cycle": "One-time",
+        "method": "Test checkout",
+        "status": "Success",
+        "expires": null,
+        "updatedAt": "2026-11-16T06:36:57.589Z"
+      },
+      {
+        "id": "CzpLjdb53Jd3",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.354Z",
+        "customer": "Sana",
+        "email": "sana8900@buyer.test",
+        "phone": "",
+        "mango": "Yoga 101",
+        "mangoId": "y1vRpbeEcVLn",
+        "amount": 1000,
+        "quantity": 1,
+        "cycle": "One-time",
+        "method": "Test checkout",
+        "status": "Success",
+        "expires": null
+      },
+      {
+        "id": "FHhqiORMgLYx",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.366Z",
+        "customer": "Tom",
+        "email": "tom8900@buyer.test",
+        "phone": "",
+        "mango": "Excel Mastery",
+        "mangoId": "EPQC-N0AVBcw",
+        "amount": 2500,
+        "quantity": 1,
+        "cycle": "One-time",
+        "method": "Test checkout",
+        "status": "Success",
+        "expires": null
+      },
+      {
+        "id": "-5cPSZ8Qn_OC",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.374Z",
+        "customer": "Uma",
+        "email": "uma8900@buyer.test",
+        "phone": "",
+        "mango": "Excel Mastery",
+        "mangoId": "EPQC-N0AVBcw",
+        "amount": 2500,
+        "quantity": 1,
+        "cycle": "One-time",
+        "method": "Test checkout",
+        "status": "Success",
+        "expires": null
       }
     ],
     "notifications": [
@@ -264,6 +458,90 @@
         "createdAt": "2026-11-16T05:07:41.496Z",
         "read": false,
         "text": "New booking: Cy booked “Clarity call”"
+      },
+      {
+        "id": "rLBgSpcQK2XP",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.346Z",
+        "read": false,
+        "text": "New sale: Ravi bought Yoga 101 for ₹1,000"
+      },
+      {
+        "id": "KojgBbxokmEd",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.354Z",
+        "read": false,
+        "text": "New sale: Sana bought Yoga 101 for ₹1,000"
+      },
+      {
+        "id": "gTjVeXFO6Ghd",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.366Z",
+        "read": false,
+        "text": "New sale: Tom bought Excel Mastery for ₹2,500"
+      },
+      {
+        "id": "X-oTdK6f_1S8",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.374Z",
+        "read": false,
+        "text": "New sale: Uma bought Excel Mastery for ₹2,500"
+      },
+      {
+        "id": "1_311N9pOzNT",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.514Z",
+        "read": false,
+        "text": "Order refunded by TagMango: Ravi · Yoga 101 · ₹1,000"
+      },
+      {
+        "id": "DoYQn6wO3EfL",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.589Z",
+        "read": false,
+        "text": "Order restored: Ravi · Yoga 101 · ₹1,000"
+      },
+      {
+        "id": "33p41BxJUi70",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.645Z",
+        "read": false,
+        "text": "Your withdrawal of ₹500 has been paid (ref: UTR 99887766)."
+      },
+      {
+        "id": "mUytObjhwtcT",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.707Z",
+        "read": false,
+        "text": "Your withdrawal of ₹700 was rejected: Name mismatch. The amount is back in your balance."
+      },
+      {
+        "id": "RDzHZMqoFyer",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.755Z",
+        "read": false,
+        "text": "Your plan was changed to Advanced by TagMango."
+      },
+      {
+        "id": "_c-5OcFLN88z",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.811Z",
+        "read": false,
+        "text": "Your KYC has been verified."
+      },
+      {
+        "id": "uVsbSFsDiRDa",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.847Z",
+        "read": false,
+        "text": "TagMango removed a post from your community after a report."
+      },
+      {
+        "id": "eQ_1Q2z0TpCC",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:58.209Z",
+        "read": false,
+        "text": "📩 Please update your bio"
       }
     ],
     "invoices": [
@@ -284,6 +562,15 @@
         "product": "Freedom Setup",
         "amount": 29499,
         "status": "Paid (test)"
+      },
+      {
+        "id": "MC6jcifJAZ8Q",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.755Z",
+        "number": "TM-11017755",
+        "product": "Advanced plan",
+        "amount": 0,
+        "status": "Granted by admin"
       }
     ],
     "cloud": [],
@@ -381,6 +668,435 @@
         "userId": "YI3xg_Qr51j1",
         "createdAt": "2026-11-16T05:07:42.401Z"
       }
-    ]
+    ],
+    "withdrawals": [
+      {
+        "amount": 500,
+        "account": "123456789012",
+        "status": "Paid",
+        "id": "VOQCYVRaTJVh",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.407Z",
+        "adminNote": "UTR 99887766",
+        "processedAt": "2026-11-16T06:36:57.645Z",
+        "processedBy": "admin@example.test"
+      },
+      {
+        "amount": 700,
+        "account": "998877665544",
+        "status": "Rejected",
+        "id": "W-s6E4v2hpLr",
+        "userId": "ZreWeLO1PYuQ",
+        "createdAt": "2026-11-16T06:36:57.422Z",
+        "adminNote": "Name mismatch",
+        "processedAt": "2026-11-16T06:36:57.707Z",
+        "processedBy": "admin@example.test"
+      }
+    ],
+    "posts": [],
+    "reports": [
+      {
+        "kind": "post",
+        "refId": "iGOHu8hXhQdQ",
+        "content": "Buy cheap followers here!!! spam spam",
+        "reporter": "Ravi",
+        "author": "Spam Bot",
+        "authorEmail": "spam@x.test",
+        "id": "C3i_sdI7IifU",
+        "userId": "TKbeoFhaeJAS",
+        "createdAt": "2026-11-16T06:36:57.448Z",
+        "resolved": "removed"
+      }
+    ],
+    "audit": [
+      {
+        "id": "MCXjpj_49SG3",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:23.558Z",
+        "admin": "admin@example.test",
+        "action": "order.refund",
+        "target": "Ravi · Yoga 101",
+        "detail": "₹1,000, was Success"
+      },
+      {
+        "id": "DiSW12bcU5OI",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:23.615Z",
+        "admin": "admin@example.test",
+        "action": "order.restore",
+        "target": "Ravi · Yoga 101",
+        "detail": "₹1,000, was Refunded"
+      },
+      {
+        "id": "KD3Stolye3Z9",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:24.048Z",
+        "admin": "admin@example.test",
+        "action": "withdrawal.paid",
+        "target": "Asha Rao · ₹500",
+        "detail": "UTR 99887766"
+      },
+      {
+        "id": "g04aIlToC9Rr",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:24.085Z",
+        "admin": "admin@example.test",
+        "action": "withdrawal.rejected",
+        "target": "Bala Singh · ₹700",
+        "detail": "Name mismatch"
+      },
+      {
+        "id": "hEjqEPdd0_jw",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:24.125Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Bala Singh <bala8157@example.test>",
+        "detail": "plan basic → advanced"
+      },
+      {
+        "id": "gPBQHg1j3iDb",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:24.187Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Bala Singh <bala8157@example.test>",
+        "detail": "KYC verified"
+      },
+      {
+        "id": "lNAetHwEP4n3",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:24.589Z",
+        "admin": "admin@example.test",
+        "action": "report.removed",
+        "target": "post by Spam Bot",
+        "detail": "Buy cheap followers here!!! spam spam"
+      },
+      {
+        "id": "2sqYr1rqIG-t",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:24.660Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Chitra Nair <chitra8157@example.test>",
+        "detail": "suspended (Fraud review)"
+      },
+      {
+        "id": "C-5Cihy0ib4l",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:25.310Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Chitra Nair <chitra8157@example.test>",
+        "detail": "reinstated"
+      },
+      {
+        "id": "HWEKzouNc3J3",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:25.347Z",
+        "admin": "admin@example.test",
+        "action": "announcement.send",
+        "target": "Maintenance",
+        "detail": "to all creators (7)"
+      },
+      {
+        "id": "BmvE2fMfEmM1",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:25.769Z",
+        "admin": "admin@example.test",
+        "action": "announcement.delete",
+        "target": "Maintenance",
+        "detail": "retracted from all notification lists"
+      },
+      {
+        "id": "Hg9aEpwh6-cI",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:25.795Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Asha Rao <asha8157@example.test>",
+        "detail": "internal note updated; message sent"
+      },
+      {
+        "id": "HPdy-8xvAtEl",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:25.875Z",
+        "admin": "admin@example.test",
+        "action": "creator.delete",
+        "target": "Chitra Nair <chitra8157@example.test>",
+        "detail": "account and all data removed"
+      },
+      {
+        "id": "DakxbCkDPWLJ",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:55.872Z",
+        "admin": "admin@example.test",
+        "action": "order.refund",
+        "target": "Ravi · Yoga 101",
+        "detail": "₹1,000, was Success"
+      },
+      {
+        "id": "QeCMJ63IdVkV",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:55.938Z",
+        "admin": "admin@example.test",
+        "action": "order.restore",
+        "target": "Ravi · Yoga 101",
+        "detail": "₹1,000, was Refunded"
+      },
+      {
+        "id": "n6E-eYsV1ojj",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:55.998Z",
+        "admin": "admin@example.test",
+        "action": "withdrawal.paid",
+        "target": "Asha Rao · ₹500",
+        "detail": "UTR 99887766"
+      },
+      {
+        "id": "tws--3Z2_vBR",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.051Z",
+        "admin": "admin@example.test",
+        "action": "withdrawal.rejected",
+        "target": "Bala Singh · ₹700",
+        "detail": "Name mismatch"
+      },
+      {
+        "id": "qTYVnlcTf4pO",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.106Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Bala Singh <bala9703@example.test>",
+        "detail": "plan basic → advanced"
+      },
+      {
+        "id": "2Vb6w2q79OsE",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.162Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Bala Singh <bala9703@example.test>",
+        "detail": "KYC verified"
+      },
+      {
+        "id": "p_u9fnmwJj3I",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.210Z",
+        "admin": "admin@example.test",
+        "action": "report.removed",
+        "target": "post by Spam Bot",
+        "detail": "Buy cheap followers here!!! spam spam"
+      },
+      {
+        "id": "pZeTBQd9kA-s",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.278Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Chitra Nair <chitra9703@example.test>",
+        "detail": "suspended (Fraud review)"
+      },
+      {
+        "id": "UkmKuSX9s6ZK",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.401Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Chitra Nair <chitra9703@example.test>",
+        "detail": "reinstated"
+      },
+      {
+        "id": "66pPAoJ_dLV1",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.450Z",
+        "admin": "admin@example.test",
+        "action": "announcement.send",
+        "target": "Maintenance",
+        "detail": "to all creators (9)"
+      },
+      {
+        "id": "c82pZxjPbBnF",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.523Z",
+        "admin": "admin@example.test",
+        "action": "announcement.delete",
+        "target": "Maintenance",
+        "detail": "retracted from all notification lists"
+      },
+      {
+        "id": "jVa9Gpw6Ij5J",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.561Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Asha Rao <asha9703@example.test>",
+        "detail": "internal note updated; message sent"
+      },
+      {
+        "id": "g_Yy0K72a-7s",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:56.640Z",
+        "admin": "admin@example.test",
+        "action": "creator.delete",
+        "target": "Chitra Nair <chitra9703@example.test>",
+        "detail": "account and all data removed"
+      },
+      {
+        "id": "Buvjly0UvJlW",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.514Z",
+        "admin": "admin@example.test",
+        "action": "order.refund",
+        "target": "Ravi · Yoga 101",
+        "detail": "₹1,000, was Success"
+      },
+      {
+        "id": "P-y90jqGzTmz",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.589Z",
+        "admin": "admin@example.test",
+        "action": "order.restore",
+        "target": "Ravi · Yoga 101",
+        "detail": "₹1,000, was Refunded"
+      },
+      {
+        "id": "mNijcF2NOv1v",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.645Z",
+        "admin": "admin@example.test",
+        "action": "withdrawal.paid",
+        "target": "Asha Rao · ₹500",
+        "detail": "UTR 99887766"
+      },
+      {
+        "id": "hkNBQCkPr43D",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.707Z",
+        "admin": "admin@example.test",
+        "action": "withdrawal.rejected",
+        "target": "Bala Singh · ₹700",
+        "detail": "Name mismatch"
+      },
+      {
+        "id": "mWBiiehfkYyY",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.755Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Bala Singh <bala8900@example.test>",
+        "detail": "plan basic → advanced"
+      },
+      {
+        "id": "wC17VpXvUPSL",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.811Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Bala Singh <bala8900@example.test>",
+        "detail": "KYC verified"
+      },
+      {
+        "id": "ifZMngxW_HPI",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.847Z",
+        "admin": "admin@example.test",
+        "action": "report.removed",
+        "target": "post by Spam Bot",
+        "detail": "Buy cheap followers here!!! spam spam"
+      },
+      {
+        "id": "MAKRl94T6zk3",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:57.919Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Chitra Nair <chitra8900@example.test>",
+        "detail": "suspended (Fraud review)"
+      },
+      {
+        "id": "vtWgyPo3TCTp",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:58.039Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Chitra Nair <chitra8900@example.test>",
+        "detail": "reinstated"
+      },
+      {
+        "id": "NihhLi-vlXqv",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:58.094Z",
+        "admin": "admin@example.test",
+        "action": "announcement.send",
+        "target": "Maintenance",
+        "detail": "to all creators (11)"
+      },
+      {
+        "id": "2fTXY2x7ZEVs",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:58.171Z",
+        "admin": "admin@example.test",
+        "action": "announcement.delete",
+        "target": "Maintenance",
+        "detail": "retracted from all notification lists"
+      },
+      {
+        "id": "Hb3IMnbtMgkB",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:58.209Z",
+        "admin": "admin@example.test",
+        "action": "creator.update",
+        "target": "Asha Rao <asha8900@example.test>",
+        "detail": "internal note updated; message sent"
+      },
+      {
+        "id": "2VprBoABFPYI",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:36:58.308Z",
+        "admin": "admin@example.test",
+        "action": "creator.delete",
+        "target": "Chitra Nair <chitra8900@example.test>",
+        "detail": "account and all data removed"
+      },
+      {
+        "id": "Pc2KOM4EPM5y",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:37:09.737Z",
+        "admin": "admin@example.test",
+        "action": "creator.delete",
+        "target": "Bala Singh <bala8157@example.test>",
+        "detail": "account and all data removed"
+      },
+      {
+        "id": "ACE5WU7XW_iG",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:37:09.749Z",
+        "admin": "admin@example.test",
+        "action": "creator.delete",
+        "target": "Bala Singh <bala9703@example.test>",
+        "detail": "account and all data removed"
+      },
+      {
+        "id": "VzqJBfD_GRA9",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:37:09.759Z",
+        "admin": "admin@example.test",
+        "action": "creator.delete",
+        "target": "Asha Rao <asha8157@example.test>",
+        "detail": "account and all data removed"
+      },
+      {
+        "id": "BKp4sWexx03x",
+        "userId": "kVMp3psppNlW",
+        "createdAt": "2026-11-16T06:37:09.769Z",
+        "admin": "admin@example.test",
+        "action": "creator.delete",
+        "target": "Asha Rao <asha9703@example.test>",
+        "detail": "account and all data removed"
+      }
+    ],
+    "announcements": []
   }
 }

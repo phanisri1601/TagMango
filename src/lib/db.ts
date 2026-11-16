@@ -20,6 +20,9 @@ export type User = {
   bank?: { holder: string; account: string; ifsc: string };
   plan?: Plan;
   whiteLabel?: boolean;
+  suspended?: boolean;
+  suspendReason?: string;
+  adminNote?: string;
   settings?: Record<string, unknown>;
   createdAt: string;
 };

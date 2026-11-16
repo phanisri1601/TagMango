@@ -120,6 +120,7 @@ function Header({ onMenu }: { onMenu: () => void }) {
             <Link href={dash("platformsettings")} onClick={() => setOpen(null)} className="flex items-center gap-2.5 px-4 py-2.5 text-[14px] hover:bg-[#f7f7f7]"><Icon name="settings" className="h-4 w-4" />Settings</Link>
             <Link href={dash("balance")} onClick={() => setOpen(null)} className="flex items-center gap-2.5 px-4 py-2.5 text-[14px] hover:bg-[#f7f7f7]"><Icon name="billing" className="h-4 w-4" />KYC &amp; Withdrawals</Link>
             <Link href={dash("plans")} onClick={() => setOpen(null)} className="flex items-center gap-2.5 px-4 py-2.5 text-[14px] hover:bg-[#f7f7f7]"><Icon name="star" className="h-4 w-4" />Plans</Link>
+            {me.isAdmin && <Link href="/admin" onClick={() => setOpen(null)} className="flex items-center gap-2.5 border-t border-[#ededed] px-4 py-2.5 text-[14px] font-medium text-[#c7740f] hover:bg-[#fdefdf]"><Icon name="lock" className="h-4 w-4" />Admin panel</Link>}
             <button onClick={logout} className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[14px] text-red-600 hover:bg-red-50"><Icon name="logout" className="h-4 w-4" />Logout</button>
           </div>
         )}
@@ -260,14 +261,14 @@ function MobileTabs() {
 }
 
 export default function Shell({ children }: { children: React.ReactNode }) {
-  const [me, setMe] = useState<Me | null>(null);
+  const [me, setMeRaw] = useState<Me | null>(null);
   const [menu, setMenu] = useState(false);
   const [promo, setPromo] = useState(false);
   const path = usePathname();
   const inDashboard = path.startsWith("/web/dashboard");
 
   useEffect(() => {
-    api<{ user: Me }>("/api/me").then((r) => setMe(r.user)).catch(() => {});
+    api<{ user: Me }>("/api/me").then((r) => setMeRaw(r.user)).catch(() => {});
     try {
       setPromo(localStorage.getItem("tm:promo-closed") !== "1");
     } catch {
@@ -284,7 +285,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <MeContext.Provider value={{ me, setMe }}>
+    <MeContext.Provider value={{ me, setMe: (m: Me) => setMeRaw((p) => ({ ...p, ...m }) as Me) }}>
       <div className="font-app min-h-screen bg-white text-[#0f0f0f]">
         {promo && <PromoStrip onClose={() => { setPromo(false); try { localStorage.setItem("tm:promo-closed", "1"); } catch {} }} />}
         <Header onMenu={() => setMenu(true)} />

@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   try {
     const out = await tx((db) => {
       const mango = (db.rows.mangoes || []).find((m) => m.id === body.mangoId && m.active);
-      if (!mango) throw new Error("This offering is no longer available");
+      if (!mango || db.users.find((u) => u.id === mango.userId)?.suspended) throw new Error("This offering is no longer available");
       const type = String(mango.type || "One-time");
       const base = type === "Free" ? 0 : Number(mango.discountPrice || mango.price || 0);
       let price = base;

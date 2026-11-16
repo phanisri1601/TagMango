@@ -75,7 +75,16 @@ export async function currentUser(): Promise<User | null> {
   if (!token) return null;
   const db = await snapshot();
   const s = db.sessions.find((x) => x.token === token);
-  return (s && db.users.find((u) => u.id === s.userId)) || null;
+  const user = s && db.users.find((u) => u.id === s.userId);
+  return user && !user.suspended ? user : null;
+}
+
+/** What a creator may see about their own account — admin-only fields are removed. */
+export function selfView(u: User) {
+  const v: Record<string, unknown> = { plan: "basic", ...u };
+  delete v.adminNote;
+  delete v.suspendReason;
+  return v;
 }
 
 /** OTPs are shown on screen in development because no SMS/email provider is wired up. */

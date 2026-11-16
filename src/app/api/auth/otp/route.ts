@@ -30,6 +30,7 @@ export async function POST(req: Request) {
   const user = email ? db.users.find((u) => u.email === email) : db.users.find((u) => u.phone === phone);
   if (!email && phone.length !== 10) return NextResponse.json({ error: "Please enter a valid 10-digit phone number" }, { status: 400 });
   if (!user) return NextResponse.json({ error: "No account found. Please sign up first." }, { status: 404 });
+  if (user.suspended) return NextResponse.json({ error: "This account has been suspended. Please contact support." }, { status: 403 });
   const code = await issueOtp(key);
   return NextResponse.json({ ok: true, sentTo: email || `+91 ${phone}`, ...(SHOW_DEV_OTP && { devOtp: code }) });
 }

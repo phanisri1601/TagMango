@@ -35,6 +35,7 @@ export async function POST(req: Request) {
   const db = await snapshot();
   const user = email ? db.users.find((u) => u.email === email) : db.users.find((u) => u.phone === phone);
   if (!user) return NextResponse.json({ error: "Account not found" }, { status: 404 });
+  if (user.suspended) return NextResponse.json({ error: "This account has been suspended. Please contact support." }, { status: 403 });
   await startSession(user.id);
   return NextResponse.json({ ok: true, next: "/web/dashboard/getstarted" });
 }

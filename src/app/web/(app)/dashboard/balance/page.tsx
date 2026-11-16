@@ -115,7 +115,7 @@ function Inner() {
     { key: "debit", label: "Debit", render: (r) => (r.debit ? <span className="text-[#ff4d4f]">-{inr(r.debit)}</span> : "-") },
     { key: "credit", label: "Credit", render: (r) => (r.credit ? <span className="text-[#00a400]">+{inr(r.credit)}</span> : "-") },
     { key: "bal", label: "Available Balance", render: (r) => inr(r.balance) },
-    { key: "s", label: "Status", render: (r) => <Pill tone={r.status === "Settled" || r.status === "Paid" ? "green" : "orange"}>{r.status}</Pill> },
+    { key: "s", label: "Status", render: (r) => <Pill tone={r.status === "Settled" || r.status === "Paid" ? "green" : r.status === "Rejected" ? "red" : "orange"}>{r.status}</Pill> },
   ];
 
   const now = new Date().toLocaleString("en-IN", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });

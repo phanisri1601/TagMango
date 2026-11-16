@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED = ["/web/dashboard", "/web/feed", "/web/workshops", "/web/courses", "/web/messages"];
+const PROTECTED = ["/web/dashboard", "/web/feed", "/web/workshops", "/web/courses", "/web/messages", "/admin"];
 
 /** Bounce signed-out visitors away from the app, and signed-in ones away from login/sign-up. */
 export function middleware(req: NextRequest) {
@@ -18,4 +18,4 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/web/:path*"] };
+export const config = { matcher: ["/web/:path*", "/admin/:path*"] };

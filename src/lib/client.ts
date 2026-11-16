@@ -11,6 +11,7 @@ export type Me = {
   kycDone?: boolean;
   bank?: { holder: string; account: string; ifsc: string };
   plan: Plan;
+  isAdmin?: boolean;
   whiteLabel?: boolean;
   settings?: Record<string, unknown>;
   createdAt: string;
