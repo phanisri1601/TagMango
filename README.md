@@ -53,11 +53,25 @@ Sign up / log in with that email, then open `/admin` (or **Admin panel** in your
 
 Suspended creators are signed out everywhere, can't log in, and their checkout, storefront, booking and landing pages go offline.
 
-## Development stand-ins (replace before going live)
+## Backend: Firebase (Firestore + Storage)
 
-- **Database:** `src/lib/db.ts` stores everything in `data/db.json` (git-ignored). Swap it for Postgres/Mongo — serverless hosts don't keep local files.
-- **OTP delivery:** no SMS/email provider is connected, so in development the OTP is shown on screen. Send it via MSG91/Twilio/SES in `src/app/api/auth/otp/route.ts` and that note disappears in production builds.
-- **File uploads (TagMango Cloud):** stored in `data/uploads/` (git-ignored). Use S3/R2 in production.
-- **Payments:** `/api/public/checkout` is test mode — it records a successful sale without charging. Plug Razorpay/Stripe in there.
-- **KYC:** only the PAN format is validated; connect a KYC provider in `src/app/web/(app)/dashboard/balance/page.tsx`.
-- **Email broadcast:** records the send and recipient count; connect an email service to actually deliver.
+All data lives in **Firestore**; uploads (TagMango Cloud) live in **Firebase Storage**. Everything goes through the Next.js server with the Admin SDK — the browser never talks to Firebase, and `firestore.rules` / `storage.rules` deny all direct access.
+
+1. Firebase console → **Build → Firestore Database → Create database** (Native mode).
+2. **Build → Storage → Get started** and note the bucket name.
+3. **Project settings → Service accounts → Generate new private key**.
+4. Copy `.env.example` to `.env.local` and fill `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`, `FIREBASE_STORAGE_BUCKET` and `ADMIN_EMAILS`.
+5. Restart `npm run dev`. The admin **Settings** page shows which database is active.
+6. Optional: `firebase deploy --only firestore:rules,storage` to publish the deny-all rules, and `npm run migrate:firebase -- --go` to copy an existing `data/db.json` and uploads into Firebase.
+
+No composite indexes are needed (queries are equality-only). With no Firebase variables in development, a local JSON file (`data/db.json`) is used; in production the app refuses to start without Firebase unless `STORE_DRIVER=file`.
+
+**Server-enforced rules:** creators can't create sales, mark withdrawals paid, verify their own KYC, raise their own plan (in production), or touch plan-locked features; withdrawal amounts are checked against a server-computed balance; slugs, coupon codes and emails are unique; OTPs and sessions are stored hashed with a 5-attempt limit.
+
+**Scheduled jobs:** call `GET /api/cron/run` with `Authorization: Bearer $CRON_SECRET` every few minutes to send scheduled broadcasts and reminder emails.
+
+## Still stand-ins (replace before going live)
+
+- **Payments:** `/api/public/checkout` is test mode (disabled in production unless `ENABLE_TEST_CHECKOUT=1`). Plug Razorpay/Stripe in there, and a plan-purchase flow to replace `ENABLE_TEST_BILLING`.
+- **KYC:** PAN is collected and held for admin review (Admin → creator → Approve/Reject). No external verification provider is connected.
+- **Email / SMS:** set `SMTP_*` / `TWILIO_*` to deliver login codes, receipts and broadcasts. Without them, development shows codes on screen and saves emails to the `outbox` collection.

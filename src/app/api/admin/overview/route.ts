@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { snapshot, type Row } from "@/lib/db";
+import { loadSnap, type Row } from "@/lib/db";
 import { deny, isAdminEmail, requireAdmin } from "@/lib/admin";
 import { DAY, planOf, rowsOf, statsByUser } from "@/lib/adminData";
 import type { AOverview } from "@/lib/adminTypes";
@@ -9,7 +9,10 @@ const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
 export async function GET() {
   if (!(await requireAdmin())) return deny();
-  const db = await snapshot();
+  const db = await loadSnap(["sales", "withdrawals", "reports", "invoices", "mangoes"]);
+  const asc = <T extends { createdAt: string }>(a: T, b: T) => a.createdAt.localeCompare(b.createdAt);
+  db.users.sort(asc);
+  for (const k of ["withdrawals", "reports"]) db.rows[k].sort(asc);
   const stats = statsByUser(db);
   const creators = db.users.filter((u) => !isAdminEmail(u.email));
   const byId = new Map(db.users.map((u) => [u.id, u]));

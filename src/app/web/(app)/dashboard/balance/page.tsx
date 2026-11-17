@@ -19,7 +19,7 @@ function KycDrawer({ onClose }: { onClose: () => void }) {
   const [busy, setBusy] = useState(false);
 
   async function submit() {
-    if (!me.kycDone) {
+    if (!me.kycDone && me.kyc?.status !== "pending") {
       if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) return toast("Enter a valid PAN (e.g. ABCDE1234F)", "err");
       if (legal.trim().length < 3) return toast("Enter your name as on PAN", "err");
     }
@@ -29,11 +29,11 @@ function KycDrawer({ onClose }: { onClose: () => void }) {
     setBusy(true);
     try {
       const body: Record<string, unknown> = {};
-      if (!me.kycDone) body.kycDone = true; // PAN format is validated; no KYC provider is connected in this clone
+      if (!me.kycDone && me.kyc?.status !== "pending") body.kyc = { pan, legalName: legal };
       if (account || !me.bank) body.bank = { holder, account, ifsc };
       const r = await patchMe(body);
       setMe(r.user);
-      toast("KYC & bank details saved");
+      toast(r.user.kyc?.status === "pending" ? "Submitted — we will verify your KYC shortly" : "KYC & bank details saved");
       onClose();
     } catch (e) {
       toast((e as Error).message, "err");
@@ -46,11 +46,12 @@ function KycDrawer({ onClose }: { onClose: () => void }) {
     <Drawer title="KYC & Bank details" onClose={onClose} footer={<Btn onClick={submit} disabled={busy}>{busy ? "Saving…" : "Submit"}</Btn>}>
       <div className="space-y-6">
         <section className="space-y-3">
-          <p className="flex items-center gap-2 text-[15px] font-semibold">1. KYC verification {me.kycDone && <Pill>Verified</Pill>}</p>
-          {!me.kycDone && (
+          <p className="flex items-center gap-2 text-[15px] font-semibold">1. KYC verification {me.kycDone && <Pill>Verified</Pill>}{!me.kycDone && me.kyc?.status === "pending" && <Pill tone="orange">Under review</Pill>}{me.kyc?.status === "rejected" && <Pill tone="red">Rejected</Pill>}</p>
+          {me.kyc?.status === "rejected" && me.kyc.note && <p className="text-[13px] text-[#cf1322]">Reason: {me.kyc.note}</p>}
+          {!me.kycDone && me.kyc?.status !== "pending" && (
             <>
               <Field label="Name as on PAN" required><input className={inputCls} value={legal} onChange={(e) => setLegal(e.target.value)} /></Field>
-              <Field label="PAN number" required hint="Format ABCDE1234F. Only the format is checked in this clone."><input className={`${inputCls} uppercase`} maxLength={10} placeholder="ABCDE1234F" value={pan} onChange={(e) => setPan(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))} /></Field>
+              <Field label="PAN number" required hint="Format ABCDE1234F. Your PAN is stored securely and reviewed before payouts."><input className={`${inputCls} uppercase`} maxLength={10} placeholder="ABCDE1234F" value={pan} onChange={(e) => setPan(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))} /></Field>
             </>
           )}
         </section>

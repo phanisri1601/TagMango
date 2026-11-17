@@ -1,10 +1,10 @@
 import "server-only";
 import { COMMISSION, type Plan } from "@/components/dash/nav";
 import { isAdminEmail } from "./admin";
-import type { Row, User, snapshot } from "./db";
+import type { Row, Snap, User } from "./db";
 import type { AStats, AUser } from "./adminTypes";
 
-export type Db = Awaited<ReturnType<typeof snapshot>>;
+export type Db = Snap;
 
 export const DAY = 864e5;
 export const PLAN_PRICE: Record<Plan, number> = { basic: 0, pro: 5000, advanced: 15000, ultimate: 35000 };
@@ -46,6 +46,7 @@ export function publicUser(db: Db, u: User, stats: Map<string, AStats>): AUser {
     phone: u.phone,
     plan: planOf(u),
     kycDone: Boolean(u.kycDone),
+    kycStatus: u.kyc?.status,
     hasBank: Boolean(u.bank),
     bankLast4: u.bank?.account.slice(-4),
     whiteLabel: Boolean(u.whiteLabel),

@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { id as newId, now, PLANS, snapshot, tx } from "@/lib/db";
-import { deny, isAdminEmail, logAudit, notify, requireAdmin } from "@/lib/admin";
-import { planOf, rowsOf } from "@/lib/adminData";
+import { asRows, asUser, id as newId, now, PLANS, store } from "@/lib/db";
+import { deny, isAdminEmail, requireAdmin } from "@/lib/admin";
+import { planOf } from "@/lib/adminData";
 import type { AAnnouncement } from "@/lib/adminTypes";
 
 export async function GET() {
   if (!(await requireAdmin())) return deny();
-  const db = await snapshot();
-  const announcements: AAnnouncement[] = rowsOf(db, "announcements")
+  const announcements: AAnnouncement[] = asRows(await store.find("announcements"))
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .map((a) => ({ id: a.id, createdAt: a.createdAt, title: String(a.title), body: String(a.body), audience: String(a.audience), recipients: Number(a.recipients || 0), admin: String(a.admin || "") }));
   return NextResponse.json({ announcements });
@@ -25,16 +24,17 @@ export async function POST(req: Request) {
   if (text.length < 5 || text.length > 500) return NextResponse.json({ error: "Message must be 5–500 characters" }, { status: 400 });
   if (audience !== "all" && !(PLANS as readonly string[]).includes(audience)) return NextResponse.json({ error: "Unknown audience" }, { status: 400 });
   try {
-    const row = await tx((db) => {
-      const targets = db.users.filter((u) => !isAdminEmail(u.email) && !u.suspended && (audience === "all" || planOf(u) === audience));
-      if (!targets.length) throw new Error("No creators match that audience");
-      const a = { id: newId(), userId: admin.id, createdAt: now(), title, body: text, audience, recipients: targets.length, admin: admin.email };
-      (db.rows.announcements ||= []).push(a);
-      for (const u of targets) notify(db, u.id, `📢 ${title} — ${text}`, { announcementId: a.id });
-      logAudit(db, admin, "announcement.send", title, `to ${audience === "all" ? "all creators" : `${audience} plan`} (${targets.length})`);
-      return a;
-    });
-    return NextResponse.json({ ok: true, recipients: row.recipients }, { status: 201 });
+    const targets = (await store.find("users")).map(asUser).filter((u) => !isAdminEmail(u.email) && !u.suspended && (audience === "all" || planOf(u) === audience));
+    if (!targets.length) throw new Error("No creators match that audience");
+    const aid = newId();
+    const at = now();
+    const ops = [
+      { type: "set" as const, coll: "announcements", id: aid, data: { userId: admin.id, createdAt: at, title, body: text, audience, recipients: targets.length, admin: admin.email } },
+      ...targets.map((u) => ({ type: "set" as const, coll: "notifications", id: newId(), data: { userId: u.id, createdAt: at, read: false, text: `📢 ${title} — ${text}`, announcementId: aid } })),
+      { type: "set" as const, coll: "audit", id: newId(), data: { userId: admin.id, createdAt: at, admin: admin.email, action: "announcement.send", target: title, detail: `to ${audience === "all" ? "all creators" : `${audience} plan`} (${targets.length})` } },
+    ];
+    await store.write(ops);
+    return NextResponse.json({ ok: true, recipients: targets.length }, { status: 201 });
   } catch (e) {
     return NextResponse.json({ error: (e as Error).message }, { status: 400 });
   }

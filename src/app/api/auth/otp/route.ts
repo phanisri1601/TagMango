@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
-import { snapshot } from "@/lib/db";
-import { issueOtp, normEmail, normPhone, SHOW_DEV_OTP } from "@/lib/auth";
+import { findUserByEmail, findUserByPhone, issueOtp, normEmail, normPhone, SHOW_DEV_OTP } from "@/lib/auth";
+import { deliverOtp } from "@/lib/messaging";
+
+const mask = (e: string) => e.replace(/^(.).*(@.*)$/, "$1***$2");
+
+async function respond(code: string, o: { phone?: string; email?: string; name?: string }, sentTo: string) {
+  const r = await deliverOtp({ code, ...o });
+  if (!r.delivered && !SHOW_DEV_OTP) return NextResponse.json({ error: "We couldn't send the code. SMS/email delivery isn't configured." }, { status: 503 });
+  return NextResponse.json({ ok: true, sentTo, ...(SHOW_DEV_OTP && { devOtp: code }) });
+}
 
 /**
  * Request an OTP.
@@ -12,25 +20,23 @@ export async function POST(req: Request) {
   const mode = body.mode === "signup" ? "signup" : "login";
   const phone = normPhone(body.phone);
   const email = normEmail(body.email);
-  const db = await snapshot();
 
   if (mode === "signup") {
     const name = String(body.name || "").trim();
-    if (!name) return NextResponse.json({ error: "Please enter your name" }, { status: 400 });
+    if (!name || name.length > 80) return NextResponse.json({ error: "Please enter your name" }, { status: 400 });
     if (!/^\S+@\S+\.\S+$/.test(email)) return NextResponse.json({ error: "Please enter a valid email" }, { status: 400 });
     if (phone.length !== 10) return NextResponse.json({ error: "Please enter a valid 10-digit phone number" }, { status: 400 });
     if (!body.terms) return NextResponse.json({ error: "Please accept the Terms of Service" }, { status: 400 });
-    if (db.users.some((u) => u.phone === phone)) return NextResponse.json({ error: "This phone number is already registered. Please login." }, { status: 409 });
-    if (db.users.some((u) => u.email === email)) return NextResponse.json({ error: "This email is already registered. Please login." }, { status: 409 });
+    if (await findUserByPhone(phone)) return NextResponse.json({ error: "This phone number is already registered. Please login." }, { status: 409 });
+    if (await findUserByEmail(email)) return NextResponse.json({ error: "This email is already registered. Please login." }, { status: 409 });
     const code = await issueOtp(`phone:${phone}`);
-    return NextResponse.json({ ok: true, sentTo: `+91 ${phone}`, ...(SHOW_DEV_OTP && { devOtp: code }) });
+    return respond(code, { phone, email, name }, `+91 ${phone}`);
   }
 
-  const key = email ? `email:${email}` : `phone:${phone}`;
-  const user = email ? db.users.find((u) => u.email === email) : db.users.find((u) => u.phone === phone);
   if (!email && phone.length !== 10) return NextResponse.json({ error: "Please enter a valid 10-digit phone number" }, { status: 400 });
+  const user = email ? await findUserByEmail(email) : await findUserByPhone(phone);
   if (!user) return NextResponse.json({ error: "No account found. Please sign up first." }, { status: 404 });
   if (user.suspended) return NextResponse.json({ error: "This account has been suspended. Please contact support." }, { status: 403 });
-  const code = await issueOtp(key);
-  return NextResponse.json({ ok: true, sentTo: email || `+91 ${phone}`, ...(SHOW_DEV_OTP && { devOtp: code }) });
+  const code = await issueOtp(email ? `email:${email}` : `phone:${phone}`);
+  return respond(code, { phone: user.phone, email: user.email, name: user.name }, email ? mask(email) : `+91 ${phone}`);
 }

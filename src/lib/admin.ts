@@ -1,7 +1,7 @@
 import "server-only";
 import { NextResponse } from "next/server";
 import { currentUser } from "./auth";
-import { id, now, type Row, type User } from "./db";
+import { id, now, type User } from "./db";
 
 /**
  * Who is a platform admin? Anyone whose login email is listed in the ADMIN_EMAILS
@@ -24,14 +24,15 @@ export async function requireAdmin(): Promise<User | null> {
 
 export const deny = () => NextResponse.json({ error: "Admin access required" }, { status: 403 });
 
-type DbShape = { rows: Record<string, Row[]> };
+type Writer = { set(coll: string, id: string, data: Record<string, unknown>): void };
 
-/** Append an entry to the admin audit log (call inside a tx so it is saved with the change). */
-export function logAudit(db: DbShape, admin: User, action: string, target: string, detail = "") {
-  (db.rows.audit ||= []).push({ id: id(), userId: admin.id, createdAt: now(), admin: admin.email, action, target, detail });
+/** Append an entry to the admin audit log (pass the transaction so it is saved with the change). */
+export function logAudit(t: Writer, admin: User, action: string, target: string, detail = "") {
+  const i = id();
+  t.set("audit", i, { userId: admin.id, createdAt: now(), admin: admin.email, action, target, detail });
 }
 
 /** Drop a notification into a creator's bell menu. */
-export function notify(db: DbShape, userId: string, text: string, extra: Record<string, unknown> = {}) {
-  (db.rows.notifications ||= []).push({ id: id(), userId, createdAt: now(), read: false, text, ...extra });
+export function notify(t: Writer, userId: string, text: string, extra: Record<string, unknown> = {}) {
+  t.set("notifications", id(), { userId, createdAt: now(), read: false, text, ...extra });
 }

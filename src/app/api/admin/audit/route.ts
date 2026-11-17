@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { snapshot } from "@/lib/db";
+import { loadSnap } from "@/lib/db";
 import { deny, requireAdmin } from "@/lib/admin";
 import { rowsOf } from "@/lib/adminData";
 import type { AAudit } from "@/lib/adminTypes";
 
 export async function GET() {
   if (!(await requireAdmin())) return deny();
-  const db = await snapshot();
+  const db = await loadSnap(["audit"]);
   const entries: AAudit[] = rowsOf(db, "audit")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .slice(0, 1000)

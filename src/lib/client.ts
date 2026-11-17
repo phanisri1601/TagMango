@@ -9,6 +9,7 @@ export type Me = {
   phone: string;
   about?: { category?: string; audience?: string; goal?: string };
   kycDone?: boolean;
+  kyc?: { pan: string; legalName: string; status: "pending" | "verified" | "rejected"; note?: string };
   bank?: { holder: string; account: string; ifsc: string };
   plan: Plan;
   isAdmin?: boolean;

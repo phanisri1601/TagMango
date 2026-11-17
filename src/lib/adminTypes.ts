@@ -9,6 +9,7 @@ export type AUser = {
   phone: string;
   plan: Plan;
   kycDone: boolean;
+  kycStatus?: string;
   hasBank: boolean;
   bankLast4?: string;
   whiteLabel: boolean;
@@ -82,7 +83,7 @@ export type AOverview = {
 };
 
 export type ACreatorDetail = {
-  user: AUser & { bank?: { holder: string; account: string; ifsc: string } };
+  user: AUser & { bank?: { holder: string; account: string; ifsc: string }; kyc?: { pan: string; legalName: string; status: string; submittedAt: string; note?: string } };
   orders: AOrder[];
   withdrawals: AWithdrawal[];
   mangoes: { id: string; title: string; price: number; type: string; active: boolean }[];

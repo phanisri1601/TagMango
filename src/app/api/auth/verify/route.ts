@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { id, now, snapshot, tx } from "@/lib/db";
-import { checkOtp, normEmail, normPhone, startSession } from "@/lib/auth";
+import { checkOtp, createUser, findUserByEmail, findUserByPhone, normEmail, normPhone, startSession } from "@/lib/auth";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
@@ -14,26 +13,15 @@ export async function POST(req: Request) {
   }
 
   if (body.mode === "signup") {
-    const userId = await tx((db) => {
-      if (db.users.some((u) => u.phone === phone || u.email === email)) return null;
-      const uid = id();
-      db.users.push({
-        id: uid,
-        name: String(body.name || "").trim(),
-        email,
-        phone,
-        marketingOptIn: Boolean(body.marketing),
-        createdAt: now(),
-      });
-      return uid;
-    });
-    if (!userId) return NextResponse.json({ error: "Account already exists. Please login." }, { status: 409 });
-    await startSession(userId);
+    const name = String(body.name || "").trim().slice(0, 80);
+    if (!name || !/^\S+@\S+\.\S+$/.test(email) || phone.length !== 10) return NextResponse.json({ error: "Invalid sign-up details" }, { status: 400 });
+    const user = await createUser({ name, email, phone, marketingOptIn: Boolean(body.marketing) });
+    if (!user) return NextResponse.json({ error: "Account already exists. Please login." }, { status: 409 });
+    await startSession(user.id);
     return NextResponse.json({ ok: true, next: "/web/sign-up/about" });
   }
 
-  const db = await snapshot();
-  const user = email ? db.users.find((u) => u.email === email) : db.users.find((u) => u.phone === phone);
+  const user = email ? await findUserByEmail(email) : await findUserByPhone(phone);
   if (!user) return NextResponse.json({ error: "Account not found" }, { status: 404 });
   if (user.suspended) return NextResponse.json({ error: "This account has been suspended. Please contact support." }, { status: 403 });
   await startSession(user.id);

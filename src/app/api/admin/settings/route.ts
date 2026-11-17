@@ -1,14 +1,27 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
-import { snapshot } from "@/lib/db";
+import { store } from "@/lib/db";
+import { ALL_COLLECTIONS } from "@/lib/collections";
+import { dataDir } from "@/lib/store/file";
 import { adminEmails, deny, requireAdmin } from "@/lib/admin";
+import { emailConfigured, smsConfigured } from "@/lib/messaging";
 
-async function dirSize(dir: string) {
+async function dirSize(dir: string): Promise<{ files: number; bytes: number }> {
   try {
-    const files = await fs.readdir(dir);
-    const sizes = await Promise.all(files.map((f) => fs.stat(path.join(dir, f)).then((s) => s.size).catch(() => 0)));
-    return { files: files.length, bytes: sizes.reduce((a, b) => a + b, 0) };
+    let files = 0;
+    let bytes = 0;
+    for (const e of await fs.readdir(dir, { withFileTypes: true })) {
+      if (e.isDirectory()) {
+        const s = await dirSize(path.join(dir, e.name));
+        files += s.files;
+        bytes += s.bytes;
+      } else {
+        files++;
+        bytes += (await fs.stat(path.join(dir, e.name)).catch(() => null))?.size || 0;
+      }
+    }
+    return { files, bytes };
   } catch {
     return { files: 0, bytes: 0 };
   }
@@ -18,17 +31,21 @@ async function dirSize(dir: string) {
 export async function GET() {
   const me = await requireAdmin();
   if (!me) return deny();
-  const db = await snapshot();
-  const dbFile = await fs.stat(path.join(process.cwd(), "data", "db.json")).catch(() => null);
+  const counts = await Promise.all(ALL_COLLECTIONS.map(async (name) => ({ name, count: await store.count(name) })));
+  const local = store.kind === "file";
+  const dbFile = local ? await fs.stat(path.join(dataDir(), "db.json")).catch(() => null) : null;
   return NextResponse.json({
     admins: adminEmails(),
     you: me.email,
     env: process.env.NODE_ENV,
     otpOnScreen: process.env.NODE_ENV !== "production" || process.env.SHOW_DEV_OTP === "1",
-    users: db.users.length,
-    sessions: db.sessions.length,
+    database: store.kind === "firestore" ? "Firebase Firestore" : "Local JSON file",
+    email: emailConfigured() ? "SMTP" : "not configured",
+    sms: smsConfigured() ? "Twilio" : "not configured",
+    users: counts.find((c) => c.name === "users")?.count || 0,
+    sessions: counts.find((c) => c.name === "sessions")?.count || 0,
     dbBytes: dbFile?.size || 0,
-    uploads: await dirSize(path.join(process.cwd(), "data", "uploads")),
-    collections: Object.entries(db.rows).map(([name, rows]) => ({ name, count: rows.length })).sort((a, b) => b.count - a.count),
+    uploads: local ? await dirSize(path.join(dataDir(), "uploads")) : { files: 0, bytes: 0 },
+    collections: counts.filter((c) => !["users", "sessions", "otps", "claims"].includes(c.name)).sort((a, b) => b.count - a.count),
   });
 }

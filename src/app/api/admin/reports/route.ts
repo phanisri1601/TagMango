@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { snapshot } from "@/lib/db";
+import { loadSnap } from "@/lib/db";
 import { deny, requireAdmin } from "@/lib/admin";
 import { rowsOf } from "@/lib/adminData";
 import type { AReport } from "@/lib/adminTypes";
@@ -7,7 +7,7 @@ import type { AReport } from "@/lib/adminTypes";
 /** Content reports from every creator's community. */
 export async function GET() {
   if (!(await requireAdmin())) return deny();
-  const db = await snapshot();
+  const db = await loadSnap(["reports"]);
   const reports: AReport[] = rowsOf(db, "reports")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .map((r) => ({

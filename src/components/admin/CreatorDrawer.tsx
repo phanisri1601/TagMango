@@ -86,6 +86,17 @@ export default function CreatorDrawer({ id, onClose }: { id: string; onClose: ()
 
           <Section title="Verification & features">
             <div className="space-y-3 text-[14px]">
+              {data.user.kyc && (
+                <div className="rounded-lg bg-[#f7f7f8] px-3 py-2.5 text-[13px]">
+                  <p>KYC submission: <b>{data.user.kyc.status}</b> · {data.user.kyc.legalName} · PAN {data.user.kyc.pan}</p>
+                  {data.user.kyc.status === "pending" && (
+                    <div className="mt-2 flex gap-2">
+                      <Btn disabled={busy} onClick={() => patch({ kyc: "approve" }, "KYC verified")}>Approve</Btn>
+                      <Btn variant="outline" disabled={busy} onClick={() => { const n = window.prompt("Reason for rejecting?"); if (n?.trim()) patch({ kyc: "reject", kycNote: n }, "KYC rejected"); }}>Reject</Btn>
+                    </div>
+                  )}
+                </div>
+              )}
               <label className="flex items-center justify-between gap-3">KYC verified<Toggle on={u.kycDone} disabled={busy} onChange={(v) => patch({ kycDone: v }, v ? "KYC verified" : "KYC revoked")} label="KYC verified" /></label>
               <label className="flex items-center justify-between gap-3">Freedom Setup (custom domain)<Toggle on={u.whiteLabel} disabled={busy} onChange={(v) => patch({ whiteLabel: v }, v ? "Freedom Setup granted" : "Freedom Setup removed")} label="Freedom Setup" /></label>
               <div className="rounded-lg bg-[#f7f7f8] px-3 py-2.5 text-[13px]">
