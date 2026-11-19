@@ -268,7 +268,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   const inDashboard = path.startsWith("/web/dashboard");
 
   useEffect(() => {
-    api<{ user: Me }>("/api/me").then((r) => setMeRaw(r.user)).catch(() => {});
+    api<{ user: Me }>("/api/me").then((r) => (r.user.role === "learner" ? window.location.replace("/portal") : setMeRaw(r.user))).catch(() => {});
     try {
       setPromo(localStorage.getItem("tm:promo-closed") !== "1");
     } catch {

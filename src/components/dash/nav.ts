@@ -81,6 +81,21 @@ export const sidebar: NavTop[] = [
     ],
   },
   {
+    label: "Growth",
+    icon: "analytics",
+    children: [
+      { label: "Funnel", slug: "growth", badge: "New" },
+      { label: "Leads & CRM", slug: "growth-leads" },
+      { label: "Pattern Check", slug: "growth-quiz" },
+      { label: "Masterclass & Calls", slug: "growth-events" },
+      { label: "Links & Bio Page", slug: "growth-links" },
+      { label: "Workflows", slug: "growth-flows" },
+      { label: "Weekly Report", slug: "growth-report" },
+      { label: "Testimonials", slug: "growth-testimonials" },
+    ],
+  },
+  { label: "Learning Portal", icon: "courses", slug: "portal-programme" },
+  {
     label: "Marketing",
     icon: "marketing",
     children: [

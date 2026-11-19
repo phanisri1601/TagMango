@@ -138,6 +138,58 @@ export const RULES: Record<string, Rule> = {
   outbox: { ops: "r" },
 };
 
+const CODE = /^[a-z0-9][a-z0-9_-]{1,38}$/i;
+
+/* ---- growth funnel + learning portal ---- */
+Object.assign(RULES, {
+  growth: {
+    ops: "ru",
+    protect: ["hookKey", "lastReportWeek"],
+    globalUnique: ["slug"],
+    check: ({ data }) => {
+      if ("slug" in data && !SLUG.test(String(data.slug))) return "Link must be 2–60 letters, numbers or dashes";
+      if ("alertEmail" in data && data.alertEmail && !email(data.alertEmail)) return "Enter a valid alert email";
+      const q = data.quiz as { patterns?: { id?: string; name?: string; bullets?: { id?: string; score?: unknown }[] }[]; rules?: Record<string, unknown> } | undefined;
+      if (q) {
+        if (!Array.isArray(q.patterns) || q.patterns.length < 2 || q.patterns.length > 8) return "A Pattern Check needs between 2 and 8 patterns";
+        const ids = new Set<string>();
+        for (const p of q.patterns) {
+          if (!p.id || !p.name?.trim()) return "Every pattern needs a name";
+          if (!p.bullets?.length) return `“${p.name}” needs at least one statement`;
+          for (const b of p.bullets) {
+            if (!b.id || ids.has(`${p.id}.${b.id}`)) return "Statement ids must be unique";
+            ids.add(`${p.id}.${b.id}`);
+            if (!(Number(b.score) >= 0)) return "Scores must be 0 or more";
+          }
+        }
+        for (const k of ["present", "blend", "lowBelow", "highFrom"]) if (!(Number(q.rules?.[k]) >= 0 && Number(q.rules?.[k]) <= 100)) return "Result rules must be percentages between 0 and 100";
+      }
+    },
+  },
+  crm: { ops: "rud", updatable: ["notes"] },
+  masterclasses: { ops: "rcud", required: ["title", "startsAt"], protect: ["attendanceTaken"], check: ({ data }) => ("seats" in data && data.seats !== "" && !(num(data.seats) >= 1) ? "Seats must be at least 1" : undefined) },
+  slots: { ops: "rcud", required: ["startsAt"], unique: ["startsAt"], protect: ["leadId", "bookedAt"] },
+  trackedLinks: {
+    ops: "rcud",
+    required: ["label", "code"],
+    globalUnique: ["code"],
+    protect: ["clicks"],
+    check: ({ data }) => ("code" in data && !CODE.test(String(data.code)) ? "Code must be 2–40 letters, numbers, dashes or underscores" : undefined),
+  },
+  linkClicks: { ops: "r" },
+  flows: { ops: "r" },
+  flowRuns: { ops: "r" },
+  msgLog: { ops: "r" },
+  testimonials: { ops: "rud", updatable: ["status", "featured"] },
+  socialStats: { ops: "rcud", required: ["platform", "weekStart"], check: ({ data }) => ("weekStart" in data && !/^\d{4}-\d{2}-\d{2}$/.test(String(data.weekStart)) ? "Pick the Monday of the week" : undefined) },
+  lessons: { ops: "rcud", required: ["title", "week"] },
+  classes: { ops: "rcud", required: ["title", "startsAt"], protect: ["reminded", "attendanceTaken"] },
+  assignments: { ops: "rcud", required: ["title", "week"], protect: ["dueReminded", "overdueHandled"] },
+  submissions: { ops: "ru", updatable: ["feedback", "status"] },
+  enrolments: { ops: "rud", updatable: ["status", "cohort"] },
+  updates: { ops: "rcd", required: ["title", "body"] },
+} satisfies Record<string, Rule>);
+
 export const ALWAYS_PROTECTED = ["id", "userId", "createdAt", "updatedAt"];
 
 const norm = (v: unknown) => String(v ?? "").trim().toLowerCase();

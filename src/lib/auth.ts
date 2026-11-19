@@ -1,7 +1,7 @@
 import "server-only";
 import crypto from "crypto";
 import { cookies, headers } from "next/headers";
-import { asUser, now, sha, id, store, type Session, type User } from "./db";
+import { asUser, authCache, now, sha, id, store, type Session, type User } from "./db";
 
 export const SESSION_COOKIE = "tm_session";
 const OTP_TTL_MS = 5 * 60 * 1000;
@@ -58,12 +58,12 @@ export async function createUser(input: { name: string; email: string; phone: st
   const ce = sha(`email:${input.email}`);
   const cp = sha(`phone:${input.phone}`);
   return store.tx(async (t) => {
-    const [a, b, ue, up] = await Promise.all([t.get("claims", ce), t.get("claims", cp), t.find("users", [["email", input.email]], { limit: 1 }), t.find("users", [["phone", input.phone]], { limit: 1 })]);
+    const [a, b, ue, up] = await Promise.all([t.get("claims", ce), input.phone ? t.get("claims", cp) : null, t.find("users", [["email", input.email]], { limit: 1 }), input.phone ? t.find("users", [["phone", input.phone]], { limit: 1 }) : []]);
     if (a || b || ue.length || up.length) return null; // also checks users directly: accounts created before claims existed
     const user: User = { id: uid, name: input.name, email: input.email, phone: input.phone, marketingOptIn: input.marketingOptIn, createdAt: now() };
     t.set("users", uid, user);
     t.set("claims", ce, { userId: uid, kind: "email" });
-    t.set("claims", cp, { userId: uid, kind: "phone" });
+    if (input.phone) t.set("claims", cp, { userId: uid, kind: "phone" });
     return user;
   });
 }
@@ -111,10 +111,15 @@ export const publicSessionId = (storedId: string) => storedId.slice(0, 16);
 export async function currentUser(): Promise<User | null> {
   const token = await currentToken();
   if (!token) return null;
-  const s = await store.get("sessions", sha(token));
+  const key = sha(token);
+  const hit = authCache.get(key);
+  if (hit) return structuredClone(hit.user) as User; // a copy, so a request can never change what other requests see
+  const s = await store.get("sessions", key);
   if (!s) return null;
   const u = await store.get("users", String(s.userId));
-  return u && !(u as unknown as User).suspended ? asUser(u) : null;
+  const user = u && !(u as unknown as User).suspended ? asUser(u) : null;
+  if (user) authCache.set(key, structuredClone(user));
+  return user;
 }
 
 /** What a creator may see about their own account: admin-only fields removed, PAN masked. */

@@ -4,6 +4,8 @@ import { currentUser } from "./auth";
 import { asUser, id as newId, now, store, type User } from "./db";
 import { hasFeature } from "./plans";
 import { runBroadcasts } from "./cron";
+import { announceUpdate, feedbackReady } from "./growth/portal";
+import { attachRoom } from "./video";
 import { present, RULES, sanitise, validate, type Rule } from "./resources";
 
 const MAX_BODY = 600_000; // characters; website/course builders store large JSON
@@ -13,6 +15,7 @@ type Resolved = { me: User; rule: Rule; coll: string } | NextResponse;
 export async function resolve(collection: string, op: "r" | "c" | "u" | "d"): Promise<Resolved> {
   const me = await currentUser();
   if (!me) return NextResponse.json({ error: "Not logged in" }, { status: 401 });
+  if (me.role === "learner") return NextResponse.json({ error: "Learner accounts use the portal" }, { status: 403 });
   const rule = Object.prototype.hasOwnProperty.call(RULES, collection) ? RULES[collection] : null;
   if (!rule) return NextResponse.json({ error: "Unknown collection" }, { status: 404 });
   if (!rule.ops.includes(op)) return NextResponse.json({ error: "Not allowed" }, { status: 405 });
@@ -54,7 +57,9 @@ export async function create(coll: string, me: User, rule: Rule, raw: Record<str
       return { id: rid, ...full };
     });
     if (coll === "broadcasts") await runBroadcasts(me.id).catch(() => {}); // send immediately if due; scheduled ones go out via /api/cron/run
-    return NextResponse.json({ row: present(rule, row) }, { status: 201 });
+    if (coll === "updates") await announceUpdate(me.id, row).catch(() => {});
+    const withRoom = await attachRoom(coll, row).catch(() => row); // empty meeting link + Metered set up → a built-in video room
+    return NextResponse.json({ row: present(rule, withRoom) }, { status: 201 });
   } catch (e) {
     return fail(e);
   }
@@ -73,6 +78,7 @@ export async function update(coll: string, me: User, rule: Rule, rid: string, ra
       return { ...cur, ...patch };
     });
     if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (coll === "submissions" && typeof raw.feedback === "string" && raw.feedback.trim()) await feedbackReady(me.id, row).catch(() => {});
     return NextResponse.json({ row: present(rule, row) });
   } catch (e) {
     return fail(e);

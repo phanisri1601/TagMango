@@ -75,3 +75,27 @@ No composite indexes are needed (queries are equality-only). With no Firebase va
 - **Payments:** `/api/public/checkout` is test mode (disabled in production unless `ENABLE_TEST_CHECKOUT=1`). Plug Razorpay/Stripe in there, and a plan-purchase flow to replace `ENABLE_TEST_BILLING`.
 - **KYC:** PAN is collected and held for admin review (Admin → creator → Approve/Reject). No external verification provider is connected.
 - **Email / SMS:** set `SMTP_*` / `TWILIO_*` to deliver login codes, receipts and broadcasts. Without them, development shows codes on screen and saves emails to the `outbox` collection.
+
+
+## Growth funnel and learning portal
+
+Built from the agency brief (attention → capture → free masterclass → discovery call → paid programme).
+
+| Area | Where |
+|---|---|
+| Funnel numbers, drop-off %, groups, sources | Dashboard › Growth › Funnel |
+| One record per lead, call card | Growth › Leads & CRM |
+| Pattern Check editor, scoring rules, result emails | Growth › Pattern Check (public page `/q/<name>`) |
+| Masterclass registration, numbered seats, attendance; discovery slots | Growth › Masterclass & Calls (`/m/<name>`, `/call/<name>`) |
+| Tracked links, link-in-bio, comment-to-DM webhook | Growth › Links & Bio Page (`/l/<name>`) |
+| The 12 workflows, stop rules, sent/opened/clicked/acted | Growth › Workflows |
+| Weekly numbers, Monday report, monetisation progress | Growth › Weekly Report |
+| Testimonials with permission tick | Growth › Testimonials (`/stories/<name>`) |
+| Learners, lessons, classes, assignments, feedback | Learning Portal (learners use `/portal`) |
+
+**Scheduler.** Reminders, follow-ups and the Monday report run from `/api/cron/run`. Call it every 5 minutes
+(`Authorization: Bearer $CRON_SECRET`). Immediate messages (result email, confirmations, thank-yous) don't wait for it.
+
+**Still stand-ins.** WhatsApp needs Twilio (`TWILIO_WHATSAPP_FROM`) and, outside the 24-hour window, Meta-approved templates.
+Instagram/YouTube numbers are typed in weekly (no platform API). Payment is the test checkout until a gateway such as Razorpay is added.
+Policy pages are templates to be reviewed by a lawyer. Pattern Check names, bullets and scores are sample content.

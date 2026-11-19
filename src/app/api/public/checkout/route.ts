@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { asUser, id, now, store } from "@/lib/db";
 import { rateLimited } from "@/lib/ratelimit";
 import { automatedEmail } from "@/lib/automation";
+import { onPurchase } from "@/lib/growth/core";
 
 const CYCLE: Record<string, { label: string; days: number }> = {
   "One-time": { label: "One-time", days: 0 },
@@ -79,6 +80,7 @@ export async function POST(req: Request) {
         subject: `You're in! ${out.title}`,
         body: `Hi {name},\n\nThanks for purchasing "{mango}" ({amount}). You now have access.\n\n— {creator}`,
       });
+      await onPurchase(out.creatorId, String(body.mangoId || ""), { name, email, phone }).catch(() => {});
       return NextResponse.json({ ok: true, price: out.price, coupon: out.coupon, saleId: out.saleId });
     }
     return NextResponse.json({ ok: true, ...out });

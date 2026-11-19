@@ -3,6 +3,9 @@ import { asUser, now, store } from "./db";
 import { activeCustomers } from "./customers";
 import { automatedEmail } from "./automation";
 import { fill, sendEmail } from "./messaging";
+import { processFlows } from "./growth/core";
+import { runClassNotices } from "./growth/portal";
+import { runWeeklyReports } from "./growth/report";
 
 /** Send every Email broadcast whose time has come (scheduled or immediate). WhatsApp broadcasts are only recorded. */
 export async function runBroadcasts(onlyUser?: string) {
@@ -55,4 +58,9 @@ export async function runReminders() {
     n++;
   }
   return n;
+}
+
+/** Growth: due workflow messages, class/assignment notices, and the Monday report. */
+export async function runGrowth() {
+  return { flows: await processFlows(), notices: await runClassNotices(), reports: await runWeeklyReports() };
 }

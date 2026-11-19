@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { runBroadcasts, runReminders } from "@/lib/cron";
+import { runBroadcasts, runGrowth, runReminders } from "@/lib/cron";
 
 /**
  * Scheduled jobs: sends due broadcasts and reminder emails. Call every few minutes
@@ -13,7 +13,8 @@ async function handle(req: Request) {
   }
   const broadcasts = await runBroadcasts();
   const reminders = await runReminders();
-  return NextResponse.json({ ok: true, broadcasts, reminders });
+  const growth = await runGrowth();
+  return NextResponse.json({ ok: true, broadcasts, reminders, growth });
 }
 export const GET = handle;
 export const POST = handle;

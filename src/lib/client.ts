@@ -13,6 +13,7 @@ export type Me = {
   bank?: { holder: string; account: string; ifsc: string };
   plan: Plan;
   isAdmin?: boolean;
+  role?: "learner";
   whiteLabel?: boolean;
   settings?: Record<string, unknown>;
   createdAt: string;

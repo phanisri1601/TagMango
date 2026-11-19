@@ -1,9 +1,9 @@
 import "server-only";
 import crypto from "crypto";
-import { store } from "./store";
+import { authCache, store } from "./store";
 import type { Reader } from "./store";
 
-export { store };
+export { store, authCache };
 
 export const PLANS = ["basic", "pro", "advanced", "ultimate"] as const;
 export type Plan = (typeof PLANS)[number];
@@ -22,6 +22,7 @@ export type User = {
   bank?: { holder: string; account: string; ifsc: string };
   plan?: Plan;
   whiteLabel?: boolean;
+  role?: "learner";
   suspended?: boolean;
   suspendReason?: string;
   adminNote?: string;
