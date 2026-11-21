@@ -2,14 +2,15 @@
 import Counter from "./Counter";
 import SplitHeading from "./SplitHeading";
 import { Arrow, GhostButton } from "./ui";
+import { FLOWS } from "@/lib/growth/model";
 
 const A = "/tagmango";
 const COLS = ["portrait-col-1-v5", "portrait-col-2-v6", "portrait-col-3-v5", "portrait-col-4-v5", "portrait-col-5-v5", "portrait-col-6-v5", "portrait-col-7-v5", "portrait-col-8-v5"];
 
 const stats = [
-  { value: "10,000+", label: "Creators" },
-  { value: "₹1,000 Cr+", label: "Yearly creator earnings" },
-  { value: "1 Cr+", label: "Learners impacted" },
+  { value: "5", label: "Funnel steps tracked" },
+  { value: String(FLOWS.length), label: "Automated workflows" },
+  { value: "6", label: "Week programme portal" },
 ];
 
 const delay = (s: number) => ({ ["--delay" as string]: `${s}s` });
@@ -35,8 +36,8 @@ export default function Hero() {
           ))}
         </div>
         {/* Orange glow band along the bottom edge */}
-        <div className="absolute inset-x-0 bottom-0 hidden h-[186px] bg-[length:1360px_186px] bg-bottom bg-no-repeat md:block" style={{ backgroundImage: `url(${A}/hero/glow-band-v2.webp)` }} />
-        <div className="absolute inset-x-0 bottom-0 aspect-[390/110] bg-cover bg-bottom md:hidden" style={{ backgroundImage: `url(${A}/hero/glow-band-mobile.webp)` }} />
+        <div className="recolor absolute inset-x-0 bottom-0 hidden h-[186px] bg-[length:1360px_186px] bg-bottom bg-no-repeat md:block" style={{ backgroundImage: `url(${A}/hero/glow-band-v2.webp)` }} />
+        <div className="recolor absolute inset-x-0 bottom-0 aspect-[390/110] bg-cover bg-bottom md:hidden" style={{ backgroundImage: `url(${A}/hero/glow-band-mobile.webp)` }} />
       </div>
 
       <div className="relative mx-auto flex min-h-[817px] max-w-5xl flex-col items-center px-4 pb-24 pt-[300px] text-center md:pt-[clamp(220px,calc(100vw*370/1440),370px)]">
@@ -45,20 +46,20 @@ export default function Hero() {
           auto
           delay={0.1}
           className="font-display text-[34px] font-bold leading-[1.1] tracking-tight sm:text-5xl md:text-[60px] lg:text-[64px]"
-          segments={[{ text: "India’s Largest", br: true }, { text: "Creator Economy" }, { text: "Platform" }]}
+          segments={[{ text: "Turn attention", br: true }, { text: "into a full" }, { text: "programme", gradient: true }]}
         />
         <p className="animate-rise mt-5 max-w-2xl text-[15px] leading-[1.5] text-white/80 sm:text-[18px]" style={delay(0.34)}>
-          Your all-in-one, AI-powered system. Community, courses, workshops, coaching, payments, your own app &amp; more.
+          Capture every lead, fill your free masterclass, book discovery calls, take payments and teach your cohort. WhatsApp and email follow-ups run by themselves.
         </p>
 
         <div className="animate-rise mt-10 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4" style={delay(0.42)}>
           <a
             href="/web/sign-up"
-            className="bg-mango group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_8px_30px_-8px_rgba(255,106,0,0.7)] transition hover:brightness-110 sm:w-[200px]"
+            className="bg-mango group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_8px_30px_-8px_rgba(var(--accent-rgb),0.7)] transition hover:brightness-110 sm:w-[200px]"
           >
             Get Started <Arrow className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </a>
-          <GhostButton className="w-full sm:w-[200px]">Book a Demo</GhostButton>
+          <GhostButton href="/apply" className="w-full sm:w-[200px]">Apply to the programme</GhostButton>
         </div>
 
         <ul className="animate-rise mt-12 grid w-full max-w-2xl grid-cols-3 gap-4 md:gap-16" style={delay(0.5)}>
@@ -72,8 +73,8 @@ export default function Hero() {
       </div>
 
       {/* Mango badge sitting on the seam */}
-      <div className="pointer-events-none absolute -bottom-[31px] left-1/2 z-20 flex size-16 -translate-x-1/2 items-center justify-center rounded-full bg-[radial-gradient(64px_1006.5px_at_100%_50%,#f6bb22_0%,#fb9311_50%,#ff6a00_100%)] shadow-[0_0_40px_8px_rgba(255,106,0,0.45)]">
-        <img src={`${A}/hero/mango-icon.svg`} alt="" className="h-full w-full" />
+      <div className="pointer-events-none absolute -bottom-[31px] left-1/2 z-20 flex size-16 -translate-x-1/2 items-center justify-center rounded-full bg-[radial-gradient(64px_1006.5px_at_100%_50%,var(--ac1)_0%,var(--ac2)_50%,var(--ac3)_100%)] shadow-[0_0_40px_8px_rgba(var(--accent-rgb),0.45)]">
+        <img src={`${A}/hero/mango-icon.svg`} alt="" className="recolor h-full w-full" />
       </div>
     </section>
   );

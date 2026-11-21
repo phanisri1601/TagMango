@@ -131,7 +131,7 @@ function ChapterForm({ ch, onSave }: { ch: Chapter; onSave: (c: Chapter) => void
       <Field label="Type">
         <div className="flex flex-wrap gap-2">{(["Video", "Audio", "PDF", "Text", "Assignment"] as const).map((t) => <button key={t} type="button" onClick={() => setC({ ...c, type: t })} className={`h-8 rounded-md border px-3 text-[13px] ${c.type === t ? "border-[#0f0f0f] bg-[#0f0f0f] text-white" : "border-[#e1e1e1]"}`}>{t}</button>)}</div>
       </Field>
-      {needsUrl && <Field label={`${c.type} URL`} hint="YouTube/Vimeo link, a file URL, or a link from TagMango Cloud."><input className={inputCls} placeholder="https://…" value={c.url || ""} onChange={(e) => setC({ ...c, url: e.target.value })} /></Field>}
+      {needsUrl && <Field label={`${c.type} URL`} hint="YouTube/Vimeo link, a file URL, or a link from Cloud."><input className={inputCls} placeholder="https://…" value={c.url || ""} onChange={(e) => setC({ ...c, url: e.target.value })} /></Field>}
       <Field label={c.type === "Assignment" ? "Assignment instructions" : "Notes / text content"}><textarea className={`${areaCls} min-h-24`} value={c.text || ""} onChange={(e) => setC({ ...c, text: e.target.value })} /></Field>
       <label className="flex items-center justify-between text-[14px]">Free preview (visible without purchase)<Toggle on={Boolean(c.free)} onChange={(v) => setC({ ...c, free: v })} /></label>
       <Btn

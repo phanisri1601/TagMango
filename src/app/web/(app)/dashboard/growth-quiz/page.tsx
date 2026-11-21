@@ -115,7 +115,7 @@ export default function GrowthQuiz() {
                 <p className="mb-2 font-semibold">{p.name || "Unnamed pattern"}</p>
                 <input className={inputCls} placeholder="Subject (blank = default)" value={e.subject || ""} onChange={(x) => set("subject", x.target.value)} />
                 <textarea className={`${areaCls} mt-2 min-h-28`} placeholder="Body (blank = default)" value={e.body || ""} onChange={(x) => set("body", x.target.value)} />
-                <input className={`${inputCls} mt-2`} placeholder="PDF link (upload in TagMango Cloud, then paste the file link)" value={e.pdfUrl || ""} onChange={(x) => set("pdfUrl", x.target.value)} />
+                <input className={`${inputCls} mt-2`} placeholder="PDF link (upload in Cloud, then paste the file link)" value={e.pdfUrl || ""} onChange={(x) => set("pdfUrl", x.target.value)} />
               </div>
             );
           })}

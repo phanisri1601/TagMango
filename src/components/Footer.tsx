@@ -2,17 +2,18 @@ import Link from "next/link";
 import { Arrow, GhostButton } from "./ui";
 import SplitHeading from "./SplitHeading";
 import Reveal from "./Reveal";
+import { BRAND } from "@/lib/brand";
 
 const links = [
-  ["Skool Alternative", "https://tagmango.com/skool-alternative"],
-  ["Graphy Alternative", "https://tagmango.com/graphy-alternative"],
-  ["Blog", "https://tagmango.com/blog/"],
+  ["About", "/about"],
+  ["Programme", "/programme"],
+  ["Events", "/events"],
+  ["Apply", "/apply"],
+  ["Blog", "/blog"],
+  ["Free resource", "/free-resource"],
   ["Pricing", "/pricing"],
-  ["Newsletter", "https://themangonetwork.substack.com/"],
-  ["Support", "https://help.tagmango.com/"],
-  ["Careers", "https://tagmango.notion.site/Job-Board-8851736ceeb54547b12f3a004f03c585"],
-  ["Edarya", "https://www.edarya.io/"],
-  ["AI Fiesta", "https://aifiesta.ai/"],
+  ["Learner login", "/portal"],
+  ["Creator login", "/web/login"],
 ];
 
 const C = "/tagmango/cta";
@@ -69,8 +70,7 @@ export default function Footer() {
     <section className="relative bg-white px-2 pb-2">
       <div className="relative overflow-hidden rounded-[32px] bg-ink text-white">
         <PhotoWall />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${C}/logo-desktop-v5.webp`} alt="" aria-hidden className="pointer-events-none absolute left-1/2 top-[646px] hidden aspect-[2244/484] w-[min(1120px,calc(100%-48px))] -translate-x-1/2 object-contain md:block md:max-lg:top-[665px] lg:top-[592px]" />
+        <div aria-hidden className="pointer-events-none absolute left-1/2 top-[620px] hidden -translate-x-1/2 select-none font-display text-[min(11vw,170px)] font-bold leading-none tracking-tighter text-white/[0.07] md:block md:max-lg:top-[640px] lg:top-[570px]">{BRAND}</div>
 
         <div className="relative mx-auto grid max-w-[1280px] gap-10 px-6 pt-[calc(100vw*360/390)] md:grid-cols-2 md:items-end md:px-10 md:pt-[390px] lg:px-20">
           <div>
@@ -79,7 +79,7 @@ export default function Footer() {
               segments={[{ text: "Launch or scale.", br: true }, { text: "We made both", br: true }, { text: "stupid" }, { text: "simple.", gradient: true }]}
             />
             <Reveal delay={0.4}>
-              <p className="mt-4 text-white/80">Mango AI runs the business. You approve.</p>
+              <p className="mt-4 text-white/80">Every follow-up runs by itself. You step in where it matters.</p>
             </Reveal>
           </div>
           <Reveal delay={0.5} className="flex flex-col gap-3 md:max-w-sm md:justify-self-end">
@@ -96,14 +96,13 @@ export default function Footer() {
           </Reveal>
         </div>
 
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${C}/logo-mobile-v3.webp`} alt="" aria-hidden className="pointer-events-none mx-auto mt-10 block w-[calc(100%-32px)] md:hidden" />
+        <div aria-hidden className="pointer-events-none mx-auto mt-10 block select-none text-center font-display text-[13vw] font-bold leading-none tracking-tighter text-white/[0.07] md:hidden">{BRAND}</div>
         <div className="hidden h-[calc(23px+(100vw-48px)*0.2)] md:block lg:h-[240px]" />
 
         <div className="relative mx-auto grid max-w-[1280px] gap-10 px-6 pb-10 md:grid-cols-[1.2fr_2fr] md:px-10 lg:px-20">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-white/70">Operating address</p>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/50">Office #301, Twin Towers, Tower 2, EN 69, Sector V, Bidhannagar, Kolkata, West Bengal 700091</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/70">{BRAND}</p>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/50">A coaching growth platform: lead capture, masterclass, discovery calls, payments, learning portal and automated follow-ups. Add your business address here.</p>
           </div>
           <div className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
             {links.map(([l, h]) => (
@@ -123,11 +122,11 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-white/50">
-            {["Privacy Policy", "Terms of Use", "Refund Policy", "Cookie Policy"].map((l) => (
-              <Link key={l} href="#" className="hover:text-white">{l}</Link>
+            {[["Contact", "/contact"], ["Press and media", "/press"], ["Privacy Policy", "/privacy"], ["Terms of Use", "/terms"], ["Refund Policy", "/refund-policy"]].map(([l, h]) => (
+              <Link key={l} href={h} className="hover:text-white">{l}</Link>
             ))}
           </div>
-          <p className="text-xs text-white/40">TagMango Inc. © {new Date().getFullYear()}. All rights reserved.</p>
+          <p className="text-xs text-white/40">{BRAND} © {new Date().getFullYear()}. All rights reserved.</p>
         </div>
       </div>
     </section>

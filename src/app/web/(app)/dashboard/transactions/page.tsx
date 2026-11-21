@@ -26,6 +26,20 @@ export default function Transactions() {
   );
   const okRows = rows.filter((s) => s.status === "Success");
 
+  const [refunding, setRefunding] = useState<Row | null>(null);
+  const [reason, setReason] = useState("");
+  const [refundMsg, setRefundMsg] = useState("");
+  const [busy, setBusy] = useState(false);
+  const doRefund = async () => {
+    if (!refunding) return;
+    setBusy(true);
+    const r = await fetch("/api/refund", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ saleId: refunding.id, reason }) }).then((x) => x.json()).catch(() => ({ error: "Network error" }));
+    setBusy(false);
+    if (r.error) return setRefundMsg(r.error);
+    setRefunding(null); setReason(""); setRefundMsg("");
+    sales.reload();
+  };
+
   const cols: Col<Row>[] = [
     { key: "date", label: "Date", render: (r) => <span className="whitespace-nowrap">{fmtDate(r.createdAt)}</span>, sort: (a, b) => a.createdAt.localeCompare(b.createdAt) },
     { key: "customer", label: "Customer", render: (r) => <span className="font-medium">{String(r.customer)}</span> },
@@ -36,6 +50,7 @@ export default function Transactions() {
     { key: "cycle", label: "Payment Cycle", render: (r) => String(r.cycle || "One-time") },
     { key: "coupon", label: "Coupon", render: (r) => (r.coupon ? <code className="rounded bg-[#fdefdf] px-1.5 text-[12px] text-[#c7740f]">{String(r.coupon)}</code> : "-") },
     { key: "status", label: "Status", render: (r) => <Pill tone={r.status === "Success" ? "green" : r.status === "Refunded" ? "red" : "orange"}>{String(r.status)}</Pill> },
+    { key: "act", label: "Refund", render: (r) => (r.status === "Success" && Number(r.amount) > 0 ? <Btn variant="outline" onClick={() => { setRefunding(r); setRefundMsg(""); }}>Refund</Btn> : <span className="text-[#9b9bab]">{r.status === "Refunded" ? "Refunded" : "-"}</span>) },
   ];
 
   return (
@@ -63,11 +78,20 @@ export default function Transactions() {
           />
         </div>
       </Panel>
+      {refunding && (
+        <Modal title="Refund this order" onClose={() => setRefunding(null)}>
+          <p className="text-[14px]">Refund <b>{inr(Number(refunding.amount))}</b> to <b>{String(refunding.customer)}</b> for {String(refunding.mango)}?</p>
+          <p className="mt-1 text-[12px] text-[#6b6b7b]">Paid through Razorpay, the money goes back to the original payment method. The learner gets an email and a WhatsApp confirmation. This cannot be undone.</p>
+          <textarea className="mt-3 w-full rounded-lg border border-[#e1e1e1] p-3 text-[14px]" rows={3} placeholder="Reason (kept on the order)" value={reason} onChange={(e) => setReason(e.target.value)} />
+          {refundMsg && <p className="mt-2 text-[13px] text-[#ff4d4f]">{refundMsg}</p>}
+          <div className="mt-4 flex justify-end gap-2"><Btn variant="outline" onClick={() => setRefunding(null)}>Cancel</Btn><Btn onClick={doRefund} disabled={busy}>{busy ? "Refunding…" : "Refund now"}</Btn></div>
+        </Modal>
+      )}
       {showFilters && (
         <Modal title="Filters" onClose={() => setShowFilters(false)}>
           <div className="space-y-3">
             <Select className="w-full" value={filters.mango} onChange={(v) => setFilters((f) => ({ ...f, mango: v }))} options={["All mangoes", ...mangoes.rows.map((m) => String(m.title))]} />
-            <Select className="w-full" value={filters.status} onChange={(v) => setFilters((f) => ({ ...f, status: v }))} options={["All statuses", "Success", "Pending", "Refunded"]} />
+            <Select className="w-full" value={filters.status} onChange={(v) => setFilters((f) => ({ ...f, status: v }))} options={["All statuses", "Success", "Pending", "Failed", "Refunded"]} />
           </div>
           <div className="mt-5 flex justify-between">
             <Btn variant="outline" onClick={() => setFilters({ mango: "All mangoes", status: "All statuses" })}>Reset</Btn>

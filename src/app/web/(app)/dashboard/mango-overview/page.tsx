@@ -49,8 +49,8 @@ function Phone({ m, tab }: { m: M; tab: (typeof TABS)[number] }) {
             <p className="mt-2 text-[#6b6b7b]">by <b className="text-[#0f0f0f]">{me.name}</b></p>
             <p className="mt-1 text-[16px] font-semibold">{String(m.title || "")}</p>
             <p className="mt-1 whitespace-pre-wrap text-[#4a4a59]">{String(m.description || "")}</p>
-            <p className="mt-4 text-[10px] text-[#9b9bab]">You agree to share information entered on this page with TagMango (owner of this page) and Razorpay, adhering to applicable laws.</p>
-            <p className="mt-2 text-[10px] text-[#9b9bab]">TagMango {new Date().getFullYear()}. · Privacy · Terms</p>
+            <p className="mt-4 text-[10px] text-[#9b9bab]">You agree to share information entered on this page with Nitienaa Rao (owner of this page) and Razorpay, adhering to applicable laws.</p>
+            <p className="mt-2 text-[10px] text-[#9b9bab]">Nitienaa Rao {new Date().getFullYear()}. · Privacy · Terms</p>
           </div>
         )}
         {tab === "Mango details" && (
@@ -124,7 +124,7 @@ function Editor({ initial, onClose }: { initial?: Row; onClose: () => void }) {
           {tab === "Mango details" && (
             <div className="animate-soft-fade space-y-4 rounded-[10px] border border-[#ededed] bg-white p-5">
               <div className="relative"><input className={inputCls} placeholder="Mango title" maxLength={100} value={String(m.title || "")} onChange={(e) => set("title", e.target.value)} /><span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] text-[#9b9bab]">{String(m.title || "").length} / 100</span></div>
-              <Field label="Mango cover" hint="Images should be horizontal, at least 1280x720px. Paste an image URL (or upload one in Settings › TagMango Cloud).">
+              <Field label="Mango cover" hint="Images should be horizontal, at least 1280x720px. Paste an image URL (or upload one in Cloud).">
                 <input className={inputCls} placeholder="https://…/cover.jpg" value={String(m.cover || "")} onChange={(e) => set("cover", e.target.value)} />
               </Field>
               <Field label="Mango description"><textarea className={`${areaCls} min-h-32`} placeholder="Add Mango description here..." value={String(m.description || "")} onChange={(e) => set("description", e.target.value)} /></Field>

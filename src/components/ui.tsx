@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { BRAND } from "@/lib/brand";
 
 export function Logo({ className = "", dark = false }: { className?: string; dark?: boolean }) {
+  const words = BRAND.split(" ");
+  const head = words.length > 1 ? words.slice(0, -1).join(" ") + " " : BRAND.slice(0, Math.ceil(BRAND.length / 2));
+  const tail = words.length > 1 ? words[words.length - 1] : BRAND.slice(Math.ceil(BRAND.length / 2));
   return (
-    <Link href="/" className={`inline-flex items-center ${className}`} aria-label="TagMango home">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={dark ? "/tagmango/brand/tagmango-logo-dark.svg" : "/tagmango/brand/tagmango-logo.svg"} alt="tagmango" className="h-[26px] w-auto" />
+    <Link href="/" className={`inline-flex items-center whitespace-pre font-display font-bold tracking-tight ${dark ? "text-ink" : "text-white"} ${className}`} aria-label={`${BRAND} home`}>
+      <span>{head}</span>
+      <span className="text-mango">{tail}</span>
     </Link>
   );
 }
@@ -14,9 +18,9 @@ export function MangoIcon({ className = "h-10 w-10" }: { className?: string }) {
     <svg viewBox="0 0 64 64" className={className} aria-hidden>
       <defs>
         <linearGradient id="mg" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#ff6a00" />
-          <stop offset="0.6" stopColor="#fb9311" />
-          <stop offset="1" stopColor="#f6bb22" />
+          <stop offset="0" style={{ stopColor: "var(--ac3)" }} />
+          <stop offset="0.6" style={{ stopColor: "var(--ac2)" }} />
+          <stop offset="1" style={{ stopColor: "var(--ac1)" }} />
         </linearGradient>
       </defs>
       <path
@@ -41,7 +45,7 @@ export function PrimaryButton({ href = "/web/sign-up", children, className = "" 
   return (
     <Link
       href={href}
-      className={`bg-mango inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_8px_30px_-8px_rgba(255,106,0,0.7)] transition hover:brightness-110 active:scale-[0.98] ${className}`}
+      className={`bg-mango inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_8px_30px_-8px_rgba(var(--accent-rgb),0.7)] transition hover:brightness-110 active:scale-[0.98] ${className}`}
     >
       {children}
     </Link>

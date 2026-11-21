@@ -127,11 +127,11 @@ export default function OnePlace() {
               style={{
                 opacity: clamp((merge - 0.5) / 0.3),
                 transform: `translate(-50%,-50%) scale(${0.5 + merge * 0.5})`,
-                boxShadow: `0 0 ${20 + merge * 50}px ${merge * 12}px rgba(255,106,0,${0.15 + merge * 0.25})`,
+                boxShadow: `0 0 ${20 + merge * 50}px ${merge * 12}px rgba(var(--accent-rgb),${0.15 + merge * 0.25})`,
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/tagmango/integrations/mango-ai-glyph.svg" alt="" className="h-16 w-16" />
+              <img src="/tagmango/integrations/mango-ai-glyph.svg" alt="" className="recolor h-16 w-16" />
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { asUser, id, now, store } from "@/lib/db";
 import { rateLimited } from "@/lib/ratelimit";
-import { automatedEmail } from "@/lib/automation";
-import { onPurchase } from "@/lib/growth/core";
+import { afterSuccess } from "@/lib/payments";
+import { createOrder, razorpayConfigured, razorpayKeyId } from "@/lib/razorpay";
 
 const CYCLE: Record<string, { label: string; days: number }> = {
   "One-time": { label: "One-time", days: 0 },
@@ -13,7 +13,8 @@ const CYCLE: Record<string, { label: string; days: number }> = {
 };
 
 /**
- * TEST-MODE checkout: there is no payment gateway, so "paying" records a
+ * Checkout. With RAZORPAY_KEY_ID/SECRET set, paid offers open a Razorpay order and stay Pending until
+ * /api/public/checkout/verify confirms the signature. Without them it is TEST MODE: "paying" records a
  * successful order for the creator. The price is always computed here from the mango and coupon,
  * never taken from the browser. Plug Razorpay/Stripe in here for real payments.
  * Disabled in production unless ENABLE_TEST_CHECKOUT=1 (otherwise anyone could create free "paid" orders).
@@ -26,7 +27,8 @@ export async function POST(req: Request) {
   const phone = String(body.phone || "").replace(/\D/g, "").slice(-10);
   const code = String(body.coupon || "").trim().toUpperCase().slice(0, 40);
   const preview = Boolean(body.preview);
-  if (!preview && process.env.NODE_ENV === "production" && process.env.ENABLE_TEST_CHECKOUT !== "1") {
+  const live = razorpayConfigured();
+  if (!preview && !live && process.env.NODE_ENV === "production" && process.env.ENABLE_TEST_CHECKOUT !== "1") {
     return NextResponse.json({ error: "Online payments aren't enabled yet" }, { status: 503 });
   }
   if (!preview && (!name || !/^\S+@\S+\.\S+$/.test(email))) {
@@ -65,22 +67,28 @@ export async function POST(req: Request) {
       const cycle = type === "Subscription" ? { label: String(mango.cycle || "Monthly"), days: SUB[String(mango.cycle || "Monthly")] || 30 } : CYCLE[type] || CYCLE["One-time"];
       const expires = cycle.days ? new Date(Date.now() + cycle.days * 864e5).toISOString() : null;
       const saleId = id();
+      const needsPay = live && price > 0;
       t.set("sales", saleId, {
         userId: mango.userId, createdAt: now(), customer: name, email, phone, mango: mango.title, mangoId: mango.id,
-        amount: price, quantity: 1, cycle: cycle.label, method: "Test checkout", status: "Success", coupon: applied, expires,
+        amount: price, quantity: 1, cycle: cycle.label, method: needsPay ? "Razorpay" : "Test checkout", status: needsPay ? "Pending" : "Success", coupon: applied, expires,
         ref: typeof body.ref === "string" ? body.ref.toUpperCase().slice(0, 40) : undefined,
       });
-      // purchase clears any drop-off for this buyer + mango
-      for (const l of await t.find("leads", [["userId", mango.userId], ["type", "dropoff"], ["email", email]])) if (l.mango === mango.title) t.delete("leads", l.id);
-      t.set("notifications", id(), { userId: mango.userId, createdAt: now(), read: false, text: `New sale: ${name} bought ${mango.title} for ₹${price.toLocaleString("en-IN")}` });
-      return { price, coupon: applied, saleId, creatorId: String(mango.userId), title: String(mango.title), expires };
+      if (!needsPay) for (const l of await t.find("leads", [["userId", mango.userId], ["type", "dropoff"], ["email", email]])) if (l.mango === mango.title) t.delete("leads", l.id);
+      return { price, coupon: applied, saleId, creatorId: String(mango.userId), title: String(mango.title), expires, needsPay };
     });
     if (out.saleId && out.creatorId && out.title) {
-      await automatedEmail(out.creatorId, "Confirmation Email on Mango Purchase", email, { name, mango: out.title, amount: `₹${out.price.toLocaleString("en-IN")}` }, {
-        subject: `You're in! ${out.title}`,
-        body: `Hi {name},\n\nThanks for purchasing "{mango}" ({amount}). You now have access.\n\n— {creator}`,
-      });
-      await onPurchase(out.creatorId, String(body.mangoId || ""), { name, email, phone }).catch(() => {});
+      if (out.needsPay) {
+        // real payment: open a Razorpay order; the sale stays Pending until the signature is verified
+        try {
+          const o = await createOrder(out.price, out.saleId, { saleId: out.saleId, email });
+          await store.write([{ type: "update", coll: "sales", id: out.saleId, patch: { rzpOrderId: o.id } }]);
+          return NextResponse.json({ ok: true, price: out.price, coupon: out.coupon, saleId: out.saleId, razorpay: { orderId: o.id, keyId: razorpayKeyId(), amount: o.amount, name, email, phone } });
+        } catch (e) {
+          await store.write([{ type: "update", coll: "sales", id: out.saleId, patch: { status: "Failed", failReason: (e as Error).message.slice(0, 200) } }]);
+          return NextResponse.json({ error: "Could not start the payment. Please try again." }, { status: 502 });
+        }
+      }
+      await afterSuccess(out.saleId);
       return NextResponse.json({ ok: true, price: out.price, coupon: out.coupon, saleId: out.saleId });
     }
     return NextResponse.json({ ok: true, ...out });

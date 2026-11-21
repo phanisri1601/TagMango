@@ -8,7 +8,7 @@ export const ROW_COLLECTIONS = [
   "notifications", "views", "outbox",
   // growth funnel + learning portal
   "growth", "crm", "masterclasses", "slots", "trackedLinks", "linkClicks", "flows", "flowRuns", "msgLog", "testimonials", "socialStats",
-  "lessons", "classes", "assignments", "submissions", "enrolments", "updates",
+  "lessons", "classes", "assignments", "submissions", "enrolments", "updates", "blogPosts",
 ] as const;
 
 /** Written by admins (userId = the admin). Kept when a creator is deleted. */

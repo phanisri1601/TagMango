@@ -77,7 +77,7 @@ export default function Portal() {
   const [att, setAtt] = useState<Row | null>(null);
   const [del, setDel] = useState<{ coll: string; row: Row } | null>(null);
   const [set, setSet] = useState<Record<string, string>>({});
-  useEffect(() => { if (g) setSet({ programmeMango: g.programmeMango || "", kickoff: g.kickoff || "", callLink: g.callLink || "", boundaryLine: g.boundaryLine || "", referralLine: g.referralLine || "", replayHours: String(g.replayHours || 48) }); }, [g]);
+  useEffect(() => { if (g) setSet({ programmeMango: g.programmeMango || "", kickoff: g.kickoff || "", callLink: g.callLink || "", boundaryLine: g.boundaryLine || "", referralLine: g.referralLine || "", replayHours: String(g.replayHours || 48), resourceTitle: String(g.resourceTitle || ""), resourceUrl: String(g.resourceUrl || ""), tagline: g.tagline || "" }); }, [g]);
   if (!ready) return <div className="h-40 animate-pulse rounded-lg bg-white" />;
 
   const colls = { lessons, classes, assignments: asg, updates: ups };
@@ -122,6 +122,9 @@ export default function Portal() {
             <Field label="Programme product" hint="Payment for this product enrols the learner, opens the portal and starts the welcome flow."><select className={inputCls} value={set.programmeMango || ""} onChange={(e) => setSet({ ...set, programmeMango: e.target.value })}><option value="">— none —</option>{mangoes.rows.map((m) => <option key={m.id} value={m.id}>{String(m.title)}</option>)}</select></Field>
             <Field label="Kick-off date (shown in welcome email)"><input className={inputCls} value={set.kickoff || ""} onChange={(e) => setSet({ ...set, kickoff: e.target.value })} placeholder="e.g. Monday 2 December" /></Field>
             <Field label="Default call link (Meet / Zoom)"><input className={inputCls} value={set.callLink || ""} onChange={(e) => setSet({ ...set, callLink: e.target.value })} /></Field>
+            <Field label="Website headline" hint="Shown large on the home page."><input className={inputCls} value={set.tagline || ""} onChange={(e) => setSet({ ...set, tagline: e.target.value })} placeholder="See the pattern that runs your choices. Then change it." /></Field>
+            <Field label="Free resource title (website)"><input className={inputCls} value={set.resourceTitle || ""} onChange={(e) => setSet({ ...set, resourceTitle: e.target.value })} /></Field>
+            <Field label="Free resource link (PDF or page)" hint="Emailed by the Lead magnet workflow and shown after the form."><input className={inputCls} value={set.resourceUrl || ""} onChange={(e) => setSet({ ...set, resourceUrl: e.target.value })} placeholder="https://…" /></Field>
             <Field label="Replay available for (hours)"><input className={inputCls} type="number" value={set.replayHours || ""} onChange={(e) => setSet({ ...set, replayHours: e.target.value })} /></Field>
             <Field label="Boundary line (added to exercise messages from Week 4)"><textarea className={`${areaCls} min-h-20`} value={set.boundaryLine || ""} onChange={(e) => setSet({ ...set, boundaryLine: e.target.value })} /></Field>
             <Field label="Referral pathway (added from Week 4)"><textarea className={`${areaCls} min-h-20`} value={set.referralLine || ""} onChange={(e) => setSet({ ...set, referralLine: e.target.value })} /></Field>

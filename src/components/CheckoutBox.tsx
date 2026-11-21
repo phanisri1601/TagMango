@@ -1,9 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 
-type Props = { mangoId: string; title: string; price: number; type: string; cycle?: string; terms?: string; successText?: string; successButton?: string; redirectUrl?: string };
+declare global { interface Window { Razorpay?: new (o: Record<string, unknown>) => { open(): void; on(ev: string, cb: (r: { error?: { description?: string } }) => void): void } } }
+const loadRzp = () => new Promise<boolean>((res) => {
+  if (window.Razorpay) return res(true);
+  const el = document.createElement("script");
+  el.src = "https://checkout.razorpay.com/v1/checkout.js";
+  el.onload = () => res(true);
+  el.onerror = () => res(false);
+  document.body.appendChild(el);
+});
 
-export default function CheckoutBox({ mangoId, title, price, type, cycle, terms, successText, successButton, redirectUrl }: Props) {
+type Props = { mangoId: string; title: string; price: number; type: string; cycle?: string; terms?: string; successText?: string; successButton?: string; redirectUrl?: string; accent?: string };
+
+export default function CheckoutBox({ mangoId, title, price, type, cycle, terms, successText, successButton, redirectUrl, accent = "#f2962c" }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -33,10 +43,11 @@ export default function CheckoutBox({ mangoId, title, price, type, cycle, terms,
         <p className="mt-3 text-[20px] font-semibold">Payment Successful</p>
         <p className="text-[24px] font-bold">₹{done.price.toLocaleString("en-IN")}</p>
         <div className="mt-4 space-y-1.5 rounded-lg bg-[#f7f7f8] p-4 text-left text-[13px]">
-          {[["Transaction ID", done.saleId.toUpperCase()], ["Service", title], ["Payment Method", "Test checkout"], ["Payment Time", new Date().toLocaleString("en-IN")], ["Billing Details", `${name} · ${email}`]].map(([k, v]) => <div key={k} className="flex justify-between gap-3"><span className="text-[#6b6b7b]">{k}</span><b className="truncate">{v}</b></div>)}
+          {[["Transaction ID", done.saleId.toUpperCase()], ["Service", title], ["Payment Method", "Online"], ["Payment Time", new Date().toLocaleString("en-IN")], ["Billing Details", `${name} · ${email}`]].map(([k, v]) => <div key={k} className="flex justify-between gap-3"><span className="text-[#6b6b7b]">{k}</span><b className="truncate">{v}</b></div>)}
         </div>
+        <a href={`/confirmation?sale=${done.saleId}`} className="mt-4 block rounded-lg border border-[#e1e1e1] py-2.5 text-[14px] font-medium">View receipt</a>
         {successText ? <p className="mt-4 whitespace-pre-wrap text-left text-[14px] text-[#4a4a59]">{successText}</p> : null}
-        <a href={redirectUrl || "/web/login"} className="mt-5 block rounded-lg bg-[#f2962c] py-3 font-semibold text-white">{successButton || "Login Now"}</a>
+        <a href={redirectUrl || "/web/login"} style={{ background: accent }} className="mt-5 block rounded-lg py-3 text-center font-semibold text-white">{successButton || "Login Now"}</a>
       </div>
     );
   }
@@ -50,9 +61,27 @@ export default function CheckoutBox({ mangoId, title, price, type, cycle, terms,
         if (terms && !agree) return setMsg({ t: "Please accept the Terms & Conditions", ok: false });
         setBusy(true);
         const r = await call(false);
-        setBusy(false);
-        if (r.error) return setMsg({ t: r.error, ok: false });
-        setDone({ price: r.price, saleId: r.saleId });
+        if (r.error) { setBusy(false); return setMsg({ t: r.error, ok: false }); }
+        if (!r.razorpay) { setBusy(false); return setDone({ price: r.price, saleId: r.saleId }); }
+        // real payment through Razorpay
+        if (!(await loadRzp())) { setBusy(false); return setMsg({ t: "Could not load the payment window. Check your connection and try again.", ok: false }); }
+        const rz = r.razorpay as { orderId: string; keyId: string; amount: number };
+        const fail = (reason: string) => fetch("/api/public/checkout/failed", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ saleId: r.saleId, reason }) }).catch(() => {});
+        let paid = false;
+        const box = new window.Razorpay!({
+          key: rz.keyId, amount: rz.amount, currency: "INR", order_id: rz.orderId, name: title, description: "Secure payment",
+          prefill: { name, email, contact: phone }, theme: { color: accent },
+          handler: async (resp: Record<string, string>) => {
+            paid = true;
+            const v = await fetch("/api/public/checkout/verify", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ saleId: r.saleId, ...resp }) }).then((x) => x.json()).catch(() => ({ error: "Network error" }));
+            setBusy(false);
+            if (v.error) return setMsg({ t: `${v.error}. If money was deducted, it is held and will be matched automatically. Contact us with order ${String(r.saleId).toUpperCase()}.`, ok: false });
+            setDone({ price: v.price, saleId: r.saleId });
+          },
+          modal: { ondismiss: () => { if (!paid) { setBusy(false); setMsg({ t: "Payment not completed. You can try again; we have saved your details.", ok: false }); fail("Window closed"); } } },
+        });
+        box.on("payment.failed", (e) => { setMsg({ t: e.error?.description || "Payment failed. Please try again.", ok: false }); fail(e.error?.description || "Payment failed"); });
+        box.open();
       }}
     >
       <p className="text-[13px] text-[#6b6b7b]">{type === "Subscription" ? `${cycle || "Monthly"} subscription` : type === "Free" ? "Free" : "One-time payment"}</p>
@@ -79,10 +108,10 @@ export default function CheckoutBox({ mangoId, title, price, type, cycle, terms,
         <label className="flex gap-2 text-[12px] text-[#4a4a59]"><input type="checkbox" className="mt-0.5 accent-[#f2962c]" checked={agree} onChange={(e) => setAgree(e.target.checked)} /><span>I agree to the <details className="inline"><summary className="inline cursor-pointer text-[#1677ff]">Terms &amp; Conditions</summary><span className="mt-1 block whitespace-pre-wrap">{terms}</span></details></span></label>
       ) : null}
       {msg && <p className={`text-[13px] ${msg.ok ? "text-[#00a400]" : "text-[#ff4d4f]"}`}>{msg.t}</p>}
-      <button disabled={busy} className="w-full rounded-lg bg-[#f2962c] py-3 font-semibold text-white transition hover:bg-[#e8861a] disabled:opacity-60">
+      <button disabled={busy} style={{ background: accent }} className="w-full rounded-lg py-3 font-semibold text-white transition hover:opacity-90 disabled:opacity-60">
         {busy ? "Processing…" : final ? `Proceed to pay ₹${final.toLocaleString("en-IN")}` : "Get access"}
       </button>
-      <p className="text-center text-[11px] text-[#9b9bab]">Test mode — no real payment is taken.</p>
+      <p className="text-center text-[11px] text-[#9b9bab]">Payments are processed securely by Razorpay. In test mode no real money moves.</p>
     </form>
   );
 }

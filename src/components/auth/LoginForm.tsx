@@ -64,7 +64,7 @@ export default function LoginForm() {
 
   return (
     <div className="max-w-[400px]">
-      <h1 className="text-[30px] font-semibold leading-tight">Continue to use TagMango</h1>
+      <h1 className="text-[30px] font-semibold leading-tight">Continue to Nitienaa Rao</h1>
       <p className="mt-2 text-[14px] text-ink/80">Welcome back! Please enter your details.</p>
       <form className="mt-12 space-y-5" onSubmit={(e) => { e.preventDefault(); if (ready) requestOtp(); }}>
         {via === "phone" ? (

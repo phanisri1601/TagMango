@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
 import PricingPlans from "@/components/PricingPlans";
@@ -28,7 +27,6 @@ export default function Pricing() {
           </p>
         </section>
         <PricingPlans />
-        <Testimonials />
         <Faq />
         <Footer />
       </main>

@@ -50,7 +50,7 @@ export async function PATCH(req: Request, { params }: Ctx) {
           patch.plan = plan;
           // Plan changes made by an admin are recorded as a ₹0 "granted" invoice so they never count as revenue.
           t.set("invoices", newId(), { userId: u.id, createdAt: now(), number: `TM-${Date.now().toString().slice(-8)}`, product: `${plan[0].toUpperCase() + plan.slice(1)} plan`, amount: 0, status: "Granted by admin" });
-          notify(t, u.id, `Your plan was changed to ${plan[0].toUpperCase() + plan.slice(1)} by TagMango.`);
+          notify(t, u.id, `Your plan was changed to ${plan[0].toUpperCase() + plan.slice(1)} by Nitienaa Rao.`);
         }
       }
       if (typeof body.suspended === "boolean" && body.suspended !== Boolean(u.suspended)) {

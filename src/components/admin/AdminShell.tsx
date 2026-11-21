@@ -109,7 +109,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         <div className="min-w-0">
           <header className="sticky top-0 z-30 flex h-[56px] items-center gap-3 border-b border-[#e1e1e1] bg-white px-4 lg:hidden">
             <button onClick={() => setMenu(true)} aria-label="Open menu"><Icon name="menu" className="h-6 w-6" /></button>
-            <span className="font-semibold">TagMango Admin</span>
+            <span className="font-semibold">Admin</span>
           </header>
           <main className="mx-auto w-full max-w-[1400px] p-4 md:p-8">{children}</main>
         </div>

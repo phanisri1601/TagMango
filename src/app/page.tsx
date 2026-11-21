@@ -1,25 +1,31 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import Funnel from "@/components/Funnel";
+import PatternDemo from "@/components/PatternDemo";
 import ProductTabs from "@/components/ProductTabs";
+import DropOff from "@/components/DropOff";
 import OnePlace from "@/components/OnePlace";
-import Features from "@/components/Features";
-import Testimonials from "@/components/Testimonials";
+import Weeks from "@/components/Weeks";
+import Automation from "@/components/Automation";
 import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <div className="theme-brand">
       <Navbar />
       <main>
         <Hero />
+        <Funnel />
+        <PatternDemo />
         <ProductTabs />
+        <DropOff />
         <OnePlace />
-        <Features />
-        <Testimonials />
+        <Weeks />
+        <Automation />
         <Faq />
         <Footer />
       </main>
-    </>
+    </div>
   );
 }

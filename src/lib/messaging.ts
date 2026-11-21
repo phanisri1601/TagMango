@@ -46,7 +46,7 @@ export async function sendEmail(m: { to: string; subject: string; text: string; 
           template_id: process.env.EMAILJS_GENERIC_TEMPLATE_ID,
           user_id: process.env.EMAILJS_PUBLIC_KEY,
           accessToken: process.env.EMAILJS_PRIVATE_KEY,
-          template_params: { to_email: m.to, subject: m.subject, message: m.text, message_html: html, from_name: m.fromName || "TagMango", reply_to: m.replyTo || "" },
+          template_params: { to_email: m.to, subject: m.subject, message: m.text, message_html: html, from_name: m.fromName || "Nitienaa Rao", reply_to: m.replyTo || "" },
         }),
       });
       return r.ok ? { ok: true, mode: "emailjs" } : { ok: false, mode: "emailjs", error: `EmailJS ${r.status}: ${(await r.text()).slice(0, 160)}` };
@@ -136,7 +136,7 @@ export async function sendWhatsApp(phone10: string, body: string, userId?: strin
 
 /** Send a login code by SMS (preferred when a phone is given and Twilio is set up) or email. */
 export async function deliverOtp(o: { code: string; phone?: string; email?: string; name?: string }) {
-  const text = `Your TagMango verification code is ${o.code}. It expires in 5 minutes. Don't share it with anyone.`;
+  const text = `Your Nitienaa Rao verification code is ${o.code}. It expires in 5 minutes. Don't share it with anyone.`;
   if (o.phone && smsConfigured()) {
     const r = await sendSms(o.phone, text);
     if (r.ok) return { delivered: true, channel: "sms" as const };
@@ -160,7 +160,7 @@ export async function deliverOtp(o: { code: string; phone?: string; email?: stri
     }
   }
   if (o.email && emailConfigured()) {
-    const r = await sendEmail({ to: o.email, subject: "Your TagMango verification code", text, kind: "otp" });
+    const r = await sendEmail({ to: o.email, subject: "Your Nitienaa Rao verification code", text, kind: "otp" });
     if (r.ok) return { delivered: true, channel: "email" as const };
   }
   return { delivered: false as const };

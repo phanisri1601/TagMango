@@ -92,6 +92,7 @@ export const sidebar: NavTop[] = [
       { label: "Workflows", slug: "growth-flows" },
       { label: "Weekly Report", slug: "growth-report" },
       { label: "Testimonials", slug: "growth-testimonials" },
+      { label: "Website Blog", slug: "website-blog" },
     ],
   },
   { label: "Learning Portal", icon: "courses", slug: "portal-programme" },
@@ -148,7 +149,7 @@ export const sidebar: NavTop[] = [
         ],
       },
       { label: "Team Management", slug: "team-management" },
-      { label: "TagMango Cloud", slug: "cloud" },
+      { label: "Cloud", slug: "cloud" },
     ],
   },
   {

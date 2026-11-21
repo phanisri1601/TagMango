@@ -312,3 +312,22 @@ curl -X POST http://localhost:3000/api/cron/run
 | Link in an email points to localhost | `NEXT_PUBLIC_APP_URL` must be the real address when live. |
 | Changes in the settings file do nothing | Restart `npm run dev`. |
 | "Not found" on a public page | The link name in the address must match the one in Growth → Pattern Check. |
+
+---
+
+## Part 8: Website, payments and refunds (added)
+
+The public site is now the coach's website (home page `/`). The old creator-platform landing page moved to `/platform`.
+
+| Test | Steps | Pass when |
+| --- | --- | --- |
+| T32 Site map | Open `/`, `/about`, `/stories`, `/programme`, `/method`, `/events`, `/blog`, a blog article, `/free-resource`, `/apply`, `/enrol`, `/contact`, `/press`, `/privacy`, `/terms`, `/refund-policy` | Every page opens in the same look; menu groups match the site map; works on a phone |
+| T33 Free resource | `/free-resource`, fill the form, tick consent | Lead appears in Growth › Leads with "Got the free resource"; welcome email arrives |
+| T34 Application | `/apply`, fill and send | Lead shows "Sent an application"; coach alert arrives; 5-step follow-up runs until a call is booked |
+| T35 Razorpay payment | `/enrol`, fill details, pay with Razorpay test card 4111 1111 1111 1111, any future date, any CVV, OTP 1234 (or UPI `success@razorpay`) | Receipt page shows "Payment successful"; Transactions shows Success; lead is "Paid"; learner can log in to `/portal`; welcome email arrives |
+| T36 Failed payment | Start payment, close the window or use test card 4000 0000 0000 0002 | Order shows Failed; "Enrolment started but unpaid" reminders start; try again works |
+| T37 Refund | Dashboard › Transactions › Refund on a paid order | Order shows Refunded; Razorpay refund created; learner gets email and WhatsApp "Refund processed" |
+| T38 Unsubscribe | Click the link at the bottom of any automated email | "You are unsubscribed"; person appears in Unsubscribed Users; no more emails |
+| T39 Blog | Dashboard › Growth › Website Blog › New article | Article appears on `/blog` and at its own address |
+
+Set the free resource link, website headline and programme product under Learning Portal › Settings.

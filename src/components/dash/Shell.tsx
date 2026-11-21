@@ -233,8 +233,8 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
         <Link href={dash("plans")} onClick={onClose} className="m-2 flex items-center gap-3 rounded-lg bg-[#5a2a10] p-3.5 text-white transition hover:bg-[#6b3216]">
           <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white/10"><Icon name="partner" className="h-6 w-6" /></span>
           <span className="flex-1">
-            <b className="block text-[15px] leading-snug">Become a TagMango Partner</b>
-            <span className="mt-0.5 block text-[12px] text-white/85">Refer tagmango and earn 20% commission on each sale.</span>
+            <b className="block text-[15px] leading-snug">Become a Partner</b>
+            <span className="mt-0.5 block text-[12px] text-white/85">Refer us and earn 20% commission on each sale.</span>
           </span>
           <Icon name="chevron" className="h-4 w-4 -rotate-90" />
         </Link>

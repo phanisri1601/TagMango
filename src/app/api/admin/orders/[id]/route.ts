@@ -17,7 +17,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       const before = s.status;
       t.update("sales", id, { status: body.status, updatedAt: now(), adminNote: String(body.note || "").slice(0, 200) || undefined });
       const amt = `₹${Number(s.amount || 0).toLocaleString("en-IN")}`;
-      notify(t, String(s.userId), body.status === "Refunded" ? `Order refunded by TagMango: ${String(s.customer)} · ${String(s.mango)} · ${amt}` : `Order restored: ${String(s.customer)} · ${String(s.mango)} · ${amt}`);
+      notify(t, String(s.userId), body.status === "Refunded" ? `Order refunded by Nitienaa Rao: ${String(s.customer)} · ${String(s.mango)} · ${amt}` : `Order restored: ${String(s.customer)} · ${String(s.mango)} · ${amt}`);
       logAudit(t, admin, body.status === "Refunded" ? "order.refund" : "order.restore", `${String(s.customer)} · ${String(s.mango)}`, `${amt}, was ${String(before)}`);
     });
     return NextResponse.json({ ok: true });

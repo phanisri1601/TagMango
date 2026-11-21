@@ -68,13 +68,13 @@ export default function ProductTabs() {
       <div className="mx-auto max-w-4xl px-4 pb-10 pt-24 text-center md:pt-32">
         <SplitHeading
           className="font-display text-[32px] font-bold leading-[1.15] tracking-tight text-ink md:text-[52px]"
-          segments={[{ text: "It takes one person to run a", br: true }, { text: "digital business now", gradient: true }]}
+          segments={[{ text: "It takes one person", br: true }, { text: "to run a" }, { text: "digital business now", gradient: true }]}
         />
       </div>
 
       <div ref={wrap} className="relative" style={{ height: `${tabs.length * 90 + 20}vh` }}>
         <div className="sticky top-0 flex h-screen items-center px-2 sm:px-4">
-          <div className="mx-auto w-full max-w-6xl overflow-hidden rounded-[28px] bg-[linear-gradient(90deg,#fde3b0_0%,#f4a259_50%,#fde3b0_100%)] p-3 sm:p-8 md:p-10">
+          <div className="mx-auto w-full max-w-6xl overflow-hidden rounded-[28px] bg-[linear-gradient(90deg,var(--soft1)_0%,var(--soft2)_50%,var(--soft1)_100%)] p-3 sm:p-8 md:p-10">
             {/* tab pills */}
             <div className="grid grid-cols-4 gap-2 sm:gap-4">
               {tabs.map((t, i) => (

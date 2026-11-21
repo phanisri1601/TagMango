@@ -17,6 +17,7 @@ export const STEPS = [
 export const MILESTONES = [
   "half", "captured", "pattern", "mcRegistered", "mcAttended", "mcMissed", "replay",
   "callBooked", "callAttended", "callNoShow", "callDone", "enrolStarted", "paid", "declined", "missedClass", "completed", "testimonial",
+  "resource", "applied", "refunded",
 ] as const;
 export type Milestone = (typeof MILESTONES)[number];
 
@@ -192,6 +193,33 @@ const SIGN = "\n\n— {coach}\n{programme}";
 
 export const FLOWS: FlowDef[] = [
   {
+    id: "lead_magnet", n: 1, name: "Lead magnet form", trigger: "Fills the free resource form on the website",
+    goal: "pattern", stopOn: ["pattern", "mcRegistered", "paid"], sales: true,
+    steps: [
+      { key: "deliver", channel: "email", at: 0, subject: "Your free resource from {coach}", body: "Hi {first},\n\nThank you for asking. Here is your free resource: {resource_link}\n\nWhen you are ready, spot your own pattern in five minutes: {quiz_link}" + SIGN },
+      { key: "optin", channel: "whatsapp", at: 1, body: "Hi {first}, you're opted in for updates from {coach}. Your free resource is in your email. Reply STOP any time to opt out." },
+    ],
+  },
+  {
+    id: "application_sent", n: 5, name: "Application sent", trigger: "Sends the application form on the website",
+    goal: "callBooked", stopOn: ["callBooked", "paid", "declined"], sales: true,
+    steps: [
+      { key: "received", channel: "email", at: 0, subject: "We received your application", body: "Hi {first},\n\nThank you for applying to {programme}. I read every application myself and will reply within two working days. Meanwhile you can pick a time for a short conversation: {book_link}" + SIGN },
+      { key: "nudge", channel: "whatsapp", at: 60, body: "Hi {first}, your application for {programme} is in. Pick a time to talk: {book_link}" },
+      { key: "f1", channel: "email", at: 2 * 1440, subject: "Next step on your application", body: "Hi {first},\n\nA short conversation helps us both see if the programme fits. Choose a time here: {book_link}" + SIGN },
+      { key: "f2", channel: "email", at: 4 * 1440, subject: "Still thinking about it?", body: "Hi {first},\n\nIf you have a question before booking, reply to this email. Otherwise your link is here: {book_link}" + SIGN },
+      { key: "f3", channel: "email", at: 7 * 1440, subject: "Last note on your application", body: "Hi {first},\n\nThis is my last note. If the timing is right, book here: {book_link}" + SIGN },
+    ],
+  },
+  {
+    id: "refund_processed", n: 7, name: "Refund processed", trigger: "A refund is made from Transactions",
+    goal: null, stopOn: [], sales: false,
+    steps: [
+      { key: "email", channel: "email", at: 0, subject: "Your refund is on its way", body: "Hi {first},\n\nYour refund for {programme} has been processed. It reaches your original payment method in 5 to 7 working days.\n\nIf you have any question, just reply to this email." + SIGN },
+      { key: "wa", channel: "whatsapp", at: 0, body: "Hi {first}, your refund for {programme} has been processed. It reaches your account in 5 to 7 working days." },
+    ],
+  },
+  {
     id: "social_lead", n: 1, name: "Social lead", trigger: "Comments a keyword on Instagram, or messages on WhatsApp from a link",
     goal: "captured", stopOn: ["captured", "pattern", "mcRegistered", "paid"], sales: true,
     steps: [{ key: "wa", channel: "whatsapp", at: 0, body: "Hi {first}! Thanks for reaching out to {coach}. Two things to start with:\n1) Spot your pattern (5 minutes): {quiz_link}\n2) Join the free live masterclass: {mc_link}" }],
@@ -309,6 +337,9 @@ export const FLOW_BY_ID = Object.fromEntries(FLOWS.map((f) => [f.id, f])) as Rec
 
 /** Milestone → workflow started when it is reached. */
 export const MILESTONE_FLOW: Partial<Record<Milestone, string>> = {
+  resource: "lead_magnet",
+  applied: "application_sent",
+  refunded: "refund_processed",
   pattern: "pattern_done",
   mcRegistered: "mc_registered",
   mcAttended: "mc_attended",

@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import AuthLayout from "@/components/auth/AuthLayout";
 import LoginForm from "@/components/auth/LoginForm";
 
-export const metadata = { title: "Login to TagMango" };
+export const metadata = { title: "Login to Nitienaa Rao" };
 
 export default function Login() {
   return (

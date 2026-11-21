@@ -8,7 +8,7 @@ import { GROUPS, STEPS, stageOf, type Lead } from "@/lib/growth/model";
 const STAGE_LABEL = Object.fromEntries(STEPS.map((s) => [s.key, s.label.replace(/^\d · /, "")]));
 const MILESTONE_LABEL: Record<string, string> = {
   half: "Started a form", captured: "Captured", pattern: "Pattern Check done", mcRegistered: "Registered for masterclass", mcAttended: "Attended masterclass", mcMissed: "Missed masterclass", replay: "Watched replay",
-  callBooked: "Booked a call", callAttended: "Attended the call", callNoShow: "Call no-show", callDone: "Call done", enrolStarted: "Started enrolling", paid: "Paid", declined: "Said no", missedClass: "Missed a class", completed: "Completed", testimonial: "Gave a testimonial",
+  callBooked: "Booked a call", callAttended: "Attended the call", callNoShow: "Call no-show", callDone: "Call done", enrolStarted: "Started enrolling", paid: "Paid", declined: "Said no", missedClass: "Missed a class", completed: "Completed", testimonial: "Gave a testimonial", resource: "Got the free resource", applied: "Sent an application", refunded: "Refunded",
 };
 
 type Detail = { lead: Lead; masterclass: Row | null; messages: Row[]; runs: Row[] };

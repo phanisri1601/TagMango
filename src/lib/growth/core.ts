@@ -1,11 +1,13 @@
 import "server-only";
 import { asUser, id as newId, now, store, type User } from "../db";
 import { sendEmail, sendWhatsApp } from "../messaging";
+import { unsubToken } from "../unsub";
 import {
   DEFAULT_CONSENT, DEFAULT_PATTERNS, DEFAULT_RULES, FLOW_BY_ID, MILESTONE_FLOW, fill,
   type FlowDef, type Lead, type Milestone, type Pattern, type QuizRules, type StepDef,
 } from "./model";
 
+export const unsubLink = (creatorId: string, email: string) => `${appUrl()}/unsubscribe?c=${creatorId}&e=${encodeURIComponent(email.toLowerCase())}&t=${unsubToken(creatorId, email)}`;
 export const appUrl = () => (process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
 const norm = (s: unknown) => String(s ?? "").trim().toLowerCase();
 const phone10 = (p: unknown) => String(p ?? "").replace(/\D/g, "").slice(-10);
@@ -130,7 +132,7 @@ export async function upsertLead(creatorId: string, i: CaptureInput): Promise<Le
   });
 }
 
-const IMPLIES_CAPTURE: Milestone[] = ["pattern", "mcRegistered", "callBooked", "enrolStarted", "paid"];
+const IMPLIES_CAPTURE: Milestone[] = ["resource", "applied", "pattern", "mcRegistered", "callBooked", "enrolStarted", "paid"];
 
 type MarkOpts = { detail?: string; eventAt?: string; ctxKey?: string; refire?: boolean; silent?: boolean; extra?: Record<string, string> };
 
@@ -238,6 +240,7 @@ export function toHtml(text: string, msgId: string, links: string[]) {
     const clean = u.replace(/[.,;)]+$/, "");
     const tail = u.slice(clean.length);
     const raw = clean.replace(/&amp;/g, "&");
+    if (raw.includes("/unsubscribe?")) return `<a href="${raw}">${clean}</a>${tail}`; // never tracked
     links.push(raw);
     return `<a href="${appUrl()}/api/t/c/${msgId}?u=${encodeURIComponent(raw)}">${clean}</a>${tail}`;
   });
@@ -265,6 +268,7 @@ export async function varsFor({ user, g, lead, run }: Ctx): Promise<Record<strin
     join_link: String(mc?.joinLink || `${base}/m/${g.slug}`), masterclass_title: String(mc?.title || "the free masterclass"),
     masterclass_time: when(mc?.startsAt as string | undefined) || "the scheduled time", seat: lead.seat ? `#${lead.seat}` : "reserved",
     call_time: when(lead.callAt) || "the scheduled time", call_link: lead.callLink || g.callLink || "the link in your calendar invite",
+    resource_link: String(g.resourceUrl || `${base}/free-resource`),
     pattern: nameOf(pr?.primary), pct: pr ? String(pr.pct[pr.primary] ?? "") : "",
     secondary_line: pr?.secondary ? ` You also show a strong thread of ${nameOf(pr.secondary)} (${pr.pct[pr.secondary]}%).` : "",
     pdf_line: resultCfg?.pdfUrl ? `\nYour PDF: ${resultCfg.pdfUrl}\n` : "", boundary: g.boundaryLine || "", referral: g.referralLine || "",
@@ -293,8 +297,9 @@ async function sendStep(c: Ctx, def: FlowDef, s: StepDef, ov: FlowDoc["overrides
     if (!/^\S+@\S+\.\S+$/.test(lead.email || "")) return { status: "skipped", note: "no email" };
     const off = await store.find("unsubscribed", [["userId", user.id], ["email", lead.email]], { limit: 1 });
     if (off.length) return { status: "skipped", note: "unsubscribed" };
-    const html = toHtml(body + `\n\n—\nTo stop these emails, reply "unsubscribe".`, msgId, log.links);
-    const r = await sendEmail({ to: lead.email, subject, text: body, html, userId: user.id, kind: `flow:${def.id}`, fromName: g.coachName || user.name, replyTo: g.alertEmail || user.email });
+    const foot = `\n\n—\nTo stop these emails, unsubscribe here: ${unsubLink(user.id, lead.email)}`;
+    const html = toHtml(body + foot, msgId, log.links);
+    const r = await sendEmail({ to: lead.email, subject, text: body + foot, html, userId: user.id, kind: `flow:${def.id}`, fromName: g.coachName || user.name, replyTo: g.alertEmail || user.email });
     await store.write([{ type: "set", coll: "msgLog", id: msgId, data: { ...log, sentAt: r.ok ? now() : undefined, mode: r.mode, error: r.error } }]);
     return r.ok ? { status: "sent", note: r.mode } : { status: "failed", note: r.error };
   }
@@ -409,7 +414,7 @@ export async function sendNotice(creatorId: string, p: Person, stepKey: string, 
   if (/^\S+@\S+\.\S+$/.test(p.email || "") && !off.length) {
     const msgId = newId();
     const links: string[] = [];
-    const r = await sendEmail({ to: p.email, subject, text, html: toHtml(text, msgId, links), userId: creatorId, kind: "flow:class_notices", fromName: g.coachName || user.name, replyTo: g.alertEmail || user.email });
+    const r = await sendEmail({ to: p.email, subject, text, html: toHtml(text + `\n\n—\nTo stop these emails, unsubscribe here: ${unsubLink(creatorId, p.email)}`, msgId, links), userId: creatorId, kind: "flow:class_notices", fromName: g.coachName || user.name, replyTo: g.alertEmail || user.email });
     await store.write([{ type: "set", coll: "msgLog", id: msgId, data: { userId: creatorId, leadId: p.id || "", flowId: "class_notices", stepKey, channel: "email", goal: null, createdAt: now(), sentAt: r.ok ? now() : undefined, mode: r.mode, error: r.error, to: p.email, subject, links } }]);
     any = r.ok;
   }

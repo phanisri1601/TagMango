@@ -53,7 +53,7 @@ export default function Cloud() {
 
   return (
     <Panel className="p-5">
-      <Title right={<><input ref={input} type="file" multiple hidden onChange={(e) => upload(e.target.files)} /><Btn variant="black" icon="upload" disabled={busy > 0} onClick={() => input.current?.click()}>{busy ? `Uploading ${busy}…` : "Upload"}</Btn></>}>TagMango Cloud</Title>
+      <Title right={<><input ref={input} type="file" multiple hidden onChange={(e) => upload(e.target.files)} /><Btn variant="black" icon="upload" disabled={busy > 0} onClick={() => input.current?.click()}>{busy ? `Uploading ${busy}…` : "Upload"}</Btn></>}>Cloud</Title>
       <div className="mt-4 w-fit min-w-[220px] rounded-[10px] border border-[#ededed] p-4">
         <p className="text-[12px] text-[#6b6b7b]">Total Used</p>
         <p className="text-[22px] font-semibold text-[#f2962c]">{size(used).replace(/ (\w+)$/, "$1")}<span className="text-[13px] font-normal text-[#6b6b7b]">of 20GB</span></p>
@@ -67,7 +67,7 @@ export default function Cloud() {
         <Btn variant="danger" disabled={!sel.length} onClick={() => setConfirm(sel)}>Delete</Btn>
       </div>
       <div className="mt-3"><DataTable cols={cols} rows={rows} loading={col.loading} selectable selected={sel} onSelect={setSel} empty={<EmptySearch title="No files yet" text="Upload videos, images and PDFs to use in your courses and pages (max 50 MB per file in this clone)." />} /></div>
-      {confirm && <Confirm title={`Delete ${confirm.length} file${confirm.length > 1 ? "s" : ""}?`} text="Files are permanently deleted from TagMango Cloud." onOk={() => remove(confirm)} onClose={() => setConfirm(null)} />}
+      {confirm && <Confirm title={`Delete ${confirm.length} file${confirm.length > 1 ? "s" : ""}?`} text="Files are permanently deleted from Cloud." onOk={() => remove(confirm)} onClose={() => setConfirm(null)} />}
     </Panel>
   );
 }

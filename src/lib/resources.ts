@@ -181,6 +181,12 @@ Object.assign(RULES, {
   flowRuns: { ops: "r" },
   msgLog: { ops: "r" },
   testimonials: { ops: "rud", updatable: ["status", "featured"] },
+  blogPosts: {
+    ops: "rcud",
+    required: ["title", "slug"],
+    unique: ["slug"],
+    check: ({ data }) => (data.slug !== undefined && !SLUG.test(String(data.slug)) ? "Address can use lowercase letters, numbers and dashes only" : undefined),
+  },
   socialStats: { ops: "rcud", required: ["platform", "weekStart"], check: ({ data }) => ("weekStart" in data && !/^\d{4}-\d{2}-\d{2}$/.test(String(data.weekStart)) ? "Pick the Monday of the week" : undefined) },
   lessons: { ops: "rcud", required: ["title", "week"] },
   classes: { ops: "rcud", required: ["title", "startsAt"], protect: ["reminded", "attendanceTaken"] },

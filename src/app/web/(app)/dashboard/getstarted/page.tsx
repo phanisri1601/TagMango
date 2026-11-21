@@ -110,7 +110,7 @@ export default function GetStarted() {
 
       <div className="animate-rise" style={{ ["--delay" as string]: "0.1s" }}>
         <h1 className="text-[30px] font-bold md:text-[36px]">Hello {me.name.split(" ")[0]}, welcome!</h1>
-        <p className="mt-1 text-[16px] text-[#0f0f0f]/80 md:text-[18px]">Your monetisation journey on TagMango starts here!</p>
+        <p className="mt-1 text-[16px] text-[#0f0f0f]/80 md:text-[18px]">Your growth journey starts here!</p>
       </div>
 
       <div className="animate-rise grid overflow-hidden rounded-[10px] border border-[#ededed] bg-white lg:grid-cols-[1fr_1.05fr]" style={{ ["--delay" as string]: "0.14s" }}>

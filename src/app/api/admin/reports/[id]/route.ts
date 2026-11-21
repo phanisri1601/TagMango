@@ -18,7 +18,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         const coll = r.kind === "comment" ? "comments" : "posts";
         const target = await t.get(coll, String(r.refId));
         if (target && target.userId === r.userId) t.delete(coll, target.id);
-        notify(t, String(r.userId), `TagMango removed a ${String(r.kind)} from your community after a report.`);
+        notify(t, String(r.userId), `Nitienaa Rao removed a ${String(r.kind)} from your community after a report.`);
       }
       const resolved = body.action === "remove" ? "removed" : "dismissed";
       t.update("reports", id, { resolved });

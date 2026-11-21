@@ -53,7 +53,7 @@ export default function AuthLayout({ children, step }: { children: React.ReactNo
         <div className="flex flex-1 flex-col justify-center py-10">{children}</div>
         {!step && (
           <div className="text-[11px] text-ink/60">
-            <p>TagMango {new Date().getFullYear()}. All rights reserved.</p>
+            <p>Nitienaa Rao {new Date().getFullYear()}. All rights reserved.</p>
             <div className="mt-2 flex gap-6">
               <Link href="#" className="hover:text-ink">Terms of Service</Link>
               <Link href="#" className="hover:text-ink">Privacy Policy</Link>
@@ -74,14 +74,14 @@ export default function AuthLayout({ children, step }: { children: React.ReactNo
         )}
         <div className="relative ml-[9%] mr-[6%] pt-[8vh]">
           <blockquote className="max-w-[620px] text-[22px] font-medium leading-[1.55] xl:text-[24px]">
-            <b className="font-semibold">It was TagMango that helped me scale my knowledge business exponentially.</b>{" "}
-            <span className="font-normal">Now I have thousands of students and a business that runs itself, all thanks to a superb product!</span>
+            <b className="font-semibold">Every lead, call and payment now lives in one place.</b>{" "}
+            <span className="font-normal">The follow-ups run by themselves, so I can focus on the conversations that matter.</span>
           </blockquote>
           <div className="mt-6 flex items-center gap-3">
             <div className="grid h-11 w-11 place-items-center rounded-full bg-ink text-[9px] font-bold text-white">FIN</div>
             <div>
-              <p className="text-[13px] font-semibold uppercase tracking-wide">A Finance Creator</p>
-              <p className="text-[13px] text-ink/60">Finance Creator | Investor | Trader</p>
+              <p className="text-[13px] font-semibold uppercase tracking-wide">A Coach</p>
+              <p className="text-[13px] text-ink/60">Using Nitienaa Rao</p>
             </div>
           </div>
           <div className="mt-10 w-[115%] animate-rise" style={{ ["--delay" as string]: "0.2s" }}>

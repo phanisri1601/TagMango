@@ -75,7 +75,7 @@ export default function PricingPlans() {
               key={p.name}
               onClick={() => setSel(i)}
               style={{ ["--delay" as string]: `${i * 0.08}s` }}
-              className={`animate-plan-show relative flex cursor-pointer flex-col rounded-[24px] border-2 bg-white p-6 text-left transition ${sel === i ? "border-orange-400 shadow-[0_20px_50px_-20px_rgba(255,106,0,0.45)]" : "border-transparent hover:border-orange-200"}`}
+              className={`animate-plan-show relative flex cursor-pointer flex-col rounded-[24px] border-2 bg-white p-6 text-left transition ${sel === i ? "border-orange-400 shadow-[0_20px_50px_-20px_rgba(var(--accent-rgb),0.45)]" : "border-transparent hover:border-orange-200"}`}
             >
               {p.popular && <span className="bg-mango absolute -top-3 left-6 rounded-full px-3 py-0.5 text-xs font-semibold text-white">Most popular</span>}
               <p className="font-display text-xl font-semibold">{p.name}</p>
