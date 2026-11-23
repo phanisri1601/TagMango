@@ -32,10 +32,12 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "next-env.d.ts",
-    ".next-agent/types/**/*.ts"
+    "next-env.d.ts"
   ],
   "exclude": [
+    ".agent-data",
+    ".next",
+    ".next-agent",
     "node_modules"
   ]
 }
