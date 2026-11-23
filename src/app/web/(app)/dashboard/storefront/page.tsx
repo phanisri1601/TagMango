@@ -13,7 +13,7 @@ function Inner() {
   const [edit, setEdit] = useState(false);
   useEffect(() => { if (params.get("edit") === "1") setEdit(true); }, [params]);
   const s = (me.settings?.store || {}) as Record<string, unknown>;
-  const url = typeof window !== "undefined" ? `${location.origin}/web/lite/store/${me.id}` : "";
+  const url = typeof window !== "undefined" ? `${location.origin}/store/${me.id}` : "";
   const hidden = (s.hidden as string[]) || [];
   const active = s.active !== false;
 
@@ -31,7 +31,7 @@ function Inner() {
             <code className="flex-1 truncate rounded-md border border-dashed border-[#e9e6e0] bg-[#f4f2ed] px-3 py-2 text-left text-[13px] text-[#141413]">{url}</code>
             <Btn variant="soft" className="text-[#141413]" onClick={() => copy(url)}>COPY LINK</Btn>
           </div>
-          <a href={`/web/lite/store/${me.id}`} target="_blank" rel="noreferrer" className="mt-4 text-[13px] text-[#141413] hover:underline">Open storefront ↗</a>
+          <a href={`/store/${me.id}`} target="_blank" rel="noreferrer" className="mt-4 text-[13px] text-[#141413] hover:underline">Open storefront ↗</a>
         </div>
         <div className="mt-6">
           <p className="mb-2 text-[15px] font-semibold">Mangoes on your storefront</p>

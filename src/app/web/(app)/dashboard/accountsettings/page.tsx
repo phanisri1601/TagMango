@@ -3,6 +3,7 @@ import Link from "next/link";
 import { fmtDate, inr, useCollection, useMe, type Row } from "@/lib/client";
 import { Btn, DataTable, EmptySearch, Panel, Pill, Title, type Col } from "@/components/dash/kit";
 import { Icon } from "@/components/dash/icons";
+import PasswordCard from "@/components/dash/PasswordCard";
 import { COMMISSION, PLAN_LABEL, dash } from "@/components/dash/nav";
 
 const PLAN_INFO = {
@@ -47,6 +48,7 @@ export default function Billing() {
           {me.whiteLabel && <p className="mt-2"><Pill tone="blue">Freedom Setup active</Pill></p>}
         </div>
       </Panel>
+      <PasswordCard />
       <Panel className="mt-5 p-5" delay={0.06}>
         <Title sub={`Plan: ${PLAN_LABEL[me.plan]}`}>Invoices</Title>
         <div className="mt-3"><DataTable cols={cols} rows={inv.rows} loading={inv.loading} empty={<EmptySearch title="No invoices found!" />} /></div>

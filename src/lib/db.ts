@@ -37,6 +37,9 @@ export type User = {
   role?: "learner";
   suspended?: boolean;
   suspendReason?: string;
+  passwordHash?: string;
+  pwFails?: number;
+  pwLockUntil?: number;
   adminNote?: string;
   settings?: Record<string, unknown>;
   createdAt: string;

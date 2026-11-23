@@ -10,12 +10,22 @@ export const certCode = () => "NR-" + Array.from(crypto.randomBytes(10), (b) => 
 type Person = { name: string; email: string; course?: string };
 
 /**
+ * The name printed on a certificate. A person who registered an account gets the name they signed up with;
+ * otherwise the name from their purchase or enrolment is used.
+ */
+export async function certName(email: string, fallback: string) {
+  const [u] = await store.find("users", [["email", email.trim().toLowerCase()]], { limit: 1 });
+  return String(u?.name || "").trim() || fallback.trim() || email;
+}
+
+/**
  * Issue one certificate to one person (once per template and email). A copy of the wording is saved with it,
  * so editing the template later never changes certificates that were already issued. The person's name is
  * taken from their own record (purchase or enrolment), never typed by hand.
  */
 export async function issueCertificate(creatorId: string, cert: Record<string, unknown> | null, p: Person) {
   const email = p.email.trim().toLowerCase();
+  p = { ...p, name: await certName(email, p.name) };
   const certId = cert ? String(cert.id) : "programme";
   const [have] = await store.find("certIssues", [["userId", creatorId], ["certId", certId], ["email", email]], { limit: 1 });
   if (have) return { code: String(have.code), fresh: false };

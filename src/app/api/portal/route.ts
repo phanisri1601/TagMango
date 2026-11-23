@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
 import { id as newId, now, store } from "@/lib/db";
 import { alertCoach, getGrowth, mark } from "@/lib/growth/core";
-import { emailCertificate, issueCertificate } from "@/lib/certificates";
+import { certName, emailCertificate, issueCertificate } from "@/lib/certificates";
 import type { Lead } from "@/lib/growth/model";
 
 const bad = (m: string, status = 400) => NextResponse.json({ error: m }, { status });
@@ -34,9 +34,10 @@ export async function GET(req: Request) {
   let certificateCode: string | undefined;
   if (completed) {
     const tpl = (await store.find("certificates", [["userId", cid]])).find((c) => c.active && c.forKind === "Course completion") || null;
-    const r = await issueCertificate(cid, tpl, { name: String(e.name), email: me.email, course: g?.programme || "" });
+    const printed = await certName(me.email, String(e.name));
+    const r = await issueCertificate(cid, tpl, { name: printed, email: me.email, course: g?.programme || "" });
     certificateCode = r.code;
-    if (r.fresh) await emailCertificate(cid, me.email, String(e.name), String(tpl?.title || "Certificate of Completion"), r.code, g?.programme || "");
+    if (r.fresh) await emailCertificate(cid, me.email, printed, String(tpl?.title || "Certificate of Completion"), r.code, g?.programme || "");
   }
   return NextResponse.json({
     certificateCode,

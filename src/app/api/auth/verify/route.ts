@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdminEmail } from "@/lib/admin";
-import { checkOtp, createUser, findUserByEmail, findUserByPhone, normEmail, normPhone, startSession } from "@/lib/auth";
+import { hashPassword, passwordProblem, checkOtp, createUser, findUserByEmail, findUserByPhone, normEmail, normPhone, startSession } from "@/lib/auth";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
@@ -16,7 +16,9 @@ export async function POST(req: Request) {
   if (body.mode === "signup") {
     const name = String(body.name || "").trim().slice(0, 80);
     if (!name || !/^\S+@\S+\.\S+$/.test(email) || phone.length !== 10) return NextResponse.json({ error: "Invalid sign-up details" }, { status: 400 });
-    const user = await createUser({ name, email, phone, marketingOptIn: Boolean(body.marketing) });
+    const pw = String(body.password || "");
+    if (passwordProblem(pw, String(body.confirm ?? ""))) return NextResponse.json({ error: "Invalid password" }, { status: 400 });
+    const user = await createUser({ name, email, phone, marketingOptIn: Boolean(body.marketing), passwordHash: await hashPassword(pw) });
     if (!user) return NextResponse.json({ error: "Account already exists. Please login." }, { status: 409 });
     await startSession(user.id);
     return NextResponse.json({ ok: true, next: "/signup/about" });

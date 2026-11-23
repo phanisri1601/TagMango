@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { findUserByEmail, findUserByPhone, issueOtp, normEmail, normPhone, SHOW_DEV_OTP } from "@/lib/auth";
+import { passwordProblem, findUserByEmail, findUserByPhone, issueOtp, normEmail, normPhone, SHOW_DEV_OTP } from "@/lib/auth";
 import { deliverOtp } from "@/lib/messaging";
 import { isAdminEmail } from "@/lib/admin";
 
@@ -35,6 +35,8 @@ async function handle(req: Request) {
     if (!name || name.length > 80) return NextResponse.json({ error: "Please enter your name" }, { status: 400 });
     if (!/^\S+@\S+\.\S+$/.test(email)) return NextResponse.json({ error: "Please enter a valid email" }, { status: 400 });
     if (phone.length !== 10) return NextResponse.json({ error: "Please enter a valid 10-digit phone number" }, { status: 400 });
+    const pwErr = passwordProblem(String(body.password || ""), String(body.confirm ?? ""));
+    if (pwErr) return NextResponse.json({ error: pwErr }, { status: 400 });
     if (!body.terms) return NextResponse.json({ error: "Please accept the Terms of Service" }, { status: 400 });
     if (await findUserByPhone(phone)) return NextResponse.json({ error: "This phone number is already registered. Please login." }, { status: 409 });
     if (await findUserByEmail(email)) return NextResponse.json({ error: "This email is already registered. Please login." }, { status: 409 });

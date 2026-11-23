@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { store } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { activeCustomers } from "@/lib/customers";
-import { emailCertificate, issueCertificate } from "@/lib/certificates";
+import { certName, emailCertificate, issueCertificate } from "@/lib/certificates";
 
 /** Issue a certificate template to everyone it is meant for. Names come from each customer's own record. */
 export async function POST(req: Request) {
@@ -15,8 +15,9 @@ export async function POST(req: Request) {
   const people = (await activeCustomers(me.id, cert.mango ? [String(cert.mango)] : [])).filter((c) => !only || only.includes(c.email));
   let issued = 0, skipped = 0;
   for (const c of people) {
-    const r = await issueCertificate(me.id, cert, { name: c.name, email: c.email });
-    if (r.fresh) { issued++; await emailCertificate(me.id, c.email, c.name, String(cert.title), r.code, String(cert.forRef || "")); } else skipped++;
+    const printed = await certName(c.email, c.name);
+    const r = await issueCertificate(me.id, cert, { name: printed, email: c.email });
+    if (r.fresh) { issued++; await emailCertificate(me.id, c.email, printed, String(cert.title), r.code, String(cert.forRef || "")); } else skipped++;
   }
   const sent = Array.from(new Set([...(((cert.sentTo as string[]) || [])), ...people.map((c) => c.email)]));
   await store.write([{ type: "update", coll: "certificates", id: String(cert.id), patch: { sentTo: sent, lastSent: new Date().toISOString() } }]);

@@ -7,6 +7,33 @@ export const SESSION_COOKIE = "tm_session";
 const OTP_TTL_MS = 5 * 60 * 1000;
 const MAX_OTP_ATTEMPTS = 5;
 
+/* ------------------------------------------------------------------ passwords */
+
+const scrypt = (pw: string, salt: Buffer) => new Promise<Buffer>((res, rej) => crypto.scrypt(pw, salt, 64, (e, k) => (e ? rej(e) : res(k))));
+
+/** scrypt with a random salt. The stored value is "s1$salt$hash"; the password itself is never kept. */
+export async function hashPassword(pw: string) {
+  const salt = crypto.randomBytes(16);
+  return `s1$${salt.toString("hex")}$${(await scrypt(pw, salt)).toString("hex")}`;
+}
+export async function verifyPassword(pw: string, stored?: string) {
+  const [v, s, h] = (stored || "").split("$");
+  if (v !== "s1" || !s || !h) return false;
+  const want = Buffer.from(h, "hex");
+  const got = await scrypt(pw, Buffer.from(s, "hex"));
+  return want.length === got.length && crypto.timingSafeEqual(want, got);
+}
+/** Returns the reason a password is not acceptable, or null when it is fine. */
+export function passwordProblem(pw: string, confirm?: string) {
+  if (pw.length < 8) return "Password must be at least 8 characters";
+  if (pw.length > 128) return "Password is too long";
+  if (!/[A-Za-z]/.test(pw) || !/[0-9]/.test(pw)) return "Use at least one letter and one number";
+  if (confirm !== undefined && pw !== confirm) return "The two passwords do not match";
+  return null;
+}
+export const MAX_PW_FAILS = 5;
+export const PW_LOCK_MS = 15 * 60 * 1000;
+
 export const normPhone = (p: string) => (p || "").replace(/\D/g, "").slice(-10);
 export const normEmail = (e: string) => (e || "").trim().toLowerCase();
 
@@ -59,14 +86,14 @@ export async function findUserByPhone(phone: string) {
 }
 
 /** Create a user, atomically claiming their email and phone so two sign-ups can't race to the same identity. */
-export async function createUser(input: { name: string; email: string; phone: string; marketingOptIn: boolean }): Promise<User | null> {
+export async function createUser(input: { name: string; email: string; phone: string; marketingOptIn: boolean; passwordHash?: string }): Promise<User | null> {
   const uid = id();
   const ce = sha(`email:${input.email}`);
   const cp = sha(`phone:${input.phone}`);
   return store.tx(async (t) => {
     const [a, b, ue, up] = await Promise.all([t.get("claims", ce), input.phone ? t.get("claims", cp) : null, t.find("users", [["email", input.email]], { limit: 1 }), input.phone ? t.find("users", [["phone", input.phone]], { limit: 1 }) : []]);
     if (a || b || ue.length || up.length) return null; // also checks users directly: accounts created before claims existed
-    const user: User = { id: uid, name: input.name, email: input.email, phone: input.phone, marketingOptIn: input.marketingOptIn, createdAt: now() };
+    const user: User = { id: uid, name: input.name, email: input.email, phone: input.phone, marketingOptIn: input.marketingOptIn, ...(input.passwordHash && { passwordHash: input.passwordHash }), createdAt: now() };
     t.set("users", uid, user);
     t.set("claims", ce, { userId: uid, kind: "email" });
     if (input.phone) t.set("claims", cp, { userId: uid, kind: "phone" });
@@ -133,6 +160,10 @@ export function selfView(u: User) {
   const v: Record<string, unknown> = { plan: "basic", ...u };
   delete v.adminNote;
   delete v.suspendReason;
+  delete v.passwordHash; // never sent to the browser
+  delete v.pwFails;
+  delete v.pwLockUntil;
+  v.hasPassword = Boolean(u.passwordHash);
   if (u.kyc) v.kyc = { ...u.kyc, pan: `XXXXX${u.kyc.pan.slice(5)}` };
   return v;
 }

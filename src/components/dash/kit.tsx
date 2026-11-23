@@ -1,11 +1,23 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { ago, useMe } from "@/lib/client";
 import { Icon } from "./icons";
 import { dash, isLocked } from "./nav";
 
 /* ---------- layout ---------- */
+
+/**
+ * Renders overlays (drawers, modals) straight under <body>. Panels animate with a transform, and a transformed
+ * ancestor becomes the containing block for `position: fixed`, which made overlays open inside the panel,
+ * clipped and off-centre, instead of covering the screen.
+ */
+export function Portal({ children }: { children: React.ReactNode }) {
+  const [host, setHost] = useState<HTMLElement | null>(null);
+  useEffect(() => { setHost(document.body); }, []);
+  return host ? createPortal(<div className="font-app">{children}</div>, host) : null;
+}
 
 export function Panel({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   return (
@@ -316,7 +328,7 @@ export function Drawer({ title, onClose, children, footer, width = "max-w-[620px
   const { me } = useMe();
   useEsc(onClose);
   return (
-    <div className="fixed inset-0 z-[80] flex justify-end bg-black/45" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <Portal><div className="fixed inset-0 z-[80] flex justify-end bg-black/45" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className={`flex h-full w-full ${width} animate-[drawer-in_.35s_var(--ease-out-expo)] flex-col bg-white shadow-2xl`} role="dialog" aria-label={title}>
         <div className="flex items-center gap-3 border-b border-[#ededed] px-5 py-3.5">
           <button onClick={onClose} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full hover:bg-black/5"><Icon name="close" className="h-5 w-5" /></button>
@@ -331,14 +343,14 @@ export function Drawer({ title, onClose, children, footer, width = "max-w-[620px
         {footer && <div className="border-t border-[#ededed] px-5 py-3.5">{footer}</div>}
       </div>
       <style>{`@keyframes drawer-in{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}`}</style>
-    </div>
+    </div></Portal>
   );
 }
 
 export function Modal({ title, onClose, children, wide }: { title: React.ReactNode; onClose: () => void; children: React.ReactNode; wide?: boolean }) {
   useEsc(onClose);
   return (
-    <div className="fixed inset-0 z-[90] grid place-items-center bg-black/45 p-4" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <Portal><div className="fixed inset-0 z-[90] grid place-items-center bg-black/45 p-4" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className={`animate-plan-show max-h-[90vh] w-full overflow-y-auto rounded-xl bg-white shadow-2xl ${wide ? "max-w-3xl" : "max-w-md"}`} role="dialog">
         <div className="flex items-center justify-between px-6 pb-2 pt-5">
           <h3 className="text-[17px] font-semibold">{title}</h3>
@@ -346,7 +358,7 @@ export function Modal({ title, onClose, children, wide }: { title: React.ReactNo
         </div>
         <div className="px-6 pb-6 pt-2">{children}</div>
       </div>
-    </div>
+    </div></Portal>
   );
 }
 

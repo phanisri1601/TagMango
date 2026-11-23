@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
       { source: "/signup", destination: "/web/sign-up" },
       { source: "/signup/about", destination: "/web/sign-up/about" },
       { source: "/admin/login", destination: "/web/login?as=admin" },
+      { source: "/store/:id", destination: "/web/lite/store/:id" },
     ];
   },
 

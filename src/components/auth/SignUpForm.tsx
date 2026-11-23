@@ -9,6 +9,9 @@ export default function SignUpForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [show, setShow] = useState(false);
   const [terms, setTerms] = useState(false);
   const [marketing, setMarketing] = useState(false);
   const [stage, setStage] = useState<"form" | "otp">("form");
@@ -17,12 +20,12 @@ export default function SignUpForm() {
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
 
-  const ready = name.trim() && email.trim() && phone.length === 10 && terms;
+  const ready = name.trim() && email.trim() && phone.length === 10 && password && confirm && terms;
 
   async function requestOtp() {
     setError(undefined);
     setLoading(true);
-    const r = await post<{ devOtp?: string }>("/api/auth/otp", { mode: "signup", name, email, phone, terms });
+    const r = await post<{ devOtp?: string }>("/api/auth/otp", { mode: "signup", name, email, phone, terms, password, confirm });
     setLoading(false);
     if (r.error) return setError(r.error);
     setDevOtp(r.devOtp);
@@ -35,7 +38,7 @@ export default function SignUpForm() {
     if (code.replace(/\s/g, "").length !== 6) return setError("Enter the 6-digit OTP");
     setError(undefined);
     setLoading(true);
-    const r = await post<{ next: string }>("/api/auth/verify", { mode: "signup", name, email, phone, marketing, code });
+    const r = await post<{ next: string }>("/api/auth/verify", { mode: "signup", name, email, phone, marketing, code, password, confirm });
     setLoading(false);
     if (r.error) return setError(r.error);
     router.push(r.next);
@@ -66,9 +69,16 @@ export default function SignUpForm() {
       <h1 className="text-[30px] font-semibold leading-tight">Welcome! First things first...</h1>
       <p className="mt-2 text-[14px] text-ink/80">You can always change them later.</p>
       <form className="mt-10 space-y-4" onSubmit={(e) => { e.preventDefault(); if (ready) requestOtp(); }}>
-        <input className={inputCls} placeholder="Enter name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} />
+        <input className={inputCls} placeholder="Full name (printed on your certificate)" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} />
+        <p className="-mt-2 text-[12px] text-ink/60">Use your full name as you want it to appear on your certificate.</p>
         <input className={inputCls} placeholder="Enter email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <PhoneInput value={phone} onChange={setPhone} />
+        <div className="relative">
+          <input className={`${inputCls} pr-16`} placeholder="Create a password" type={show ? "text" : "password"} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-ink/70 underline">{show ? "Hide" : "Show"}</button>
+        </div>
+        <input className={inputCls} placeholder="Confirm password" type={show ? "text" : "password"} autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+        <p className={`text-[12px] ${confirm && password !== confirm ? "text-[#cf1322]" : "text-ink/60"}`}>{confirm && password !== confirm ? "The two passwords do not match." : "At least 8 characters, with a letter and a number. You can still sign in with a one-time code."}</p>
         <label className="flex gap-2.5 pt-1 text-[12px] leading-relaxed text-ink/70">
           <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#141413]" />
           <span>

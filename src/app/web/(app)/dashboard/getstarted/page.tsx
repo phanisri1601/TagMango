@@ -77,7 +77,7 @@ export default function GetStarted() {
     { t: "Create & link your digital product", href: `${dash("courses")}?new=1` },
     { t: "Setup your bank account", href: `${dash("balance")}?kyc=1` },
   ];
-  const storeLink = typeof window !== "undefined" ? `${location.origin}/web/lite/store/${me.id}` : "";
+  const storeLink = typeof window !== "undefined" ? `${location.origin}/store/${me.id}` : "";
   const open = (k: string) => { setI(0); setVideo(k); };
 
   return (
