@@ -45,7 +45,7 @@ export default function ReviewerHome() {
   const load = useCallback(() => { api<List>("/api/kyc/review").then(setD).catch((e) => setErr((e as Error).message)); }, []);
   useEffect(() => { load(); }, [load]);
 
-  if (err) return <div className="grid min-h-screen place-items-center p-6 text-center"><div><p className="text-[22px] font-semibold">Reviewer access needed</p><p className="mt-2 max-w-sm text-[#5c5a55]">{err === "Not logged in" ? "Sign in with the email the super admin added as a reviewer." : "This account is not a KYC reviewer. Ask the super admin to add your email."}</p><a href="/web/login?afterLoginRedirectTo=/reviewer" className="mt-5 inline-block rounded-md bg-[#141413] px-5 py-2.5 text-white">Sign in</a></div></div>;
+  if (err) return <div className="grid min-h-screen place-items-center p-6 text-center"><div><p className="text-[22px] font-semibold">Reviewer access needed</p><p className="mt-2 max-w-sm text-[#5c5a55]">{err === "Not logged in" ? "Sign in with the email the super admin added as a reviewer." : "This account is not a KYC reviewer. Ask the super admin to add your email."}</p><a href="/login?afterLoginRedirectTo=/reviewer" className="mt-5 inline-block rounded-md bg-[#141413] px-5 py-2.5 text-white">Sign in</a></div></div>;
   const list = (rows: Row[], empty: string) => rows.length === 0 ? <p className="py-8 text-center text-[14px] text-[#5c5a55]">{empty}</p> : (
     <div className="divide-y divide-[#ededed]">{rows.map((r) => (
       <button key={r.userId} onClick={() => setOpen(r.userId)} className="flex w-full flex-wrap items-center gap-3 py-3.5 text-left hover:bg-[#fafaf9]">
@@ -57,7 +57,7 @@ export default function ReviewerHome() {
   return (
     <div className="mx-auto max-w-3xl px-5 py-10">
       <div className="flex items-start justify-between gap-3"><div><p className="text-[12px] uppercase tracking-[0.24em] text-[#5c5a55]">KYC reviews</p><h1 className="mt-1 text-[30px] font-semibold">{d ? `Hello, ${d.me.name.split(" ")[0]}` : "Loading…"}</h1><p className="text-[14px] text-[#5c5a55]">Check each person&apos;s documents against their details, then send your recommendation. The super admin makes the final decision.</p></div>
-        <button className="text-[13px] underline" onClick={async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/web/login"; }}>Sign out</button></div>
+        <button className="text-[13px] underline" onClick={async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login?afterLoginRedirectTo=/reviewer"; }}>Sign out</button></div>
       <div className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5"><p className="text-[15px] font-semibold">Waiting for you {d && <span className="ml-1 rounded-full bg-[#141413] px-2 py-0.5 text-[12px] text-white">{d.todo.length}</span>}</p>{d ? list(d.todo, "Nothing assigned to you right now.") : <div className="mt-3 h-24 animate-pulse rounded bg-[#f4f2ed]" />}</div>
       <div className="mt-5 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5"><p className="text-[15px] font-semibold">Already reviewed</p>{d ? list(d.done, "No reviews yet.") : null}</div>
       {open && <Review id={open} onClose={() => setOpen(null)} onDone={load} />}

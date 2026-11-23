@@ -41,7 +41,7 @@ export default function About() {
       body: JSON.stringify(skip ? {} : { about: { category, audience, goal } }),
     });
     setLoading(false);
-    if (r.status === 401) return router.push("/web/login");
+    if (r.status === 401) return router.push("/login");
     if (!r.ok) return setError("Something went wrong. Please try again.");
     router.push("/web/dashboard/getstarted");
   }

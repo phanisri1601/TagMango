@@ -13,7 +13,7 @@ const links = [
   ["Free resource", "/free-resource"],
   ["Pricing", "/pricing"],
   ["Learner login", "/portal"],
-  ["Creator login", "/web/login"],
+  ["Creator login", "/login"],
 ];
 
 const C = "/tagmango/cta";
@@ -84,7 +84,7 @@ export default function Footer() {
           </div>
           <Reveal delay={0.5} className="flex flex-col gap-3 md:max-w-sm md:justify-self-end">
             <Link
-              href="/web/sign-up"
+              href="/signup"
               className="bg-mango inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 font-semibold text-white"
             >
               Get Started <Arrow />

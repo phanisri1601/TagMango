@@ -17,8 +17,14 @@ const codeHash = (key: string, code: string) => sha(`${key}:${code}`);
 
 /** Create (replacing any previous) a 6-digit code for `key` ("phone:…" / "email:…"). Only a hash is stored. */
 export async function issueOtp(key: string) {
+  // Throttle: at most 5 codes per identity in 10 minutes, so nobody can flood a person's phone or email.
+  const [prev] = await store.find("otps", [["key", key]], { limit: 1 });
+  const win = 10 * 60 * 1000;
+  const sent = prev && Date.now() - Number(prev.windowStart || 0) < win ? Number(prev.sent || 0) : 0;
+  if (sent >= 5) throw new Error("Too many codes requested. Please wait 10 minutes and try again.");
+  const windowStart = sent ? Number(prev?.windowStart) : Date.now();
   const code = String(crypto.randomInt(100000, 1000000));
-  await store.write([{ type: "set", coll: "otps", id: otpDoc(key), data: { key, hash: codeHash(key, code), expires: Date.now() + OTP_TTL_MS, attempts: 0 } }]);
+  await store.write([{ type: "set", coll: "otps", id: otpDoc(key), data: { key, hash: codeHash(key, code), expires: Date.now() + OTP_TTL_MS, attempts: 0, sent: sent + 1, windowStart } }]);
   return code;
 }
 
@@ -70,7 +76,7 @@ export async function createUser(input: { name: string; email: string; phone: st
 
 /* ------------------------------------------------------------------ sessions */
 
-export async function startSession(userId: string) {
+export async function startSession(userId: string, opts?: { hours?: number }) {
   const token = crypto.randomBytes(32).toString("hex");
   const h = await headers();
   const sid = sha(token);
@@ -90,7 +96,7 @@ export async function startSession(userId: string) {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: opts?.hours ? opts.hours * 3600 : 60 * 60 * 24 * 30,
   });
 }
 

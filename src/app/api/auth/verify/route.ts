@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAdminEmail } from "@/lib/admin";
 import { checkOtp, createUser, findUserByEmail, findUserByPhone, normEmail, normPhone, startSession } from "@/lib/auth";
 
 export async function POST(req: Request) {
@@ -18,12 +19,13 @@ export async function POST(req: Request) {
     const user = await createUser({ name, email, phone, marketingOptIn: Boolean(body.marketing) });
     if (!user) return NextResponse.json({ error: "Account already exists. Please login." }, { status: 409 });
     await startSession(user.id);
-    return NextResponse.json({ ok: true, next: "/web/sign-up/about" });
+    return NextResponse.json({ ok: true, next: "/signup/about" });
   }
 
   const user = email ? await findUserByEmail(email) : await findUserByPhone(phone);
   if (!user) return NextResponse.json({ error: "Account not found" }, { status: 404 });
   if (user.suspended) return NextResponse.json({ error: "This account has been suspended. Please contact support." }, { status: 403 });
-  await startSession(user.id);
-  return NextResponse.json({ ok: true, next: "/web/dashboard/getstarted" });
+  if (body.admin && !isAdminEmail(user.email)) return NextResponse.json({ error: "This email is not allowed to sign in to the admin panel." }, { status: 403 });
+  await startSession(user.id, body.admin ? { hours: 8 } : undefined);
+  return NextResponse.json({ ok: true, next: body.admin ? "/admin" : "/web/dashboard/getstarted" });
 }

@@ -69,7 +69,7 @@ export default function Navbar({ light = false }: { light?: boolean }) {
               </div>
             )
           )}
-          <Link href="/web/sign-up" className={`ml-1.5 rounded-full px-5 py-2 text-[13.5px] font-semibold transition duration-200 hover:opacity-90 ${dark ? "bg-ink text-white" : "bg-white text-ink"}`}>Sign-Up</Link>
+          <Link href="/signup" className={`ml-1.5 rounded-full px-5 py-2 text-[13.5px] font-semibold transition duration-200 hover:opacity-90 ${dark ? "bg-ink text-white" : "bg-white text-ink"}`}>Sign-Up</Link>
         </div>
         <button aria-label="Menu" aria-expanded={open} onClick={() => setOpen((v) => !v)} className={`grid h-10 w-10 place-items-center rounded-full transition-colors md:hidden ${dark ? "text-ink hover:bg-black/5" : "text-white hover:bg-white/10"}`}>
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -88,7 +88,7 @@ export default function Navbar({ light = false }: { light?: boolean }) {
             )}
           </div>
         ))}
-        <Link href="/web/sign-up" className="mt-2 block rounded-2xl bg-white px-4 py-3 text-center font-semibold text-ink">Sign-Up</Link>
+        <Link href="/signup" className="mt-2 block rounded-2xl bg-white px-4 py-3 text-center font-semibold text-ink">Sign-Up</Link>
       </div>
     </header>
   );

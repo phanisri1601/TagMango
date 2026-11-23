@@ -34,7 +34,7 @@ function Header({ onMenu }: { onMenu: () => void }) {
 
   async function logout() {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/web/login");
+    router.push("/login");
     router.refresh();
   }
 

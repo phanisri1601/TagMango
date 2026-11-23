@@ -54,7 +54,7 @@ export default function Hero() {
 
         <div className="animate-rise mt-10 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4" style={delay(0.42)}>
           <a
-            href="/web/sign-up"
+            href="/signup"
             className="bg-mango group inline-flex w-full items-center justify-center gap-2 rounded-full px-8 py-3.5 text-[15px] font-semibold text-white shadow-[0_8px_30px_-8px_rgba(var(--accent-rgb),0.7)] transition hover:brightness-110 sm:w-[200px]"
           >
             Get Started <Arrow className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />

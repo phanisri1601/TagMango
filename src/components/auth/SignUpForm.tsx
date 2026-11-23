@@ -83,7 +83,7 @@ export default function SignUpForm() {
         <ErrorText>{error}</ErrorText>
         <OrangeButton disabled={!ready} loading={loading}>Get started</OrangeButton>
         <p className="text-center text-[13px] text-ink/80">
-          Already have an account? <Link href="/web/login" className="font-medium text-[#141413]">Login</Link>
+          Already have an account? <Link href="/login" className="font-medium text-[#141413]">Login</Link>
         </p>
       </form>
     </div>

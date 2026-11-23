@@ -47,7 +47,7 @@ export default function CheckoutBox({ mangoId, title, price, type, cycle, terms,
         </div>
         <a href={`/confirmation?sale=${done.saleId}`} className="mt-4 block rounded-lg border border-[#e1e1e1] py-2.5 text-[14px] font-medium">View receipt</a>
         {successText ? <p className="mt-4 whitespace-pre-wrap text-left text-[14px] text-[#4a4a59]">{successText}</p> : null}
-        <a href={redirectUrl || "/web/login"} style={{ background: accent }} className="mt-5 block rounded-lg py-3 text-center font-semibold text-white">{successButton || "Login Now"}</a>
+        <a href={redirectUrl || "/login"} style={{ background: accent }} className="mt-5 block rounded-lg py-3 text-center font-semibold text-white">{successButton || "Login Now"}</a>
       </div>
     );
   }

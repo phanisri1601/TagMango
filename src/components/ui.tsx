@@ -21,7 +21,7 @@ export function Arrow({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-export function PrimaryButton({ href = "/web/sign-up", children, className = "" }: { href?: string; children: React.ReactNode; className?: string }) {
+export function PrimaryButton({ href = "/signup", children, className = "" }: { href?: string; children: React.ReactNode; className?: string }) {
   return (
     <Link
       href={href}

@@ -81,7 +81,7 @@ function Sidebar({ me, open, onClose }: { me: Me; open: boolean; onClose: () => 
               className="flex-1 rounded-md bg-white/10 py-2 text-[12px] transition hover:bg-white/15"
               onClick={async () => {
                 await fetch("/api/auth/logout", { method: "POST" });
-                router.push("/web/login");
+                router.push("/admin/login");
                 router.refresh();
               }}
             >

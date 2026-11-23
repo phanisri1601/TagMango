@@ -36,7 +36,7 @@ export default function Portal() {
   const [err, setErr] = useState("");
   const load = useCallback(async () => {
     const r = await fetch("/api/portal");
-    if (r.status === 401) { window.location.href = "/web/login?afterLoginRedirectTo=/portal"; return; }
+    if (r.status === 401) { window.location.href = "/login?afterLoginRedirectTo=/portal"; return; }
     setP(await r.json());
   }, []);
   useEffect(() => { load().catch((e) => setErr(e.message)); }, [load]);
@@ -45,7 +45,7 @@ export default function Portal() {
   if (err) return <p className="p-10 text-center">{err}</p>;
   if (!p) return <div className="grid min-h-screen place-items-center bg-[#fafaf8]"><div className="h-9 w-9 animate-spin rounded-full border-[3px] border-[#ddd] border-t-[#111]" /></div>;
   if (!p.enrolled) return (
-    <div className="grid min-h-screen place-items-center bg-[#fafaf8] px-4 text-center"><div><h1 className="text-[24px] font-semibold">You&apos;re not enrolled yet</h1><p className="mt-2 text-[#555]">Sign in with the email you enrolled with, or enrol first.</p><button className="mt-4 text-[14px] underline" onClick={async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/web/login?afterLoginRedirectTo=/portal"; }}>Use a different email</button></div></div>
+    <div className="grid min-h-screen place-items-center bg-[#fafaf8] px-4 text-center"><div><h1 className="text-[24px] font-semibold">You&apos;re not enrolled yet</h1><p className="mt-2 text-[#555]">Sign in with the email you enrolled with, or enrol first.</p><button className="mt-4 text-[14px] underline" onClick={async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login?afterLoginRedirectTo=/portal"; }}>Use a different email</button></div></div>
   );
   const weeks = [...new Set([...p.lessons.map((l) => l.week), ...p.assignments.map((a) => a.week), ...p.classes.map((c) => c.week || 0)])].filter((w) => w > 0).sort((a, b) => a - b);
   const done = new Set(p.enrolment.lessonsDone);
@@ -55,7 +55,7 @@ export default function Portal() {
       <div className="mx-auto max-w-3xl space-y-5 px-4 py-8">
         <header className="flex items-start justify-between gap-3">
           <div><p className="text-[12px] uppercase tracking-[0.2em] text-[#888]">{p.coach}</p><h1 className="text-[26px] font-semibold">{p.programme}</h1><p className="text-[14px] text-[#555]">Welcome, {p.enrolment.name.split(" ")[0]}.{p.kickoff ? ` Kick-off: ${p.kickoff}.` : ""}</p></div>
-          <button className="text-[13px] underline" onClick={async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/web/login"; }}>Sign out</button>
+          <button className="text-[13px] underline" onClick={async () => { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; }}>Sign out</button>
         </header>
 
         <section className={card}>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { findUserByEmail, findUserByPhone, issueOtp, normEmail, normPhone, SHOW_DEV_OTP } from "@/lib/auth";
 import { deliverOtp } from "@/lib/messaging";
+import { isAdminEmail } from "@/lib/admin";
 
 const mask = (e: string) => e.replace(/^(.).*(@.*)$/, "$1***$2");
 
@@ -16,6 +17,14 @@ async function respond(code: string, o: { phone?: string; email?: string; name?:
  *  mode "signup": phone and email must NOT be taken yet
  */
 export async function POST(req: Request) {
+  try {
+    return await handle(req);
+  } catch (e) {
+    return NextResponse.json({ error: (e as Error).message }, { status: 429 });
+  }
+}
+
+async function handle(req: Request) {
   const body = await req.json().catch(() => ({}));
   const mode = body.mode === "signup" ? "signup" : "login";
   const phone = normPhone(body.phone);
@@ -34,8 +43,9 @@ export async function POST(req: Request) {
   }
 
   if (!email && phone.length !== 10) return NextResponse.json({ error: "Please enter a valid 10-digit phone number" }, { status: 400 });
+  if (body.admin && !isAdminEmail(email)) return NextResponse.json({ error: "This email is not allowed to sign in to the admin panel." }, { status: 403 });
   const user = email ? await findUserByEmail(email) : await findUserByPhone(phone);
-  if (!user) return NextResponse.json({ error: "No account found. Please sign up first." }, { status: 404 });
+  if (!user) return NextResponse.json({ error: body.admin ? "This email is not allowed to sign in to the admin panel." : "No account found. Please sign up first." }, { status: body.admin ? 403 : 404 });
   if (user.suspended) return NextResponse.json({ error: "This account has been suspended. Please contact support." }, { status: 403 });
   const code = await issueOtp(email ? `email:${email}` : `phone:${phone}`);
   return respond(code, { phone: user.phone, email: user.email, name: user.name }, email ? mask(email) : `+91 ${phone}`);

@@ -7,7 +7,8 @@ import { DevOtpNote, ErrorText, OrangeButton, OtpBoxes, PhoneInput, ResendTimer,
 export default function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const [via, setVia] = useState<"phone" | "email">("phone");
+  const admin = params.get("as") === "admin";
+  const [via, setVia] = useState<"phone" | "email">(admin ? "email" : "phone");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [stage, setStage] = useState<"id" | "otp">("id");
@@ -22,7 +23,7 @@ export default function LoginForm() {
   async function requestOtp() {
     setError(undefined);
     setLoading(true);
-    const r = await post<{ devOtp?: string }>("/api/auth/otp", { mode: "login", ...ident });
+    const r = await post<{ devOtp?: string }>("/api/auth/otp", { mode: "login", ...ident, ...(admin && { admin: true }) });
     setLoading(false);
     if (r.error) return setError(r.error);
     setDevOtp(r.devOtp);
@@ -35,11 +36,11 @@ export default function LoginForm() {
     if (code.replace(/\s/g, "").length !== 6) return setError("Enter the 6-digit OTP");
     setError(undefined);
     setLoading(true);
-    const r = await post<{ next: string }>("/api/auth/verify", { mode: "login", ...ident, code });
+    const r = await post<{ next: string }>("/api/auth/verify", { mode: "login", ...ident, code, ...(admin && { admin: true }) });
     setLoading(false);
     if (r.error) return setError(r.error);
     const back = params.get("afterLoginRedirectTo");
-    router.push(back && (back.startsWith("/web/dashboard") || back.startsWith("/admin")) ? back : r.next);
+    router.push(back && /^\/(web\/dashboard|admin|reviewer|portal)(\/|$)/.test(back) && !back.startsWith("//") && (!admin || back.startsWith("/admin")) ? back : r.next);
     router.refresh();
   }
 
@@ -64,8 +65,8 @@ export default function LoginForm() {
 
   return (
     <div className="max-w-[400px]">
-      <h1 className="text-[30px] font-semibold leading-tight">Continue to Nitienaa Rao</h1>
-      <p className="mt-2 text-[14px] text-ink/80">Welcome back! Please enter your details.</p>
+      <h1 className="text-[30px] font-semibold leading-tight">{admin ? "Admin sign-in" : "Continue to Nitienaa Rao"}</h1>
+      <p className="mt-2 text-[14px] text-ink/80">{admin ? "For the platform administrator only. A one-time code is sent to your admin email." : "Welcome back! Please enter your details."}</p>
       <form className="mt-12 space-y-5" onSubmit={(e) => { e.preventDefault(); if (ready) requestOtp(); }}>
         {via === "phone" ? (
           <PhoneInput value={phone} onChange={setPhone} autoFocus />
@@ -74,15 +75,15 @@ export default function LoginForm() {
         )}
         <ErrorText>{error}</ErrorText>
         <OrangeButton disabled={!ready} loading={loading}>Request OTP</OrangeButton>
-        <p className="pt-3 text-center text-[13px] text-ink/80">
+        {!admin && <p className="pt-3 text-center text-[13px] text-ink/80">
           OR,{" "}
           <button type="button" className="font-medium text-[#141413]" onClick={() => { setVia(via === "phone" ? "email" : "phone"); setError(undefined); }}>
             Login using {via === "phone" ? "email" : "phone"}
           </button>
-        </p>
-        <p className="text-center text-[12px] text-ink/70">
-          Not registered yet? <Link href="/web/sign-up" className="font-medium text-[#141413]">Sign Up</Link>
-        </p>
+        </p>}
+        {!admin && <p className="text-center text-[12px] text-ink/70">
+          Not registered yet? <Link href="/signup" className="font-medium text-[#141413]">Sign Up</Link>
+        </p>}
       </form>
     </div>
   );

@@ -37,7 +37,7 @@ export async function api<T = unknown>(url: string, method = "GET", body?: unkno
   const data = await r.json().catch(() => ({}));
   if (r.status === 401) {
     await fetch("/api/auth/logout", { method: "POST" });
-    window.location.href = "/web/login";
+    window.location.href = "/login";
   }
   if (!r.ok) throw new Error(data.error || "Request failed");
   return data as T;
