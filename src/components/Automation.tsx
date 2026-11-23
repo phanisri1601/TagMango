@@ -26,7 +26,7 @@ export default function Automation() {
           <div key={ri} className="flex overflow-hidden">
             <div className={`flex shrink-0 gap-3 pr-3 ${ri ? "[animation:marquee_46s_linear_infinite_reverse]" : "animate-marquee"}`}>
               {[...row, ...row, ...row, ...row].map((n, i) => (
-                <span key={i} className="whitespace-nowrap rounded-full border border-black/10 bg-[#f6f2ef] px-5 py-2.5 text-[14px] text-ink/80">{n}</span>
+                <span key={i} className="whitespace-nowrap rounded-full border border-black/10 bg-[#f4f2ed] px-5 py-2.5 text-[14px] text-ink/80">{n}</span>
               ))}
             </div>
           </div>
@@ -35,7 +35,7 @@ export default function Automation() {
       <div className="mx-auto mt-14 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {POINTS.map(([t, d], i) => (
           <Reveal key={t} delay={i * 0.08}>
-            <div className="h-full rounded-[24px] border border-black/[0.06] bg-[#f6f2ef] p-6 transition duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.3)]">
+            <div className="h-full rounded-[24px] border border-black/[0.06] bg-[#f4f2ed] p-6 transition duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.3)]">
               <span className="bg-mango grid h-9 w-9 place-items-center rounded-full font-display text-[14px] font-bold text-white">{i + 1}</span>
               <h3 className="mt-4 font-display text-[17px] font-bold leading-tight text-ink">{t}</h3>
               <p className="mt-2 text-[14px] leading-relaxed text-ink/65">{d}</p>

@@ -40,7 +40,7 @@ function CallCard({ id, onClose, onChanged }: { id: string; onClose: () => void;
           <p className="text-[20px] font-semibold">{l.name}</p>
           <p className="text-[#4a4a59]">{l.email}{l.phone ? ` · +91 ${l.phone}` : ""}{l.whatsappOptIn ? " · WhatsApp opted in" : ""}</p>
           <p className="mt-1 text-[12.5px] text-[#6b6b7b]">Source: {l.source || "direct"} · Stage: {STAGE_LABEL[stageOf(l)]} · Added {fmtDateTime(l.createdAt)}</p>
-          {l.callAt && <p className="mt-1 text-[13px]"><b>Call:</b> {fmtDateTime(l.callAt)}{l.callLink ? <> · <a className="text-[#1677ff] underline" href={l.callLink} target="_blank" rel="noreferrer">join link</a></> : null}</p>}
+          {l.callAt && <p className="mt-1 text-[13px]"><b>Call:</b> {fmtDateTime(l.callAt)}{l.callLink ? <> · <a className="text-[#141413] underline" href={l.callLink} target="_blank" rel="noreferrer">join link</a></> : null}</p>}
           {d.masterclass && <p className="text-[13px]"><b>Masterclass:</b> {String(d.masterclass.title)}{l.seat ? ` · seat #${l.seat}` : ""} · attended: {m.mcAttended ? "yes" : "no"}</p>}
         </div>
 
@@ -64,7 +64,7 @@ function CallCard({ id, onClose, onChanged }: { id: string; onClose: () => void;
                 </div>
               ))}
             </div>
-            {pr.retest && <p className="mt-3 rounded bg-[#e6f4ff] px-3 py-2 text-[13px]">Retest ({fmtDateTime(pr.retest.at)}): {patterns.map((p) => `${p.name} ${pr.retest!.pct[p.id] ?? 0}%`).join(" · ")}</p>}
+            {pr.retest && <p className="mt-3 rounded bg-[#e9e6e0] px-3 py-2 text-[13px]">Retest ({fmtDateTime(pr.retest.at)}): {patterns.map((p) => `${p.name} ${pr.retest!.pct[p.id] ?? 0}%`).join(" · ")}</p>}
           </div>
         ) : <p className="rounded-lg border border-dashed border-[#d9d9d9] p-4 text-[13px] text-[#6b6b7b]">No Pattern Check yet.</p>}
 
@@ -118,7 +118,7 @@ export default function GrowthLeads() {
   }, [col.rows, q, group]);
 
   const cols: Col<Row>[] = [
-    { key: "name", label: "Name", render: (r) => <button className="text-left font-medium hover:text-[#f2962c]" onClick={() => setOpen(r.id)}>{String(r.name)}</button>, sort: (a, b) => String(a.name).localeCompare(String(b.name)) },
+    { key: "name", label: "Name", render: (r) => <button className="text-left font-medium hover:text-[#141413]" onClick={() => setOpen(r.id)}>{String(r.name)}</button>, sort: (a, b) => String(a.name).localeCompare(String(b.name)) },
     { key: "contact", label: "Contact", render: (r) => <div className="text-[13px]"><p>{String(r.email)}</p>{r.phone ? <p className="text-[#6b6b7b]">+91 {String(r.phone)}</p> : null}</div> },
     { key: "stage", label: "Stage", render: (r) => <Pill tone={stageOf(r as unknown as Lead) === "programme" ? "green" : "orange"}>{STAGE_LABEL[stageOf(r as unknown as Lead)]}</Pill> },
     { key: "pattern", label: "Pattern", render: (r) => { const p = (r as unknown as Lead).pattern; return p ? <span className="text-[13px]">{p.type}</span> : <span className="text-[#9b9bab]">—</span>; } },

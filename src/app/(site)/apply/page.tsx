@@ -15,9 +15,9 @@ export default async function Apply() {
       <div>
         <Label>Apply and enrol</Label>
         <H1 className="mt-4">Apply</H1>
-        <p className="mt-6 max-w-md text-[18px] font-light leading-relaxed text-[#3d3b36]">Tell us a little about where you are. Every application is read personally and answered within two working days.</p>
+        <p className="mt-6 max-w-md text-[18px] font-light leading-relaxed text-[#5c5a55]">Tell us a little about where you are. Every application is read personally and answered within two working days.</p>
       </div>
-      <div className="border border-[#1c1c1c] bg-[#faf9f6] p-6">
+      <div className="border border-[#141413] bg-[#ffffff] p-6">
         <SiteForm kind="apply" consent={g?.consentLine || DEFAULT_CONSENT} cta="Send application" done={<><p className="text-[22px]" style={{ fontFamily: "var(--font-vietnam)" }}>Application received.</p><p className="mt-2 text-[15px] font-light">We have emailed you a note and a link to pick a time for a short conversation.</p></>} />
       </div>
     </Section>

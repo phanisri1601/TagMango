@@ -18,7 +18,7 @@ export default async function Store({ params, searchParams }: { params: Promise<
   return (
     <div className="font-app min-h-screen bg-[#fafafa] text-[#0f0f0f]">
       <TrackView kind="store" refId={id} />
-      <header className="px-4 py-16 text-center text-white" style={{ background: `linear-gradient(135deg, ${c.color}, #1d0f08)` }}>
+      <header className="px-4 py-16 text-center text-white" style={{ background: `linear-gradient(135deg, ${c.color}, #171716)` }}>
         {c.avatar ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={c.avatar} alt="" className="animate-rise mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-white/30" />
@@ -41,7 +41,7 @@ export default async function Store({ params, searchParams }: { params: Promise<
               // eslint-disable-next-line @next/next/no-img-element
               <img src={String(m.cover)} alt="" className="aspect-video w-full object-cover" />
             ) : (
-              <div className="grid aspect-video place-items-center text-[28px] font-bold text-white" style={{ background: `linear-gradient(135deg, ${c.color}, #f6bb22)` }}>{String(m.title).slice(0, 1)}</div>
+              <div className="grid aspect-video place-items-center text-[28px] font-bold text-white" style={{ background: `linear-gradient(135deg, ${c.color}, #5c5a55)` }}>{String(m.title).slice(0, 1)}</div>
             )}
             <div className="p-5">
               <p className="text-[18px] font-semibold">{String(m.title)}</p>
@@ -52,7 +52,7 @@ export default async function Store({ params, searchParams }: { params: Promise<
           </Link>
         ))}
       </main>
-      <p className="pb-8 text-center text-[12px] text-[#9b9bab]">Powered by tag<span className="text-[#f2962c]">mango</span></p>
+      <p className="pb-8 text-center text-[12px] text-[#9b9bab]">Powered by tag<span className="text-[#141413]">mango</span></p>
     </div>
   );
 }

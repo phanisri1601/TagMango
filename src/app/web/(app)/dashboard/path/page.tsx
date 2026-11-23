@@ -27,7 +27,7 @@ function PathEditor({ path, onClose }: { path?: Row; onClose: () => void }) {
       <div className="space-y-2">
         {steps.map((s, i) => (
           <div key={s.id} className="flex flex-wrap items-center gap-2 rounded-md border border-[#ededed] p-2">
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#fdefdf] text-[12px] font-semibold text-[#c7740f]">{i + 1}</span>
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#e9e6e0] text-[12px] font-semibold text-[#5c5a55]">{i + 1}</span>
             <select className={`${inputCls} w-32`} value={s.kind} onChange={(e) => setSteps((x) => x.map((y) => (y.id === s.id ? { ...y, kind: e.target.value as Step["kind"], ref: "" } : y)))}>{["Course", "Workshop", "Task"].map((k) => <option key={k}>{k}</option>)}</select>
             {s.kind === "Task" ? (
               <input className={`${inputCls} flex-1`} placeholder="Describe the task" value={s.ref} onChange={(e) => setSteps((x) => x.map((y) => (y.id === s.id ? { ...y, ref: e.target.value } : y)))} />

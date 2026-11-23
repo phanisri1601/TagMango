@@ -12,7 +12,7 @@ export default async function Checkout({ params }: { params: Promise<{ id: strin
   const { mango: m, creator } = data;
   const price = m.type === "Free" ? 0 : Number(m.discountPrice || m.price || 0);
   return (
-    <div className="font-app min-h-screen bg-[#fff5ec] px-4 py-10 text-[#0f0f0f]">
+    <div className="font-app min-h-screen bg-[#f4f2ed] px-4 py-10 text-[#0f0f0f]">
       <TrackView kind="checkout" refId={m.id} />
       <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-[1.2fr_1fr]">
         <div className="animate-rise">
@@ -20,7 +20,7 @@ export default async function Checkout({ params }: { params: Promise<{ id: strin
             // eslint-disable-next-line @next/next/no-img-element
             <img src={String(m.cover)} alt="" className="aspect-video w-full rounded-2xl object-cover" />
           ) : (
-            <div className="grid aspect-video w-full place-items-center rounded-2xl bg-gradient-to-br from-[#ff6a00] to-[#f6bb22] text-[40px] font-bold text-white">{String(m.title).slice(0, 1)}</div>
+            <div className="grid aspect-video w-full place-items-center rounded-2xl bg-gradient-to-br from-[#141413] to-[#5c5a55] text-[40px] font-bold text-white">{String(m.title).slice(0, 1)}</div>
           )}
           <p className="mt-4 text-[13px] text-[#6b6b7b]">by <b className="text-[#0f0f0f]">{creator?.name}</b></p>
           <h1 className="mt-1 text-[28px] font-bold">{String(m.title)}</h1>

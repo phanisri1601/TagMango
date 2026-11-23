@@ -12,7 +12,7 @@ export default function SiteForm({ kind, consent, cta, done }: { kind: Kind; con
   const [ok, setOk] = useState<{ url?: string | null } | null>(null);
   const set = (k: keyof typeof f, v: string | boolean) => setF((x) => ({ ...x, [k]: v }));
 
-  if (ok) return <div className="border border-[#1c1c1c] bg-[#faf9f6] p-6"><div className="text-[16px] leading-relaxed">{done}</div>{ok.url ? <a href={ok.url} target="_blank" rel="noreferrer" className="mt-4 inline-block bg-[#1c1c1c] px-6 py-3 text-[14px] text-[#f3f1ec]">Open your free resource</a> : null}</div>;
+  if (ok) return <div className="border border-[#141413] bg-[#ffffff] p-6"><div className="text-[16px] leading-relaxed">{done}</div>{ok.url ? <a href={ok.url} target="_blank" rel="noreferrer" className="mt-4 inline-block bg-[#141413] px-6 py-3 text-[14px] text-[#f4f2ed]">Open your free resource</a> : null}</div>;
 
   return (
     <form
@@ -45,13 +45,13 @@ export default function SiteForm({ kind, consent, cta, done }: { kind: Kind; con
       )}
       {kind === "contact" && <textarea className={input} rows={5} placeholder="Your message" value={f.message} onChange={(e) => set("message", e.target.value)} required />}
       {kind !== "contact" && f.phone.length === 10 && (
-        <label className="flex gap-2 text-[13px] text-[#555]"><input type="checkbox" className="mt-0.5 accent-[#1c1c1c]" checked={f.opt} onChange={(e) => set("opt", e.target.checked)} />Yes, you may message me on WhatsApp about this. I can stop any time.</label>
+        <label className="flex gap-2 text-[13px] text-[#555]"><input type="checkbox" className="mt-0.5 accent-[#141413]" checked={f.opt} onChange={(e) => set("opt", e.target.checked)} />Yes, you may message me on WhatsApp about this. I can stop any time.</label>
       )}
       {kind !== "contact" && (
-        <label className="flex gap-2 text-[13px] text-[#555]"><input type="checkbox" className="mt-0.5 accent-[#1c1c1c]" checked={f.consent} onChange={(e) => set("consent", e.target.checked)} /><span>{consent} I have read the <a className="underline" href="/privacy" target="_blank">privacy policy</a>.</span></label>
+        <label className="flex gap-2 text-[13px] text-[#555]"><input type="checkbox" className="mt-0.5 accent-[#141413]" checked={f.consent} onChange={(e) => set("consent", e.target.checked)} /><span>{consent} I have read the <a className="underline" href="/privacy" target="_blank">privacy policy</a>.</span></label>
       )}
       {msg && <p className="text-[14px] text-[#b3261e]">{msg}</p>}
-      <button disabled={busy} className="bg-[#1c1c1c] px-7 py-3 text-[14px] tracking-[0.04em] text-[#f3f1ec] disabled:opacity-60">{busy ? "Sending…" : cta}</button>
+      <button disabled={busy} className="bg-[#141413] px-7 py-3 text-[14px] tracking-[0.04em] text-[#f4f2ed] disabled:opacity-60">{busy ? "Sending…" : cta}</button>
     </form>
   );
 }

@@ -36,7 +36,7 @@ function Inner() {
   };
 
   const cols: Col<Row>[] = [
-    { key: "name", label: "Broadcast", render: (r) => <div className="flex items-center gap-2"><span className="grid h-8 w-8 place-items-center rounded-md bg-[#fdefdf] text-[#f2962c]"><Icon name={r.kind === "Email" ? "messages" : r.kind === "WhatsApp" ? "send" : "bell"} className="h-4 w-4" /></span><div><p className="font-medium">{String(r.name)}</p><p className="text-[12px] text-[#6b6b7b]">{String(r.kind)} · {String(r.recipients ?? 0)} recipients</p></div></div> },
+    { key: "name", label: "Broadcast", render: (r) => <div className="flex items-center gap-2"><span className="grid h-8 w-8 place-items-center rounded-md bg-[#e9e6e0] text-[#141413]"><Icon name={r.kind === "Email" ? "messages" : r.kind === "WhatsApp" ? "send" : "bell"} className="h-4 w-4" /></span><div><p className="font-medium">{String(r.name)}</p><p className="text-[12px] text-[#6b6b7b]">{String(r.kind)} · {String(r.recipients ?? 0)} recipients</p></div></div> },
     { key: "mangoes", label: "Mangoes", render: (r) => ((r.mangoes as string[]) || []).join(", ") || "All customers" },
     { key: "time", label: "Time", render: (r) => fmtDateTime(String(r.sendAt || r.createdAt)), sort: (a, b) => String(a.sendAt || a.createdAt).localeCompare(String(b.sendAt || b.createdAt)) },
     { key: "status", label: "Status", render: (r) => (r.isTemplate ? <Pill tone="blue">Template</Pill> : new Date(String(r.sendAt || r.createdAt)).getTime() > Date.now() ? <Pill tone="orange">Scheduled</Pill> : <Pill>Sent</Pill>) },
@@ -49,7 +49,7 @@ function Inner() {
       <Panel className="p-5">
         <Title>Broadcasts Overview</Title>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-[10px] border border-[#ededed] p-4"><p className="text-[12px] text-[#6b6b7b]">Total Broadcasts</p><p className="text-[24px] font-semibold text-[#f2962c]">{published.length}</p></div>
+          <div className="rounded-[10px] border border-[#ededed] p-4"><p className="text-[12px] text-[#6b6b7b]">Total Broadcasts</p><p className="text-[24px] font-semibold text-[#141413]">{published.length}</p></div>
           {([["Notification", "Click rate (%)"], ["Email", "Open rate (%)"], ["WhatsApp", "Seen rate (%)"]] as [Kind, string][]).map(([k, r]) => (
             <div key={k} className="grid grid-cols-2 rounded-[10px] border border-[#ededed] p-4">
               <div><p className="text-[12px] text-[#6b6b7b]">{k === "Notification" ? "Notifications" : `${k}s`}</p><p className="text-[22px] font-semibold">{sum(k)}</p></div>
@@ -77,9 +77,9 @@ function Inner() {
             {([["Email", "Engage your audience with a customized email broadcast", "messages"], ["WhatsApp", "Reach your audience directly on their phones with a WhatsApp broadcast", "send"], ["Notification", "Reach your audience directly on their phones with a Notification broadcast", "bell"]] as [Kind, string, string][]).map(([k, d, i]) => {
               const locked = k === "WhatsApp" && isLocked("whatsapp-broadcast", me.plan);
               return (
-                <button key={k} disabled={locked} onClick={() => { setChoose(false); setCompose({ kind: k }); }} className="flex w-full items-start gap-3 rounded-[10px] border border-[#ededed] p-4 text-left transition hover:border-[#f2962c] disabled:cursor-not-allowed disabled:opacity-60">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-[#fdefdf] text-[#f2962c]"><Icon name={i} className="h-5 w-5" /></span>
-                  <span><b className="flex items-center gap-1.5 text-[15px]">{k} Broadcast{locked && <Icon name="lock" className="h-3.5 w-3.5 text-[#f2962c]" />}</b><span className="text-[13px] text-[#6b6b7b]">{locked ? "Upgrade to Pro to send WhatsApp broadcasts." : d}</span></span>
+                <button key={k} disabled={locked} onClick={() => { setChoose(false); setCompose({ kind: k }); }} className="flex w-full items-start gap-3 rounded-[10px] border border-[#ededed] p-4 text-left transition hover:border-[#141413] disabled:cursor-not-allowed disabled:opacity-60">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-[#e9e6e0] text-[#141413]"><Icon name={i} className="h-5 w-5" /></span>
+                  <span><b className="flex items-center gap-1.5 text-[15px]">{k} Broadcast{locked && <Icon name="lock" className="h-3.5 w-3.5 text-[#141413]" />}</b><span className="text-[13px] text-[#6b6b7b]">{locked ? "Upgrade to Pro to send WhatsApp broadcasts." : d}</span></span>
                 </button>
               );
             })}
@@ -113,7 +113,7 @@ function Inner() {
             if (d.saveTemplate) await col.create({ ...base, isTemplate: true });
             toast(d.schedule ? "Broadcast scheduled" : `Broadcast sent to ${n} customer${n === 1 ? "" : "s"}`);
           }}
-          intro={<p className="rounded-md bg-[#e6f4ff] px-3 py-2 text-[12px] text-[#0f0f0f]">No email/WhatsApp provider is connected in this clone, so broadcasts are recorded with their recipient count but not delivered.</p>}
+          intro={<p className="rounded-md bg-[#e9e6e0] px-3 py-2 text-[12px] text-[#0f0f0f]">No email/WhatsApp provider is connected in this clone, so broadcasts are recorded with their recipient count but not delivered.</p>}
         />
       )}
       {view && (

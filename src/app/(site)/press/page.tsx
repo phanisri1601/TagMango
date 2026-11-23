@@ -14,8 +14,8 @@ export default async function Press() {
       <Label>Footer and utility</Label>
       <H1 className="mt-4">Press and media</H1>
       <div className="mt-10 grid gap-5 sm:grid-cols-2">
-        <Card strong><h2 className="text-[26px]" style={serif}>Short bio</h2><p className="mt-3 text-[16px] font-light leading-relaxed text-[#3d3b36]">{coach} is a coach who helps people see the patterns that run their choices, through {g?.programme || "THE HUMAN OS™"}, a six-week programme.</p><p className="mt-3 text-[13px] text-[#8a867d]">Draft. Replace with your approved bio.</p></Card>
-        <Card strong><h2 className="text-[26px]" style={serif}>For interviews and speaking</h2><p className="mt-3 text-[16px] font-light leading-relaxed text-[#3d3b36]">Podcasts, articles, panels and talks are welcome. Use the contact page with a short note about the format and audience.</p><div className="mt-5"><Button href="/contact">Contact</Button></div></Card>
+        <Card strong><h2 className="text-[26px]" style={serif}>Short bio</h2><p className="mt-3 text-[16px] font-light leading-relaxed text-[#5c5a55]">{coach} is a coach who helps people see the patterns that run their choices, through {g?.programme || "THE HUMAN OS™"}, a six-week programme.</p><p className="mt-3 text-[13px] text-[#5c5a55]">Draft. Replace with your approved bio.</p></Card>
+        <Card strong><h2 className="text-[26px]" style={serif}>For interviews and speaking</h2><p className="mt-3 text-[16px] font-light leading-relaxed text-[#5c5a55]">Podcasts, articles, panels and talks are welcome. Use the contact page with a short note about the format and audience.</p><div className="mt-5"><Button href="/contact">Contact</Button></div></Card>
       </div>
     </Section>
       <Section><Head label="Topics" title="What the coach can talk about" /><Checks items={["Why the same situation keeps repeating", "Patterns at work: saying yes, staying silent, chasing approval", "Why good advice does not stick", "Coaching versus therapy, and where the line is", "Building a pause between trigger and response", "Designing a short, practical coaching programme"]} /></Section>

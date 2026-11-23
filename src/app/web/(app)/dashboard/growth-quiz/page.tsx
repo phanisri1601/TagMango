@@ -46,7 +46,7 @@ export default function GrowthQuiz() {
         <div className="mt-4 flex flex-wrap items-center gap-2 rounded-md bg-[#f7f7f8] px-3 py-2 text-[13px]">
           <span className="font-medium">Public link:</span> <code className="break-all">{url}</code>
           <Btn variant="outline" className="!h-7 !px-2 text-[12px]" onClick={() => copy(url)}>Copy</Btn>
-          <a className="text-[#1677ff] underline" href={url} target="_blank" rel="noreferrer">Open</a>
+          <a className="text-[#141413] underline" href={url} target="_blank" rel="noreferrer">Open</a>
         </div>
         <div className="mt-3"><Note tone="yellow">The patterns, bullets and scores below are <b>sample content</b>. Replace them with your own four patterns before sharing the link.</Note></div>
       </Panel>

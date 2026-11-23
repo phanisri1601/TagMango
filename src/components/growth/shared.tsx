@@ -29,7 +29,7 @@ export function useGrowthDoc() {
 
 export const origin = () => (typeof window === "undefined" ? "" : window.location.origin);
 
-export function Bar({ pct, tone = "#f2962c" }: { pct: number; tone?: string }) {
+export function Bar({ pct, tone = "#141413" }: { pct: number; tone?: string }) {
   return (
     <div className="h-2 w-full overflow-hidden rounded-full bg-[#f0f0f0]">
       <div className="h-full rounded-full transition-all" style={{ width: `${Math.max(0, Math.min(100, pct))}%`, background: tone }} />
@@ -52,4 +52,4 @@ export function Section({ title, sub, children, right }: { title: string; sub?: 
   );
 }
 
-export const PATTERN_COLORS = ["#f2962c", "#1677ff", "#2e9e4f", "#a855f7", "#e11d48", "#0891b2", "#65a30d", "#db2777"];
+export const PATTERN_COLORS = ["#141413", "#141413", "#2e9e4f", "#141413", "#e11d48", "#141413", "#65a30d", "#141413"];

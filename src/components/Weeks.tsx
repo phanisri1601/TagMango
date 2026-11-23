@@ -14,7 +14,7 @@ const WEEKS = [
 /** THE HUMAN OS™ programme: six weeks, each card rises in turn. */
 export default function Weeks() {
   return (
-    <section id="programme" className="relative overflow-hidden bg-[#111111] px-4 py-20 text-white md:py-28">
+    <section id="programme" className="on-dark relative overflow-hidden bg-[#141413] px-4 py-20 text-white md:py-28">
       <div className="pointer-events-none absolute -right-40 bottom-0 h-[420px] w-[420px] rounded-full opacity-25 blur-[120px]" style={{ background: "var(--ac2)" }} />
       <div className="relative mx-auto max-w-6xl">
         <p className="text-center text-[12px] font-semibold uppercase tracking-[0.22em] text-white/50">THE HUMAN OS™</p>

@@ -41,7 +41,7 @@ export default function Creators() {
       render: (u) => (
         <button className="flex items-center gap-3 text-left" onClick={() => setOpen(u.id)}>
           <Initial name={u.name} />
-          <span className="min-w-0"><span className="block truncate font-medium hover:text-[#f2962c]">{u.name}{u.isAdmin && <span className="ml-2 align-middle"><Pill tone="blue">Admin</Pill></span>}</span><span className="block truncate text-[12px] text-[#6b6b7b]">{u.email}</span></span>
+          <span className="min-w-0"><span className="block truncate font-medium hover:text-[#141413]">{u.name}{u.isAdmin && <span className="ml-2 align-middle"><Pill tone="blue">Admin</Pill></span>}</span><span className="block truncate text-[12px] text-[#6b6b7b]">{u.email}</span></span>
         </button>
       ),
     },

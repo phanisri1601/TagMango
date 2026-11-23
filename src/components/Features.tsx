@@ -19,7 +19,7 @@ const STAGGER = [0, 0.08, 0, 0.08, 0.16, 0, 0.08];
 
 export default function Features() {
   return (
-    <section className="relative z-10 rounded-b-[32px] bg-[linear-gradient(180deg,#ffffff_0%,#f6f2ef_100%)] px-4 py-20 md:px-10 md:py-28">
+    <section className="relative z-10 rounded-b-[32px] bg-[linear-gradient(180deg,#ffffff_0%,#f4f2ed_100%)] px-4 py-20 md:px-10 md:py-28">
       <div className="mx-auto max-w-[1280px]">
         <div className="text-center">
           <SplitHeading
@@ -36,7 +36,7 @@ export default function Features() {
             <li key={c.t} className={c.span}>
               <Reveal delay={STAGGER[k]} className="h-full">
                 <article className="group flex h-full flex-col gap-2 overflow-hidden rounded-[24px] bg-white p-2 lg:rounded-[32px]">
-                  <div className="relative aspect-[612/364] w-full overflow-hidden rounded-[6px] bg-[#f6f2ef] md:rounded-[24px]">
+                  <div className="relative aspect-[612/364] w-full overflow-hidden rounded-[6px] bg-[#f4f2ed] md:rounded-[24px]">
                     <img src={`${B}/${c.img}.webp`} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 [transition-timing-function:var(--ease-out-expo)] group-hover:scale-[1.03]" />
                   </div>
                   <div className="px-3 pb-4 pt-3 md:px-4">

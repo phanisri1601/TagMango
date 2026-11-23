@@ -16,7 +16,7 @@ function Banners() {
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {rows.map((b) => (
             <div key={b.id} className="overflow-hidden rounded-[10px] border border-[#ededed]">
-              <div className="relative grid aspect-[3/1] place-items-center bg-gradient-to-r from-[#3a1606] to-[#f2962c] text-white">
+              <div className="relative grid aspect-[3/1] place-items-center bg-gradient-to-r from-[#171716] to-[#141413] text-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 {b.image ? <img src={String(b.image)} alt="" className="absolute inset-0 h-full w-full object-cover" /> : null}
                 <p className="relative px-4 text-center text-[18px] font-bold drop-shadow">{String(b.title)}</p>

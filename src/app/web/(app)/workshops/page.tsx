@@ -17,7 +17,7 @@ export default function WorkshopsTab() {
               const live = new Date(String(w.startsAt)).getTime() <= Date.now();
               return (
                 <div key={w.id} className="flex flex-wrap items-center gap-4 rounded-[10px] border border-[#ededed] p-4">
-                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-[#fdefdf] text-center text-[#c7740f]">
+                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-[#e9e6e0] text-center text-[#5c5a55]">
                     <span className="text-[11px] font-semibold uppercase">{new Date(String(w.startsAt)).toLocaleDateString("en-IN", { month: "short" })}</span>
                     <span className="-mt-1 text-[20px] font-bold">{new Date(String(w.startsAt)).getDate()}</span>
                   </div>

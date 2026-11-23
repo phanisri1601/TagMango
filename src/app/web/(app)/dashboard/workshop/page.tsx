@@ -84,7 +84,7 @@ function Inner() {
         {rows.length === 0 && !col.loading ? (
           <EmptyBox
             title={tab === "Upcoming" ? "You do not have any upcoming workshops yet..." : "No completed workshops yet"}
-            text={tab === "Upcoming" ? <>To schedule single or recurring workshops, simply click <button className="text-[#1677ff]" onClick={() => setEdit("new")}>schedule a workshop</button></> : "Workshops move here after they end."}
+            text={tab === "Upcoming" ? <>To schedule single or recurring workshops, simply click <button className="text-[#141413]" onClick={() => setEdit("new")}>schedule a workshop</button></> : "Workshops move here after they end."}
           />
         ) : (
           <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -92,7 +92,7 @@ function Inner() {
               const live = new Date(String(w.startsAt)).getTime() <= Date.now() && endOf(w) >= Date.now();
               return (
                 <div key={w.id} className="animate-rise overflow-hidden rounded-[10px] border border-[#ededed] bg-white" style={{ ["--delay" as string]: `${i * 0.04}s` }}>
-                  <div className="relative aspect-[16/7] bg-gradient-to-br from-[#2b1149] to-[#f2962c]">
+                  <div className="relative aspect-[16/7] bg-gradient-to-br from-[#171716] to-[#141413]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     {w.thumbnail ? <img src={String(w.thumbnail)} alt="" className="h-full w-full object-cover" /> : null}
                     <span className="absolute left-3 top-3">{live ? <Pill tone="red">Live now</Pill> : tab === "Completed" ? <Pill tone="grey">Completed</Pill> : <Pill tone="blue">Upcoming</Pill>}</span>

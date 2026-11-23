@@ -2,11 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 
 export const inputCls =
-  "w-full rounded-md border border-[#d9d9d9] bg-white px-3.5 py-3 text-[14px] outline-none transition placeholder:text-[#9a9a9a] focus:border-[#fb8a1b] focus:ring-2 focus:ring-[#fb8a1b]/15";
+  "w-full rounded-md border border-[#d9d9d9] bg-white px-3.5 py-3 text-[14px] outline-none transition placeholder:text-[#9a9a9a] focus:border-[#141413] focus:ring-2 focus:ring-[#141413]/15";
 
 export function PhoneInput({ value, onChange, autoFocus }: { value: string; onChange: (v: string) => void; autoFocus?: boolean }) {
   return (
-    <div className="flex overflow-hidden rounded-md border border-[#d9d9d9] transition focus-within:border-[#fb8a1b] focus-within:ring-2 focus-within:ring-[#fb8a1b]/15">
+    <div className="flex overflow-hidden rounded-md border border-[#d9d9d9] transition focus-within:border-[#141413] focus-within:ring-2 focus-within:ring-[#141413]/15">
       <div className="flex items-center gap-1.5 border-r border-[#d9d9d9] px-3 text-[14px]">
         <span aria-hidden>🇮🇳</span>
         <span>+91</span>
@@ -31,7 +31,7 @@ export function OrangeButton({ children, disabled, loading, ...rest }: React.But
     <button
       {...rest}
       disabled={disabled || loading}
-      className={`flex w-full items-center justify-center gap-2 rounded-md bg-[#fb8a1b] py-3 text-[14px] font-medium text-white transition hover:bg-[#f07c0c] disabled:cursor-not-allowed disabled:bg-[#f6b874] ${rest.className ?? ""}`}
+      className={`flex w-full items-center justify-center gap-2 rounded-md bg-[#141413] py-3 text-[14px] font-medium text-white transition hover:bg-[#141413] disabled:cursor-not-allowed disabled:bg-[#5c5a55] ${rest.className ?? ""}`}
     >
       {loading && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />}
       {children}
@@ -104,7 +104,7 @@ export function OtpBoxes({ value, onChange, onComplete }: { value: string; onCha
           onKeyDown={(e) => {
             if (e.key === "Backspace" && !digits.current[i] && i > 0) refs.current[i - 1]?.focus();
           }}
-          className="h-12 w-full rounded-md border border-[#d9d9d9] text-center text-lg font-semibold outline-none transition focus:border-[#fb8a1b] focus:ring-2 focus:ring-[#fb8a1b]/15"
+          className="h-12 w-full rounded-md border border-[#d9d9d9] text-center text-lg font-semibold outline-none transition focus:border-[#141413] focus:ring-2 focus:ring-[#141413]/15"
         />
       ))}
     </div>
@@ -124,7 +124,7 @@ export function ResendTimer({ onResend }: { onResend: () => void }) {
       {left > 0 ? (
         <span>Resend in 00:{String(left).padStart(2, "0")}</span>
       ) : (
-        <button type="button" className="font-medium text-[#1a73e8]" onClick={() => { onResend(); setLeft(30); }}>
+        <button type="button" className="font-medium text-[#141413]" onClick={() => { onResend(); setLeft(30); }}>
           Resend OTP
         </button>
       )}

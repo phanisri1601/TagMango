@@ -73,7 +73,7 @@ export default function EmailAutomation() {
                 const cur = templates[t] || {};
                 return (
                   <tr key={t} className="border-b border-[#f0f0f0] last:border-0">
-                    <td className="px-4 py-3">{t}{cur.subject && <span className="ml-2 rounded bg-[#e6f4ff] px-1.5 text-[11px] text-[#1677ff]">Customised</span>}</td>
+                    <td className="px-4 py-3">{t}{cur.subject && <span className="ml-2 rounded bg-[#e9e6e0] px-1.5 text-[11px] text-[#141413]">Customised</span>}</td>
                     <td className="px-4 py-3"><Toggle on={Boolean(cur.enabled)} onChange={(v) => save({ templates: { ...templates, [t]: { ...cur, enabled: v } } }, v ? "Template enabled" : "Template disabled")} label={`Enable ${t}`} /></td>
                     <td className="px-4 py-3 text-right"><Btn variant="soft" className="h-8 px-3 text-[13px]" onClick={() => { setEdit(t); setDraft({ subject: cur.subject || t.replace(/^(Notification|Reminder|Confirmation|Promotional|Cancellation|Post Workshop) Email ?/, "") || t, body: cur.body || `Hi {name},\n\n…\n\n— ${fromName}` }); }}>Edit</Btn></td>
                   </tr>

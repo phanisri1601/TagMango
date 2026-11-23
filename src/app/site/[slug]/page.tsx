@@ -12,7 +12,7 @@ export default async function Site({ params }: { params: Promise<{ slug: string 
   return (
     <>
       <TrackView kind="site" refId={site.id} />
-      <SiteRender blocks={(site.blocks as Block[]) || []} color={String(site.color || "#f2962c")} />
+      <SiteRender blocks={(site.blocks as Block[]) || []} color={String(site.color || "#141413")} />
     </>
   );
 }

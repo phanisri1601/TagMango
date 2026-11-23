@@ -28,10 +28,10 @@ function Inner() {
           <p className="mt-1 text-[13px] text-[#6b6b7b]">Your storefront link is given below.</p>
           <p className="mt-5 text-[13px] font-medium">Share storefront link</p>
           <div className="mt-2 flex w-full max-w-xl items-center gap-2">
-            <code className="flex-1 truncate rounded-md border border-dashed border-[#9fb7e0] bg-[#f5f8ff] px-3 py-2 text-left text-[13px] text-[#1677ff]">{url}</code>
-            <Btn variant="soft" className="text-[#1677ff]" onClick={() => copy(url)}>COPY LINK</Btn>
+            <code className="flex-1 truncate rounded-md border border-dashed border-[#e9e6e0] bg-[#f4f2ed] px-3 py-2 text-left text-[13px] text-[#141413]">{url}</code>
+            <Btn variant="soft" className="text-[#141413]" onClick={() => copy(url)}>COPY LINK</Btn>
           </div>
-          <a href={`/web/lite/store/${me.id}`} target="_blank" rel="noreferrer" className="mt-4 text-[13px] text-[#1677ff] hover:underline">Open storefront ↗</a>
+          <a href={`/web/lite/store/${me.id}`} target="_blank" rel="noreferrer" className="mt-4 text-[13px] text-[#141413] hover:underline">Open storefront ↗</a>
         </div>
         <div className="mt-6">
           <p className="mb-2 text-[15px] font-semibold">Mangoes on your storefront</p>
@@ -59,7 +59,7 @@ function Inner() {
             { key: "instagram", label: "Instagram link", type: "url" },
             { key: "youtube", label: "YouTube link", type: "url" },
           ]}
-          initial={{ active: true, name: me.name, color: "#f2962c", ...s }}
+          initial={{ active: true, name: me.name, color: "#141413", ...s }}
           submitLabel="Save"
           onClose={() => setEdit(false)}
           onSubmit={async (d) => { const r = await patchMe({ settings: { store: { ...s, ...d } } }); setMe(r.user); toast("Storefront updated"); }}

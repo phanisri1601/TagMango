@@ -43,7 +43,7 @@ export default function GrowthLinks() {
         <div className="mt-3"><DataTable cols={cols} rows={links.rows} loading={links.loading} empty={<p className="py-8 text-center text-[#6b6b7b]">No tracked links yet. Create one per platform to see where leads come from.</p>} /></div>
       </Panel>
 
-      <Section title="Link-in-bio page" sub={<>Public page: <a className="text-[#1677ff] underline" href={`/l/${g!.slug}`} target="_blank" rel="noreferrer">{base}/l/{g!.slug}</a>. Every button click is counted.</>}>
+      <Section title="Link-in-bio page" sub={<>Public page: <a className="text-[#141413] underline" href={`/l/${g!.slug}`} target="_blank" rel="noreferrer">{base}/l/{g!.slug}</a>. Every button click is counted.</>}>
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Headline"><input className={inputCls} value={bio.headline} onChange={(e) => setBio({ ...bio, headline: e.target.value })} /></Field>
           <Field label="One line under it"><input className={inputCls} value={bio.sub} onChange={(e) => setBio({ ...bio, sub: e.target.value })} /></Field>

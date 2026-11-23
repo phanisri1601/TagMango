@@ -2,7 +2,7 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import { Label, Section, H2, wrap } from "./ui";
 
-const card = "h-full rounded-[24px] border border-black/[0.06] bg-[#f6f2ef] p-6 transition duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.3)]";
+const card = "h-full rounded-[24px] border border-black/[0.06] bg-[#f4f2ed] p-6 transition duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.3)]";
 
 /** Section heading: small label, large title, optional lead. */
 export function Head({ label, title, lead }: { label?: string; title: string; lead?: string }) {
@@ -10,7 +10,7 @@ export function Head({ label, title, lead }: { label?: string; title: string; le
     <Reveal className="max-w-2xl">
       {label ? <Label>{label}</Label> : null}
       <H2 className="mt-3">{title}</H2>
-      {lead ? <p className="mt-4 text-[17px] font-light leading-relaxed text-[#4a4843]">{lead}</p> : null}
+      {lead ? <p className="mt-4 text-[17px] font-light leading-relaxed text-[#5c5a55]">{lead}</p> : null}
     </Reveal>
   );
 }
@@ -83,7 +83,7 @@ export function CtaBand({ title, text, primary, secondary }: { title: string; te
   return (
     <section className={`${wrap} pb-20`}>
       <Reveal>
-        <div className="relative overflow-hidden rounded-[32px] bg-[#141414] px-6 py-14 text-center text-white sm:px-12">
+        <div className="on-dark relative overflow-hidden rounded-[32px] bg-[#141413] px-6 py-14 text-center text-white sm:px-12">
           <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-40 blur-[90px]" style={{ background: "var(--ac1)" }} />
           <h2 className="relative font-display text-[28px] font-bold leading-tight tracking-tight sm:text-[38px]">{title}</h2>
           {text ? <p className="relative mx-auto mt-3 max-w-xl text-white/65">{text}</p> : null}

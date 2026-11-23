@@ -48,7 +48,7 @@ export default function Transactions() {
     { key: "mango", label: "Mango" },
     { key: "qty", label: "Quantity", render: (r) => String(r.quantity || 1) },
     { key: "cycle", label: "Payment Cycle", render: (r) => String(r.cycle || "One-time") },
-    { key: "coupon", label: "Coupon", render: (r) => (r.coupon ? <code className="rounded bg-[#fdefdf] px-1.5 text-[12px] text-[#c7740f]">{String(r.coupon)}</code> : "-") },
+    { key: "coupon", label: "Coupon", render: (r) => (r.coupon ? <code className="rounded bg-[#e9e6e0] px-1.5 text-[12px] text-[#5c5a55]">{String(r.coupon)}</code> : "-") },
     { key: "status", label: "Status", render: (r) => <Pill tone={r.status === "Success" ? "green" : r.status === "Refunded" ? "red" : "orange"}>{String(r.status)}</Pill> },
     { key: "act", label: "Refund", render: (r) => (r.status === "Success" && Number(r.amount) > 0 ? <Btn variant="outline" onClick={() => { setRefunding(r); setRefundMsg(""); }}>Refund</Btn> : <span className="text-[#9b9bab]">{r.status === "Refunded" ? "Refunded" : "-"}</span>) },
   ];

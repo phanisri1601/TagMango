@@ -48,7 +48,7 @@ export default function Cloud() {
     { key: "s", label: "File Size", render: (r) => size(Number(r.size)), sort: (a, b) => Number(a.size) - Number(b.size) },
     { key: "c", label: "Created On", render: (r) => fmtDateTime(r.createdAt), sort: (a, b) => a.createdAt.localeCompare(b.createdAt) },
     { key: "r", label: "Last Restored On", render: () => "-" },
-    { key: "a", label: "Actions", render: (r) => <div className="flex gap-1.5"><RowAction icon="eye" title="Open" href={`/api/cloud/${r.id}`} /><RowAction icon="link" title="Copy link" onClick={() => { navigator.clipboard?.writeText(`${location.origin}/api/cloud/${r.id}`); toast("Link copied (works while you're signed in)"); }} /><RowAction icon="trash" title="Delete" danger onClick={() => setConfirm([r.id])} /></div> },
+    { key: "a", label: "Actions", render: (r) => <div className="flex gap-1.5"><RowAction icon="eye" title="Open" href={`/api/cloud/${r.id}`} /><RowAction icon="link" title="Copy link" onClick={() => { navigator.clipboard?.writeText(`${location.origin}/api/cloud/${r.id}`); toast("Link copied"); }} /><RowAction icon="trash" title="Delete" danger onClick={() => setConfirm([r.id])} /></div> },
   ];
 
   return (
@@ -56,8 +56,8 @@ export default function Cloud() {
       <Title right={<><input ref={input} type="file" multiple hidden onChange={(e) => upload(e.target.files)} /><Btn variant="black" icon="upload" disabled={busy > 0} onClick={() => input.current?.click()}>{busy ? `Uploading ${busy}…` : "Upload"}</Btn></>}>Cloud</Title>
       <div className="mt-4 w-fit min-w-[220px] rounded-[10px] border border-[#ededed] p-4">
         <p className="text-[12px] text-[#6b6b7b]">Total Used</p>
-        <p className="text-[22px] font-semibold text-[#f2962c]">{size(used).replace(/ (\w+)$/, "$1")}<span className="text-[13px] font-normal text-[#6b6b7b]">of 20GB</span></p>
-        <div className="mt-2 h-1.5 overflow-hidden rounded bg-[#f2f2f2]"><div className="h-full bg-[#f2962c]" style={{ width: `${Math.min(100, (used / QUOTA) * 100)}%` }} /></div>
+        <p className="text-[22px] font-semibold text-[#141413]">{size(used).replace(/ (\w+)$/, "$1")}<span className="text-[13px] font-normal text-[#6b6b7b]">of 20GB</span></p>
+        <div className="mt-2 h-1.5 overflow-hidden rounded bg-[#f2f2f2]"><div className="h-full bg-[#141413]" style={{ width: `${Math.min(100, (used / QUOTA) * 100)}%` }} /></div>
       </div>
       <div className="mt-4"><Note tone="yellow"><b>Important:</b> Files uploaded here can only be used on this platform. Download is available exclusively on Ultimate Plan, so please keep a backup for other purposes.</Note></div>
       <div className="mt-4 flex flex-wrap items-center gap-2">

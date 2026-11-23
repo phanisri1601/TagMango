@@ -48,7 +48,7 @@ function Inner() {
 
   const cols: Col<Row>[] = [
     { key: "mango", label: "Mango" },
-    { key: "link", label: "Link", render: (r) => <button className="max-w-[260px] truncate text-[#1677ff] hover:underline" onClick={() => copy(`${location.origin}/p/${r.slug}`)}>/p/{String(r.slug)}</button> },
+    { key: "link", label: "Link", render: (r) => <button className="max-w-[260px] truncate text-[#141413] hover:underline" onClick={() => copy(`${location.origin}/p/${r.slug}`)}>/p/{String(r.slug)}</button> },
     { key: "title", label: "Page Title", render: (r) => <span className="font-medium">{String(r.title)}</span> },
     { key: "status", label: "Status", render: (r) => <Toggle on={Boolean(r.published)} onChange={async (v) => { await col.update(r.id, { published: v }); toast(v ? "Page published" : "Page unpublished"); }} label="Published" /> },
     { key: "a", label: "Actions", render: (r) => <div className="flex gap-1.5"><RowAction icon="eye" title="Open page" href={`/p/${r.slug}`} /><RowAction icon="edit" title="Edit" onClick={() => setEdit(r)} /><RowAction icon="trash" title="Delete" danger onClick={() => setDel(r)} /></div> },

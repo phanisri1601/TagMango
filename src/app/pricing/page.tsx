@@ -9,11 +9,11 @@ export const metadata: Metadata = { title: "Pricing Plans for Creators & Communi
 
 export default function Pricing() {
   return (
-    <>
+    <div className="theme-brand">
       <Navbar />
       <main>
         <section className="relative overflow-hidden bg-ink px-4 pb-24 pt-36 text-center text-white">
-          <div className="pointer-events-none absolute -bottom-40 left-1/2 h-72 w-[900px] -translate-x-1/2 rounded-[50%] bg-[#ff6a00]/30 blur-[90px]" />
+          <div className="pointer-events-none absolute -bottom-40 left-1/2 h-72 w-[900px] -translate-x-1/2 rounded-[50%] bg-[#141413]/30 blur-[90px]" />
           <SplitHeading
             as="h1"
             auto
@@ -30,6 +30,6 @@ export default function Pricing() {
         <Faq />
         <Footer />
       </main>
-    </>
+    </div>
   );
 }

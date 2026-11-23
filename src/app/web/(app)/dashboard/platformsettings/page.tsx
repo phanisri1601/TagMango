@@ -17,7 +17,7 @@ function Domain() {
     return (
       <div className="flex flex-col items-center py-10 text-center">
         <p className="text-[20px] font-semibold">Feature disabled!</p>
-        <p className="mt-2 max-w-md text-[13px] text-[#4a4a59]">The domain linking feature is only available for White Label creators. Upgrade to White Label with the <Link href={dash("plans")} className="text-[#1677ff]">Freedom Setup</Link>.</p>
+        <p className="mt-2 max-w-md text-[13px] text-[#4a4a59]">The domain linking feature is only available for White Label creators. Upgrade to White Label with the <Link href={dash("plans")} className="text-[#141413]">Freedom Setup</Link>.</p>
       </div>
     );
   }
@@ -35,7 +35,7 @@ function Domain() {
 function Branding() {
   const { me, setMe } = useMe();
   const b = (me.settings?.branding || {}) as Record<string, string>;
-  const [d, setD] = useState({ name: me.name, color: "#f2962c", logo: "", favicon: "", ...b });
+  const [d, setD] = useState({ name: me.name, color: "#141413", logo: "", favicon: "", ...b });
   return (
     <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_320px]">
       <div className="space-y-4">
@@ -99,8 +99,8 @@ function Help() {
   return (
     <div className="mt-4 grid gap-4 md:grid-cols-3">
       {[["Help Centre", "Guides for every feature", "info"], ["Chat with us", "Mon–Sat, 10am–7pm", "messages"], ["Book a call", "30 minutes with an expert", "calendar"]].map(([t, d, i]) => (
-        <Link key={t} href={t === "Book a call" ? "/demo" : "#"} className="rounded-[10px] border border-[#ededed] p-4 transition hover:border-[#f2962c]">
-          <span className="grid h-10 w-10 place-items-center rounded-lg bg-[#fdefdf] text-[#f2962c]"><Icon name={i} className="h-5 w-5" /></span>
+        <Link key={t} href={t === "Book a call" ? "/demo" : "#"} className="rounded-[10px] border border-[#ededed] p-4 transition hover:border-[#141413]">
+          <span className="grid h-10 w-10 place-items-center rounded-lg bg-[#e9e6e0] text-[#141413]"><Icon name={i} className="h-5 w-5" /></span>
           <p className="mt-3 font-semibold">{t}</p><p className="text-[13px] text-[#6b6b7b]">{d}</p>
         </Link>
       ))}

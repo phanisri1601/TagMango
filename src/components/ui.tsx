@@ -27,7 +27,7 @@ export function MangoIcon({ className = "h-10 w-10" }: { className?: string }) {
         d="M14 40c0-14 11-24 24-24 8 0 12 5 12 12 0 15-13 26-26 26-6 0-10-5-10-14z"
         fill="url(#mg)"
       />
-      <path d="M40 17c2-6 7-9 13-9-1 6-5 10-11 11z" fill="#e8590c" />
+      <path d="M40 17c2-6 7-9 13-9-1 6-5 10-11 11z" fill="#141413" />
       <path d="M22 44c3-8 9-14 18-17" stroke="#fff" strokeOpacity=".35" strokeWidth="2.5" fill="none" strokeLinecap="round" />
     </svg>
   );

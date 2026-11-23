@@ -11,7 +11,7 @@ function Builder({ site, onBack }: { site: Row; onBack: () => void }) {
   const col = useCollection("sites");
   const [blocks, setBlocks] = useState<Block[]>((site.blocks as Block[]) || []);
   const [name, setName] = useState(String(site.name));
-  const [color, setColor] = useState(String(site.color || "#f2962c"));
+  const [color, setColor] = useState(String(site.color || "#141413"));
   const [sel, setSel] = useState<string | null>(blocks[0]?.id || null);
   const cur = blocks.find((b) => b.id === sel);
   const upd = (patch: Partial<Block>) => setBlocks((bs) => bs.map((b) => (b.id === sel ? { ...b, ...patch } : b)));
@@ -29,7 +29,7 @@ function Builder({ site, onBack }: { site: Row; onBack: () => void }) {
         <Panel className="h-fit p-3">
           <p className="px-1 pb-2 text-[12px] font-semibold uppercase text-[#6b6b7b]">Sections</p>
           {blocks.map((b, i) => (
-            <div key={b.id} className={`mb-1 flex items-center gap-1 rounded-md px-2 py-2 text-[13px] ${sel === b.id ? "bg-[#fdefdf] text-[#c7740f]" : "hover:bg-[#f7f7f7]"}`}>
+            <div key={b.id} className={`mb-1 flex items-center gap-1 rounded-md px-2 py-2 text-[13px] ${sel === b.id ? "bg-[#e9e6e0] text-[#5c5a55]" : "hover:bg-[#f7f7f7]"}`}>
               <button className="flex-1 text-left capitalize" onClick={() => setSel(b.id)}>{b.kind}{b.title ? ` — ${b.title}` : ""}</button>
               <button aria-label="Move up" onClick={() => move(i, -1)}>↑</button>
               <button aria-label="Move down" onClick={() => move(i, 1)}>↓</button>
@@ -37,7 +37,7 @@ function Builder({ site, onBack }: { site: Row; onBack: () => void }) {
             </div>
           ))}
           <div className="mt-2 grid grid-cols-2 gap-1.5">
-            {KINDS.map((k) => <button key={k} onClick={() => { const nb: Block = { id: crypto.randomUUID(), kind: k, title: k === "hero" ? "Your big promise" : k[0].toUpperCase() + k.slice(1), body: "", button: k === "hero" || k === "cta" ? "Get started" : undefined }; setBlocks((bs) => [...bs, nb]); setSel(nb.id); }} className="rounded-md border border-dashed border-[#d9d9d9] py-1.5 text-[12px] capitalize hover:border-[#f2962c] hover:text-[#f2962c]">+ {k}</button>)}
+            {KINDS.map((k) => <button key={k} onClick={() => { const nb: Block = { id: crypto.randomUUID(), kind: k, title: k === "hero" ? "Your big promise" : k[0].toUpperCase() + k.slice(1), body: "", button: k === "hero" || k === "cta" ? "Get started" : undefined }; setBlocks((bs) => [...bs, nb]); setSel(nb.id); }} className="rounded-md border border-dashed border-[#d9d9d9] py-1.5 text-[12px] capitalize hover:border-[#141413] hover:text-[#141413]">+ {k}</button>)}
           </div>
         </Panel>
         <Panel className="overflow-hidden">
@@ -74,7 +74,7 @@ function Sites() {
     <Panel className="p-5">
       <Title right={<Btn icon="plus" onClick={async () => {
         const slug = `site-${Math.random().toString(36).slice(2, 7)}`;
-        const row = await col.create({ name: "My website", slug, color: "#f2962c", published: false, blocks: [
+        const row = await col.create({ name: "My website", slug, color: "#141413", published: false, blocks: [
           { id: crypto.randomUUID(), kind: "hero", title: "Transform your life in 30 days", body: "Join thousands of learners in my flagship program.", button: "Join now" },
           { id: crypto.randomUUID(), kind: "features", title: "What you'll get", items: "Weekly live sessions\nRecorded lessons\nPrivate community" },
           { id: crypto.randomUUID(), kind: "cta", title: "Ready to start?", button: "Get started" },
@@ -85,7 +85,7 @@ function Sites() {
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {col.rows.map((s) => (
             <div key={s.id} className="rounded-[10px] border border-[#ededed] p-4">
-              <div className="h-24 rounded-md" style={{ background: `linear-gradient(135deg, ${String(s.color)}, #1d0f08)` }} />
+              <div className="h-24 rounded-md" style={{ background: `linear-gradient(135deg, ${String(s.color)}, #171716)` }} />
               <div className="mt-3 flex items-center justify-between"><p className="font-semibold">{String(s.name)}</p><Pill tone={s.published ? "green" : "grey"}>{s.published ? "Live" : "Draft"}</Pill></div>
               <p className="text-[12px] text-[#6b6b7b]">/site/{String(s.slug)}</p>
               <div className="mt-3 flex items-center gap-1.5">

@@ -21,7 +21,7 @@ export default function WebsiteBlog() {
   const [del, setDel] = useState<Row | null>(null);
   const cols: Col<Row>[] = [
     { key: "title", label: "Title", render: (r) => <span className="font-medium">{String(r.title)}</span> },
-    { key: "slug", label: "Address", render: (r) => <a className="text-[#1677ff]" href={`/blog/${r.slug}`} target="_blank" rel="noreferrer">/blog/{String(r.slug)}</a> },
+    { key: "slug", label: "Address", render: (r) => <a className="text-[#141413]" href={`/blog/${r.slug}`} target="_blank" rel="noreferrer">/blog/{String(r.slug)}</a> },
     { key: "date", label: "Date", render: (r) => fmtDate(String(r.date || r.createdAt)) },
     { key: "published", label: "Status", render: (r) => (r.published === false ? <Pill tone="orange">Draft</Pill> : <Pill>Published</Pill>) },
     { key: "act", label: "", render: (r) => <div className="flex gap-2"><Btn variant="outline" onClick={() => setForm({ row: r })}>Edit</Btn><Btn variant="danger" onClick={() => setDel(r)}>Delete</Btn></div> },

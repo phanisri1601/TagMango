@@ -25,7 +25,7 @@ function Phone({ m, tab }: { m: M; tab: (typeof TABS)[number] }) {
               {[["Transaction ID", "0987654321"], ["Service", String(m.title || "—")], ["Payment Method", "UPI"], ["Payment Time", new Date().toLocaleString("en-IN")]].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><span className="text-[#6b6b7b]">{k}</span><b className="truncate">{v}</b></div>)}
             </div>
             {m.successText ? <p className="mt-3 whitespace-pre-wrap rounded-lg border border-[#ededed] p-3">{String(m.successText)}</p> : null}
-            <button className="mt-4 w-full rounded-md bg-[#f2962c] py-2 font-semibold text-white">{String(m.successButton || "Login Now")}</button>
+            <button className="mt-4 w-full rounded-md bg-[#141413] py-2 font-semibold text-white">{String(m.successButton || "Login Now")}</button>
           </div>
         ) : tab === "Payment details" ? (
           <div className="flex-1 overflow-y-auto">
@@ -35,8 +35,8 @@ function Phone({ m, tab }: { m: M; tab: (typeof TABS)[number] }) {
               {["Name", "Email", "Phone", ...((m.customFields as string[]) || [])].map((f) => <div key={f} className="rounded-md border border-[#e1e1e1] px-2.5 py-2 text-[#9b9bab]">{f}</div>)}
             </div>
             {m.terms ? <p className="mt-2 text-[10px] text-[#6b6b7b]">☑ I agree to the Terms &amp; Conditions</p> : null}
-            <p className="mt-3 text-[#1677ff]">Have a coupon?</p>
-            <button className="mt-3 w-full rounded-md bg-[#f2962c] py-2 font-semibold text-white">Proceed to pay {inr(price)}</button>
+            <p className="mt-3 text-[#141413]">Have a coupon?</p>
+            <button className="mt-3 w-full rounded-md bg-[#141413] py-2 font-semibold text-white">Proceed to pay {inr(price)}</button>
           </div>
         ) : (
           <div className="flex-1 overflow-y-auto">
@@ -44,7 +44,7 @@ function Phone({ m, tab }: { m: M; tab: (typeof TABS)[number] }) {
               // eslint-disable-next-line @next/next/no-img-element
               <img src={String(m.cover)} alt="" className="aspect-video w-full rounded-lg object-cover" />
             ) : (
-              <div className="grid aspect-video w-full place-items-center rounded-lg bg-[#f7f7f8]"><span className="grid h-10 w-10 place-items-center rounded-full bg-[#f2962c] text-white"><Icon name="mangoes" className="h-5 w-5" /></span></div>
+              <div className="grid aspect-video w-full place-items-center rounded-lg bg-[#f7f7f8]"><span className="grid h-10 w-10 place-items-center rounded-full bg-[#141413] text-white"><Icon name="mangoes" className="h-5 w-5" /></span></div>
             )}
             <p className="mt-2 text-[#6b6b7b]">by <b className="text-[#0f0f0f]">{me.name}</b></p>
             <p className="mt-1 text-[16px] font-semibold">{String(m.title || "")}</p>
@@ -60,7 +60,7 @@ function Phone({ m, tab }: { m: M; tab: (typeof TABS)[number] }) {
               {m.discountPrice && m.price && Number(m.discountPrice) < Number(m.price) ? <s className="ml-1 text-[#9b9bab]">{inr(Number(m.price))}</s> : null}
               {m.type === "Subscription" && <span className="block text-[10px] text-[#6b6b7b]">/{String(m.cycle || "Monthly").toLowerCase()}</span>}
             </div>
-            <span className="rounded-md bg-[#f2962c] px-6 py-2 font-semibold text-white">Buy Now</span>
+            <span className="rounded-md bg-[#141413] px-6 py-2 font-semibold text-white">Buy Now</span>
           </div>
         )}
       </div>
@@ -162,7 +162,7 @@ function Editor({ initial, onClose }: { initial?: Row; onClose: () => void }) {
                 <div className="flex gap-2"><input className={inputCls} placeholder="e.g. City" value={newField} onChange={(e) => setNewField(e.target.value)} /><Btn variant="black" type="button" onClick={() => { if (newField.trim()) { set("customFields", [...((m.customFields as string[]) || []), newField.trim()]); setNewField(""); } }}>Add field</Btn></div>
                 <div className="mt-2 flex flex-wrap gap-2">{((m.customFields as string[]) || []).map((f) => <span key={f} className="inline-flex items-center gap-1 rounded-md bg-[#f2f2f2] px-2 py-1 text-[12px]">{f}<button aria-label={`Remove ${f}`} onClick={() => set("customFields", ((m.customFields as string[]) || []).filter((x) => x !== f))}>×</button></span>)}</div>
               </Field>
-              <Field label={<span>Terms &amp; Conditions <span className="ml-1 rounded bg-[#f2962c] px-1.5 text-[9px] text-white">NEW</span></span>}><textarea className={`${areaCls} min-h-24`} placeholder="Buyers must accept these before paying (optional)" value={String(m.terms || "")} onChange={(e) => set("terms", e.target.value)} /></Field>
+              <Field label={<span>Terms &amp; Conditions <span className="ml-1 rounded bg-[#141413] px-1.5 text-[9px] text-white">NEW</span></span>}><textarea className={`${areaCls} min-h-24`} placeholder="Buyers must accept these before paying (optional)" value={String(m.terms || "")} onChange={(e) => set("terms", e.target.value)} /></Field>
             </div>
           )}
           {tab === "Payment success page" && (

@@ -7,53 +7,30 @@ import { Icon } from "@/components/dash/icons";
 import { dash } from "@/components/dash/nav";
 
 function PromoCard() {
-  return (
-    <div className="animate-rise relative overflow-hidden rounded-[10px] bg-[linear-gradient(90deg,#3a1606_0%,#1b0c06_45%,#2a1309_100%)] text-white">
-      <div className="pointer-events-none absolute left-[8%] top-1/2 hidden h-[230px] w-[230px] -translate-y-1/2 rounded-full border-[12px] border-[#f2962c]/80 md:block" />
-      <div className="pointer-events-none absolute left-[1%] top-0 hidden h-full w-[30%] bg-[repeating-linear-gradient(100deg,transparent_0_28px,rgba(242,150,44,0.35)_28px_40px)] md:block" />
-      <div className="relative grid items-center gap-4 p-5 md:grid-cols-[30%_1fr_auto] md:p-0 md:pr-8">
-        <div className="hidden h-[136px] items-end justify-center md:flex"><div className="h-[120px] w-[120px] rounded-t-full bg-gradient-to-b from-amber-200/80 to-orange-400/80" /></div>
-        <div className="md:py-4">
-          <div className="flex flex-wrap items-center gap-2 text-[12px]">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/30 px-1.5 py-0.5">
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#e5372e] px-2 py-0.5 text-[10px] font-bold"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />LIVE</span>
-              <b>BLACK <span className="text-[#f2962c]">FRIDAY</span> Special</b>
-            </span>
-            <b className="text-[15px]"><span className="text-[#e5372e]">●</span> Build It <span className="text-[#f2962c]">Live</span></b>
-          </div>
-          <p className="mt-2 text-[22px] font-extrabold leading-tight md:text-[28px]">Build your coaching business</p>
-          <p className="text-[22px] leading-tight md:text-[28px]"><b className="text-[#f2962c]">Live</b> with us, in 2 days.</p>
-        </div>
-        <div className="flex w-fit items-center gap-1 rounded-full border border-[#f2962c]/50 p-1">
-          <span className="px-3 text-[14px] font-bold text-[#f6b26b]">Nov 20–21</span>
-          <Link href="/demo" className="rounded-full bg-gradient-to-r from-[#ff6a00] to-[#f6bb22] px-4 py-2 text-[14px] font-bold transition hover:brightness-110">Tap to register →</Link>
-        </div>
-      </div>
-    </div>
-  );
+  return null;
 }
 
 function KycCard() {
   return (
-    <div className="animate-rise relative overflow-hidden rounded-[10px] bg-[#2b1149] p-6 text-white md:p-7" style={{ ["--delay" as string]: "0.06s" }}>
+    <div className="animate-rise relative overflow-hidden rounded-[10px] bg-[#171716] p-6 text-white md:p-7" style={{ ["--delay" as string]: "0.06s" }}>
       <div className="flex gap-5">
         <span className="hidden h-16 w-16 shrink-0 place-items-center rounded-full bg-white/10 sm:grid"><Icon name="warning" className="h-8 w-8" /></span>
         <div className="max-w-[860px] 2xl:pr-[300px]">
-          <p className="text-[28px] font-bold text-[#f2962c]">Important!</p>
+          <p className="text-[28px] font-bold text-[#e9e6e0]">Important!</p>
           <p className="mt-2 text-[15px] leading-relaxed text-white/90 md:text-[17px]">
             Your KYC details have not been updated yet. This will prevent any future withdrawals from this account. Update your KYC now to ensure a smooth withdrawal experience!
           </p>
-          <Link href={`${dash("balance")}?kyc=1`} className="mt-4 inline-block rounded-md bg-[#fb6a0c] px-5 py-2.5 text-[16px] font-medium transition hover:bg-[#ff7a1f]">Update KYC</Link>
+          <Link href={`${dash("balance")}?kyc=1`} className="mt-4 inline-block rounded-md bg-[#f4f2ed] px-5 py-2.5 text-[16px] font-medium text-[#141413] transition hover:bg-white">Update KYC</Link>
         </div>
       </div>
       <svg viewBox="0 0 300 160" className="pointer-events-none absolute -right-4 bottom-0 hidden h-[190px] 2xl:block" aria-hidden>
         <rect x="10" y="10" width="90" height="60" rx="6" fill="none" stroke="#fff" strokeOpacity=".5" />
         <circle cx="32" cy="34" r="10" fill="none" stroke="#fff" strokeOpacity=".6" />
-        <rect x="48" y="28" width="40" height="4" rx="2" fill="#7c5cff" />
+        <rect x="48" y="28" width="40" height="4" rx="2" fill="#141413" />
         <rect x="190" y="6" width="80" height="150" rx="8" fill="none" stroke="#fff" strokeOpacity=".6" />
         <path d="M212 50h36v34c0 14-18 22-18 22s-18-8-18-22Z" fill="#2fbf71" />
         <path d="m221 76 7 7 13-14" stroke="#fff" strokeWidth="4" fill="none" />
-        <path d="M120 160c4-40 20-60 45-62 20 0 32 14 34 30l-10 32Z" fill="#fb6a0c" />
+        <path d="M120 160c4-40 20-60 45-62 20 0 32 14 34 30l-10 32Z" fill="#141413" />
         <circle cx="160" cy="70" r="18" fill="#fff" />
       </svg>
     </div>
@@ -64,7 +41,7 @@ function VideoTile({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <button onClick={onClick} className="group relative min-h-[220px] w-full overflow-hidden bg-black text-left" aria-label={`Play: ${label}`}>
       <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_40%,#3a2410_0%,#000_100%)]" />
-      <span className="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#f2962c] shadow-xl transition duration-300 group-hover:scale-110"><Icon name="play" className="ml-1 h-6 w-6" /></span>
+      <span className="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#141413] shadow-xl transition duration-300 group-hover:scale-110"><Icon name="play" className="ml-1 h-6 w-6" /></span>
       <div className="absolute inset-x-3 bottom-3 flex items-center gap-2 text-[12px] text-white/90">
         <Icon name="play" className="h-3.5 w-3.5" /><span>0:00 / 4:29</span><span className="ml-2 h-1 flex-1 rounded bg-white/30" /><span>{label}</span>
       </div>
@@ -127,7 +104,7 @@ export default function GetStarted() {
                   ) : (
                     <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border text-[14px] ${next ? "border-[#2e9e4f] text-[#2e9e4f]" : "border-[#bfbfbf] text-[#6b6b7b]"}`}>{k + 1}</span>
                   )}
-                  <span className={`text-[16px] md:text-[18px] ${done[k] ? "text-[#6b6b7b] line-through" : "group-hover:text-[#f2962c]"}`}>{s.t}</span>
+                  <span className={`text-[16px] md:text-[18px] ${done[k] ? "text-[#6b6b7b] line-through" : "group-hover:text-[#141413]"}`}>{s.t}</span>
                 </>
               );
               return <li key={s.t}>{!done[k] && s.href ? <Link href={s.href} className="group flex items-center gap-4">{row}</Link> : <div className="flex items-center gap-4">{row}</div>}</li>;
@@ -150,8 +127,8 @@ export default function GetStarted() {
           </div>
           <p className="mt-3 text-[14px] text-[#4a4a59]">Link to your storefront is given below</p>
           <div className="mt-auto flex items-center gap-2 pt-6">
-            <code className="flex-1 truncate rounded-md border border-dashed border-[#9fb7e0] bg-[#f5f8ff] px-3 py-2 text-[13px] text-[#1677ff]">{storeLink}</code>
-            <Btn variant="soft" onClick={() => copy(storeLink)} className="text-[#1677ff]">Copy Link</Btn>
+            <code className="flex-1 truncate rounded-md border border-dashed border-[#e9e6e0] bg-[#f4f2ed] px-3 py-2 text-[13px] text-[#141413]">{storeLink}</code>
+            <Btn variant="soft" onClick={() => copy(storeLink)} className="text-[#141413]">Copy Link</Btn>
           </div>
         </div>
       </div>
@@ -186,8 +163,8 @@ export default function GetStarted() {
       {video && (
         <Modal title="Video walkthrough" onClose={() => setVideo(null)} wide>
           <div key={i} className="animate-soft-fade">
-            <div className="grid aspect-video place-items-center rounded-lg bg-gradient-to-br from-[#1d1d1d] to-[#3a2410] text-white">
-              <div className="px-8 text-center"><p className="text-[12px] uppercase tracking-[0.2em] text-[#f2962c]">Step {i + 1} of {SLIDES[video].length}</p><p className="mt-2 text-[24px] font-semibold">{SLIDES[video][i][0]}</p></div>
+            <div className="grid aspect-video place-items-center rounded-lg bg-gradient-to-br from-[#1d1d1d] to-[#171716] text-white">
+              <div className="px-8 text-center"><p className="text-[12px] uppercase tracking-[0.2em] text-[#141413]">Step {i + 1} of {SLIDES[video].length}</p><p className="mt-2 text-[24px] font-semibold">{SLIDES[video][i][0]}</p></div>
             </div>
             <p className="mt-4 text-[14px] text-[#4a4a59]">{SLIDES[video][i][1]}</p>
           </div>

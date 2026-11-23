@@ -30,7 +30,7 @@ function Provider({ id, name, url }: { id: "zapier" | "pabbly"; name: string; ur
       ) : (
         <Btn variant="black" className="mt-2" onClick={gen}><Icon name="refresh" className="h-4 w-4" />Generate API Key</Btn>
       )}
-      <p className="mt-3 text-[13px] text-[#4a4a59]"><a href={url} target="_blank" rel="noreferrer" className="text-[#1677ff] hover:underline">Click Here</a> to use our {id} app.</p>
+      <p className="mt-3 text-[13px] text-[#4a4a59]"><a href={url} target="_blank" rel="noreferrer" className="text-[#141413] hover:underline">Click Here</a> to use our {id} app.</p>
       {confirm && <Confirm title="Regenerate API key?" text={`Any ${name} workflows using the old key will stop working until you update them.`} okLabel="Regenerate" danger={false} onOk={gen} onClose={() => setConfirm(false)} />}
     </Panel>
   );

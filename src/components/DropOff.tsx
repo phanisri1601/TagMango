@@ -33,11 +33,11 @@ export default function DropOff() {
           <Reveal delay={0.15}>
             <p className="mt-4 max-w-md text-[16px] leading-relaxed text-ink/60">One lead record follows each person through all five steps. Pull up a list of the people stuck at any step, and message them from there.</p>
             <ul className="mt-6 flex flex-wrap gap-2">
-              {GROUPS.map((g) => <li key={g} className="rounded-full border border-black/10 bg-[#f6f2ef] px-3 py-1.5 text-[12.5px] text-ink/70">{g}</li>)}
+              {GROUPS.map((g) => <li key={g} className="rounded-full border border-black/10 bg-[#f4f2ed] px-3 py-1.5 text-[12.5px] text-ink/70">{g}</li>)}
             </ul>
           </Reveal>
         </div>
-        <div ref={ref} className="rounded-[28px] border border-black/[0.06] bg-[#f6f2ef] p-5 sm:p-7">
+        <div ref={ref} className="rounded-[28px] border border-black/[0.06] bg-[#f4f2ed] p-5 sm:p-7">
           <div className="flex items-center justify-between"><p className="font-display text-[15px] font-bold">Funnel (sample data)</p><span className="rounded-full bg-ink px-3 py-1 text-[11px] text-white">Last 30 days</span></div>
           <div className="mt-5 space-y-3.5">
             {ROWS.map((r, i) => {
@@ -47,7 +47,7 @@ export default function DropOff() {
                 <div key={r.label}>
                   <div className="flex items-baseline justify-between gap-3 text-[13px]"><span className="text-ink/80">{r.label}</span><span className="tabular-nums"><b>{r.n.toLocaleString("en-IN")}</b>{i ? <span className="ml-2 text-ink/45">−{drop}%</span> : null}</span></div>
                   <div className="mt-1.5 h-3 overflow-hidden rounded-full bg-black/[0.06]">
-                    <div className="h-full rounded-full transition-[width] duration-[1400ms] [transition-timing-function:var(--ease-out-expo)]" style={{ width: go ? `${(r.n / ROWS[0].n) * 100}%` : "0%", transitionDelay: `${i * 120}ms`, background: "linear-gradient(90deg, var(--ac1), var(--ac2), var(--ac3))" }} />
+                    <div className="h-full rounded-full transition-[width] duration-[1400ms] [transition-timing-function:var(--ease-out-expo)]" style={{ width: go ? `${(r.n / ROWS[0].n) * 100}%` : "0%", transitionDelay: `${i * 120}ms`, background: "linear-gradient(90deg, #5c5a55, #141413)" }} />
                   </div>
                 </div>
               );

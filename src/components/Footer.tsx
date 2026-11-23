@@ -68,7 +68,7 @@ const socials = [
 export default function Footer() {
   return (
     <section className="relative bg-white px-2 pb-2">
-      <div className="relative overflow-hidden rounded-[32px] bg-ink text-white">
+      <div className="on-dark relative overflow-hidden rounded-[32px] bg-ink text-white">
         <PhotoWall />
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-[620px] hidden -translate-x-1/2 select-none font-display text-[min(11vw,170px)] font-bold leading-none tracking-tighter text-white/[0.07] md:block md:max-lg:top-[640px] lg:top-[570px]">{BRAND}</div>
 

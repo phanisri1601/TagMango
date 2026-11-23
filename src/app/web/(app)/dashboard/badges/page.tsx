@@ -18,7 +18,7 @@ function Badges() {
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {rows.map((b) => (
             <div key={b.id} className="rounded-[10px] border border-[#ededed] p-4 text-center">
-              <div className="mx-auto grid h-16 w-16 place-items-center rounded-full text-[32px]" style={{ background: `${String(b.color || "#f2962c")}22` }}>{String(b.icon || "🏅")}</div>
+              <div className="mx-auto grid h-16 w-16 place-items-center rounded-full text-[32px]" style={{ background: `${String(b.color || "#141413")}22` }}>{String(b.icon || "🏅")}</div>
               <p className="mt-2 font-semibold">{String(b.name)}</p>
               <p className="text-[12px] text-[#6b6b7b]">{String(b.threshold)} points</p>
               {b.description ? <p className="mt-1 text-[12px] text-[#6b6b7b]">{String(b.description)}</p> : null}
@@ -37,7 +37,7 @@ function Badges() {
             { key: "color", label: "Colour", type: "color" },
             { key: "description", label: "Description", type: "textarea" },
           ]}
-          initial={edit === "new" ? { icon: "🏅", color: "#f2962c", threshold: 100 } : edit}
+          initial={edit === "new" ? { icon: "🏅", color: "#141413", threshold: 100 } : edit}
           onClose={() => setEdit(null)}
           onSubmit={async (d) => {
             if (col.rows.some((b) => Number(b.threshold) === Number(d.threshold) && (edit === "new" || b.id !== edit.id))) return "Another badge already uses that threshold";

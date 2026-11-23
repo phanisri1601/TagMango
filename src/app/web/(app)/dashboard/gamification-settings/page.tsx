@@ -36,7 +36,7 @@ function Settings() {
         <div className="mt-4 max-w-xl">
           <p className="text-[13px] text-[#6b6b7b]">Tags group members (e.g. “Beginner”, “VIP”) so you can target them with broadcasts and paths.</p>
           <div className="mt-3 flex gap-2"><input className={inputCls} placeholder="New tag" value={tag} onChange={(e) => setTag(e.target.value)} /><Btn variant="black" onClick={() => { const t = tag.trim(); if (!t) return; if (tags.includes(t)) return toast("Tag already exists", "err"); save({ tags: [...tags, t] }, "Tag added"); setTag(""); }}>Add</Btn></div>
-          <div className="mt-3 flex flex-wrap gap-2">{tags.map((t) => <span key={t} className="inline-flex items-center gap-1 rounded-full bg-[#fdefdf] px-3 py-1 text-[13px] text-[#c7740f]">{t}<button aria-label={`Remove ${t}`} onClick={() => save({ tags: tags.filter((x) => x !== t) }, "Tag removed")}>×</button></span>)}{!tags.length && <span className="text-[13px] text-[#9b9bab]">No tags yet.</span>}</div>
+          <div className="mt-3 flex flex-wrap gap-2">{tags.map((t) => <span key={t} className="inline-flex items-center gap-1 rounded-full bg-[#e9e6e0] px-3 py-1 text-[13px] text-[#5c5a55]">{t}<button aria-label={`Remove ${t}`} onClick={() => save({ tags: tags.filter((x) => x !== t) }, "Tag removed")}>×</button></span>)}{!tags.length && <span className="text-[13px] text-[#9b9bab]">No tags yet.</span>}</div>
         </div>
       )}
     </Panel>

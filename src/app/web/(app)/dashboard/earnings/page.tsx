@@ -47,7 +47,7 @@ export default function Earnings() {
             {months.map(([k, v]) => (
               <div key={k} className="group flex flex-1 flex-col items-center gap-1">
                 <span className="text-[11px] text-[#6b6b7b] opacity-0 transition group-hover:opacity-100">{inr(v)}</span>
-                <div className="w-full max-w-12 origin-bottom animate-[grow-y_.8s_var(--ease-out-expo)] rounded-t bg-[#f2962c]" style={{ height: `${(v / max) * 160}px` }} />
+                <div className="w-full max-w-12 origin-bottom animate-[grow-y_.8s_var(--ease-out-expo)] rounded-t bg-[#141413]" style={{ height: `${(v / max) * 160}px` }} />
                 <span className="text-[11px] text-[#6b6b7b]">{new Date(k + "-01").toLocaleDateString("en-IN", { month: "short" })}</span>
               </div>
             ))}

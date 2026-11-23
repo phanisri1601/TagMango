@@ -24,7 +24,7 @@ export default function Customers() {
   const active = list.filter((c) => c.status === "Active").length;
 
   const cols: Col<Customer>[] = [
-    { key: "name", label: "Customer", render: (c) => <div className="flex items-center gap-2"><span className="grid h-8 w-8 place-items-center rounded-full bg-[#fdefdf] text-[12px] font-semibold text-[#c7740f]">{c.name[0]?.toUpperCase()}</span><span className="font-medium">{c.name}</span></div> },
+    { key: "name", label: "Customer", render: (c) => <div className="flex items-center gap-2"><span className="grid h-8 w-8 place-items-center rounded-full bg-[#e9e6e0] text-[12px] font-semibold text-[#5c5a55]">{c.name[0]?.toUpperCase()}</span><span className="font-medium">{c.name}</span></div> },
     { key: "contact", label: "Contact", render: (c) => <div className="text-[13px]"><p>{c.email}</p>{c.phone && <p className="text-[#6b6b7b]">+91 {c.phone}</p>}</div> },
     { key: "mango", label: "Mango" },
     { key: "cycle", label: "Payment Cycle" },

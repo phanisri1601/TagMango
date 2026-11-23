@@ -103,7 +103,7 @@ export default function CreatorDrawer({ id, onClose }: { id: string; onClose: ()
                 {data.user.bank ? (
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span>{data.user.bank.holder} · A/C {showAcc ? data.user.bank.account : `••••${data.user.bank.account.slice(-4)}`} · {data.user.bank.ifsc}</span>
-                    <button className="text-[#1677ff]" onClick={() => setShowAcc(!showAcc)}>{showAcc ? "Hide" : "Reveal"}</button>
+                    <button className="text-[#141413]" onClick={() => setShowAcc(!showAcc)}>{showAcc ? "Hide" : "Reveal"}</button>
                   </div>
                 ) : <span className="text-[#9b9bab]">No bank account added</span>}
               </div>

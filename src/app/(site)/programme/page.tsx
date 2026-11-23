@@ -16,9 +16,9 @@ export default async function Programme() {
       <Section>
         <Label>Programme</Label>
         <H1 className="mt-4">{mango ? String(mango.title) : g?.programme || "THE HUMAN OS™"}</H1>
-        {mango?.description ? <p className="mt-6 max-w-2xl whitespace-pre-wrap text-[18px] font-light leading-relaxed text-[#3d3b36]">{String(mango.description)}</p> : <p className="mt-6 max-w-2xl text-[18px] font-light leading-relaxed text-[#3d3b36]">A six-week programme to see the pattern that runs your choices and build a different response. Live classes, weekly practice and feedback on your work.</p>}
+        {mango?.description ? <p className="mt-6 max-w-2xl whitespace-pre-wrap text-[18px] font-light leading-relaxed text-[#5c5a55]">{String(mango.description)}</p> : <p className="mt-6 max-w-2xl text-[18px] font-light leading-relaxed text-[#5c5a55]">A six-week programme to see the pattern that runs your choices and build a different response. Live classes, weekly practice and feedback on your work.</p>}
         <div className="mt-8 flex flex-wrap items-center gap-6">
-          {price !== null && <p className="text-[34px]" style={serif}>{price ? `₹${price.toLocaleString("en-IN")}` : "Free"}<span className="ml-2 text-[14px] font-light text-[#6f6c66]">{String(mango?.type || "")}</span></p>}
+          {price !== null && <p className="text-[34px]" style={serif}>{price ? `₹${price.toLocaleString("en-IN")}` : "Free"}<span className="ml-2 text-[14px] font-light text-[#5c5a55]">{String(mango?.type || "")}</span></p>}
           <Button href="/enrol">Enrol and pay</Button><Button href="/apply" variant="outline">Apply first</Button>
         </div>
       </Section>
@@ -29,9 +29,9 @@ export default async function Programme() {
           {PROGRAMME_WEEKS.map((w) => <Card key={w}><p className="text-[22px] leading-snug" style={serif}>{w}</p></Card>)}
         </div>
         <ul className="mt-10 grid gap-3 text-[15px] font-light sm:grid-cols-2">
-          {["Live classes with a join link in your portal", "Weekly lessons and assignments", "Written feedback from your coach", "A certificate on completion", "Replays if you miss a class", "A retest to see how far you have moved"].map((x) => <li key={x} className="border-b border-[#d6d2c9] pb-2">{x}</li>)}
+          {["Live classes with a join link in your portal", "Weekly lessons and assignments", "Written feedback from your coach", "A certificate on completion", "Replays if you miss a class", "A retest to see how far you have moved"].map((x) => <li key={x} className="border-b border-[#e9e6e0] pb-2">{x}</li>)}
         </ul>
-        {g?.kickoff ? <p className="mt-8 text-[15px] text-[#4a4843]">Kick-off: {g.kickoff}</p> : null}
+        {g?.kickoff ? <p className="mt-8 text-[15px] text-[#5c5a55]">Kick-off: {g.kickoff}</p> : null}
       </Section>
     </>
       <Section><Head label="Who it is for" title="Is this right for you?" /><Cards cols={2} items={[

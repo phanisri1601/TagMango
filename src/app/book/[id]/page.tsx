@@ -9,7 +9,7 @@ export default async function Book({ params }: { params: Promise<{ id: string }>
   const data = await findEvent(id);
   if (!data) notFound();
   return (
-    <div className="font-app min-h-screen bg-[#fff5ec] px-4 py-12 text-[#0f0f0f]">
+    <div className="font-app min-h-screen bg-[#f4f2ed] px-4 py-12 text-[#0f0f0f]">
       <div className="mx-auto max-w-2xl">
         <p className="text-center text-[13px] uppercase tracking-[0.2em] text-[#6b6b7b]">{data.creator?.name}</p>
         <h1 className="mt-1 text-center text-[28px] font-bold">{data.ev.title}</h1>

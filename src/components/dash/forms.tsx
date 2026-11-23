@@ -37,7 +37,7 @@ export function FormFields({ fields, data, set }: { fields: FieldDef[]; data: Re
               {f.options.map((o) => {
                 const on = arr.includes(o);
                 return (
-                  <button type="button" key={o} onClick={() => set(f.key, on ? arr.filter((x) => x !== o) : [...arr, o])} className={`rounded-md border px-3 py-1.5 text-[13px] transition ${on ? "border-[#f2962c] bg-[#fdefdf] text-[#c7740f]" : "border-[#e1e1e1] text-[#4a4a59] hover:border-[#bfbfbf]"}`}>
+                  <button type="button" key={o} onClick={() => set(f.key, on ? arr.filter((x) => x !== o) : [...arr, o])} className={`rounded-md border px-3 py-1.5 text-[13px] transition ${on ? "border-[#141413] bg-[#e9e6e0] text-[#5c5a55]" : "border-[#e1e1e1] text-[#4a4a59] hover:border-[#bfbfbf]"}`}>
                     {on ? "✓ " : ""}{o}
                   </button>
                 );

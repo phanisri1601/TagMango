@@ -23,7 +23,7 @@ function NewCourse({ onClose }: { onClose: () => void }) {
       <div className="flex flex-wrap gap-2">
         {mangoes.length === 0 && <p className="text-[13px] text-[#9b9bab]">No mangoes yet — you can link them later.</p>}
         {mangoes.map((m) => (
-          <button key={m} onClick={() => setLinked((l) => (l.includes(m) ? l.filter((x) => x !== m) : [...l, m]))} className={`rounded-md border px-3 py-1.5 text-[13px] ${linked.includes(m) ? "border-[#f2962c] bg-[#fdefdf] text-[#c7740f]" : "border-[#e1e1e1] text-[#4a4a59]"}`}>{linked.includes(m) ? "✓ " : ""}{m}</button>
+          <button key={m} onClick={() => setLinked((l) => (l.includes(m) ? l.filter((x) => x !== m) : [...l, m]))} className={`rounded-md border px-3 py-1.5 text-[13px] ${linked.includes(m) ? "border-[#141413] bg-[#e9e6e0] text-[#5c5a55]" : "border-[#e1e1e1] text-[#4a4a59]"}`}>{linked.includes(m) ? "✓ " : ""}{m}</button>
         ))}
       </div>
       <Btn

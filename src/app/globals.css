@@ -3,47 +3,83 @@
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-vietnam), ui-sans-serif, system-ui, sans-serif;
-  --color-mango-50: #fff7ed;
-  --color-mango-100: #ffedd5;
-  --color-mango-300: #fbbf74;
-  --color-mango-400: #fb9311;
-  --color-mango-500: #ff6a00;
-  --color-ink: #111111;
-  --color-ink-soft: #1b1b1b;
+  --color-mango-50: #f4f2ed;
+  --color-mango-100: #e9e6e0;
+  --color-mango-300: #e9e6e0;
+  --color-mango-400: #5c5a55;
+  --color-mango-500: #141413;
+  --color-orange-50: #f4f2ed;
+  --color-orange-100: #f4f2ed;
+  --color-orange-200: #e9e6e0;
+  --color-orange-300: #e9e6e0;
+  --color-orange-400: #5c5a55;
+  --color-orange-500: #141413;
+  --color-orange-600: #141413;
+  --color-orange-700: #171716;
+  --color-orange-800: #171716;
+  --color-orange-900: #171716;
+  --color-amber-50: #f4f2ed;
+  --color-amber-100: #f4f2ed;
+  --color-amber-200: #e9e6e0;
+  --color-amber-300: #e9e6e0;
+  --color-amber-400: #5c5a55;
+  --color-amber-500: #141413;
+  --color-amber-600: #141413;
+  --color-amber-700: #171716;
+  --color-amber-800: #171716;
+  --color-amber-900: #171716;
+  --color-yellow-50: #f4f2ed;
+  --color-yellow-100: #f4f2ed;
+  --color-yellow-200: #e9e6e0;
+  --color-yellow-300: #e9e6e0;
+  --color-yellow-400: #5c5a55;
+  --color-yellow-500: #141413;
+  --color-yellow-600: #141413;
+  --color-yellow-700: #171716;
+  --color-yellow-800: #171716;
+  --color-yellow-900: #171716;
+  --color-ink: #141413;
+  --color-ink-soft: #171716;
   --radius-32: 32px;
 }
 
 :root {
-  --ac1: #f6bb22;
-  --ac2: #fb9311;
-  --ac3: #ff6a00;
-  --accent-rgb: 255, 106, 0;
-  --soft1: #fde3b0;
-  --soft2: #f4a259;
-  --mango-gradient: radial-gradient(100% 1573% at 100% 50%, var(--ac1) 0%, var(--ac2) 50%, var(--ac3) 100%);
+  --ac1: #e9e6e0;
+  --ac2: #5c5a55;
+  --ac3: #141413;
+  --accent-rgb: 20, 20, 19;
+  --soft1: #e9e6e0;
+  --soft2: #f4f2ed;
+  --mango-gradient: linear-gradient(135deg, #5c5a55 0%, #141413 100%);
 }
 
-/* Brand colour theme for the public website (Nitienaa Rao): ivory, charcoal and a warm clay accent.
-   Only colours change; layout and design are the original. Edit these values to retheme. */
+/* Brand colour theme (Brand Book p.65, "Black, white, light type"): only these five colours, no colour accents.
+   Paper #F4F2ED, Mist #E9E6E0, Graphite #5C5A55, Ink #141413, Dark #171716. */
 .theme-brand {
-  --ac1: #b8967a;
-  --ac2: #7a5a44;
-  --ac3: #2b2622;
-  --accent-rgb: 122, 90, 68;
-  --soft1: #ebe4dc;
-  --soft2: #c2ab98;
-  --mango-gradient: radial-gradient(100% 1573% at 100% 50%, #b8967a 0%, #7a5a44 50%, #2b2622 100%);
-  --color-mango-50: #f6f2ef;
-  --color-mango-100: #ebe4dc;
-  --color-mango-300: #c9b5a2;
-  --color-mango-400: #a98467;
-  --color-mango-500: #7a5a44;
-  --color-orange-100: #efe7df;
-  --color-orange-200: #e0d3c6;
-  --color-orange-300: #cdb8a6;
-  --color-orange-400: #a98467;
-  --color-orange-500: #7a5a44;
-  background: #f4f1ec;
+  --paper: #f4f2ed;
+  --mist: #e9e6e0;
+  --graphite: #5c5a55;
+  --ink-brand: #141413;
+  --dark: #171716;
+  --ac1: #e9e6e0;
+  --ac2: #5c5a55;
+  --ac3: #141413;
+  --accent-rgb: 92, 90, 85;
+  --soft1: #e9e6e0;
+  --soft2: #f4f2ed;
+  --mango-gradient: linear-gradient(135deg, #5c5a55 0%, #141413 100%);
+  --color-ink: #141413;
+  --color-mango-50: #f4f2ed;
+  --color-mango-100: #e9e6e0;
+  --color-mango-300: #e9e6e0;
+  --color-mango-400: #5c5a55;
+  --color-mango-500: #141413;
+  --color-orange-100: #f4f2ed;
+  --color-orange-200: #e9e6e0;
+  --color-orange-300: #e9e6e0;
+  --color-orange-400: #5c5a55;
+  --color-orange-500: #141413;
+  background: #f4f2ed;
 }
 
 html {
@@ -51,8 +87,8 @@ html {
 }
 
 body {
-  background: #ffffff;
-  color: #111111;
+  background: #f4f2ed;
+  color: #141413;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -70,7 +106,7 @@ body {
 }
 
 .text-mango {
-  background-image: linear-gradient(90deg, var(--ac3) 0%, var(--ac2) 50%, var(--ac1) 100%);
+  background-image: linear-gradient(90deg, #5c5a55 0%, #141413 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -183,7 +219,7 @@ body {
   animation-delay: calc(var(--d, 0s) + var(--i, 0) * 24ms);
 }
 .text-gradient-amber {
-  --text-grad: linear-gradient(270deg, var(--ac1) 0%, var(--ac2) 50%, var(--ac3) 100%);
+  --text-grad: linear-gradient(270deg, #5c5a55 0%, #141413 100%);
 }
 .text-gradient-amber .heading-char {
   background-image: var(--text-grad);
@@ -251,24 +287,20 @@ body {
   .photo-wall-up, .photo-wall-down { animation: none; }
 }
 
-/* Brand theme: re-tone the orange TagMango logo image to the clay accent */
-.theme-brand img[alt="tagmango"] {
-  filter: grayscale(1) brightness(1.15);
-}
-/* orange artwork (glow bands, mango badge) re-toned to the clay accent */
-.theme-brand .recolor {
-  filter: sepia(0.55) saturate(0.55) hue-rotate(-12deg) brightness(0.92);
-}
 
 @keyframes draw-line {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
 
-/* Gradient text must stay readable on both the dark and the light sections */
-.theme-brand .text-mango {
-  background-image: linear-gradient(90deg, #d4b69b 0%, #b58b68 55%, #96704f 100%);
-}
-.theme-brand .text-gradient-amber {
-  --text-grad: linear-gradient(270deg, #96704f 0%, #b58b68 45%, #d4b69b 100%);
-}
+
+/* Monochrome treatment of the remaining artwork and accents */
+.theme-brand .recolor { filter: grayscale(1) contrast(1.05); }
+.theme-brand .text-mango { background-image: linear-gradient(90deg, #e9e6e0, #f4f2ed); }
+.theme-brand .text-ink .text-mango, .theme-brand .bg-white .text-mango { background-image: linear-gradient(90deg, #5c5a55, #141413); }
+.theme-brand .text-gradient-amber { --text-grad: linear-gradient(270deg, #e9e6e0 0%, #f4f2ed 100%); }
+.theme-brand .bg-white .text-gradient-amber { --text-grad: linear-gradient(270deg, #5c5a55 0%, #141413 100%); }
+/* buttons on dark sections are Paper with Ink text; elsewhere they are Ink with white text */
+.theme-brand .on-dark .bg-mango { background: #f4f2ed; color: #141413 !important; box-shadow: none; }
+.theme-brand .bg-mango { box-shadow: none; }
+.theme-brand [data-lottie], .theme-brand .lottie-box { filter: grayscale(1); }

@@ -48,7 +48,7 @@ export default function SignUpForm() {
         <h1 className="text-[30px] font-semibold leading-tight">Verify your number</h1>
         <p className="mt-2 text-[14px] text-ink/70">
           Enter the 6-digit OTP sent to <b>+91 {phone}</b>{" "}
-          <button className="text-[#1a73e8]" onClick={() => { setStage("form"); setError(undefined); }}>Edit</button>
+          <button className="text-[#141413]" onClick={() => { setStage("form"); setError(undefined); }}>Edit</button>
         </p>
         <form className="mt-8 space-y-4" onSubmit={(e) => { e.preventDefault(); verify(); }}>
           <OtpBoxes value={otp} onChange={setOtp} onComplete={verify} />
@@ -70,20 +70,20 @@ export default function SignUpForm() {
         <input className={inputCls} placeholder="Enter email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <PhoneInput value={phone} onChange={setPhone} />
         <label className="flex gap-2.5 pt-1 text-[12px] leading-relaxed text-ink/70">
-          <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#fb8a1b]" />
+          <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#141413]" />
           <span>
-            I have read and agree to the <Link href="#" className="text-[#fb8a1b]">Terms of Service</Link> and{" "}
-            <Link href="#" className="text-[#fb8a1b]">Privacy Policy</Link>.
+            I have read and agree to the <Link href="#" className="text-[#141413]">Terms of Service</Link> and{" "}
+            <Link href="#" className="text-[#141413]">Privacy Policy</Link>.
           </span>
         </label>
         <label className="flex gap-2.5 text-[12px] leading-relaxed text-ink/70">
-          <input type="checkbox" checked={marketing} onChange={(e) => setMarketing(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#fb8a1b]" />
+          <input type="checkbox" checked={marketing} onChange={(e) => setMarketing(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-[#141413]" />
           <span>I agree to receive product updates, newsletters, and promotional communications by email. I understand I can unsubscribe at any time.</span>
         </label>
         <ErrorText>{error}</ErrorText>
         <OrangeButton disabled={!ready} loading={loading}>Get started</OrangeButton>
         <p className="text-center text-[13px] text-ink/80">
-          Already have an account? <Link href="/web/login" className="font-medium text-[#1a73e8]">Login</Link>
+          Already have an account? <Link href="/web/login" className="font-medium text-[#141413]">Login</Link>
         </p>
       </form>
     </div>

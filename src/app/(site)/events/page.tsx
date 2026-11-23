@@ -17,22 +17,22 @@ export default async function Events() {
       <Label>Programme</Label>
       <H1 className="mt-4">Events and workshops</H1>
       <h2 className="mt-10 text-[30px]" style={serif}>Free live masterclass</h2>
-      <ul className="mt-4 divide-y divide-[#d6d2c9] border-y border-[#d6d2c9]">
+      <ul className="mt-4 divide-y divide-[#e9e6e0] border-y border-[#e9e6e0]">
         {mcs.map((m) => (
           <li key={String(m.id)} className="flex flex-wrap items-center justify-between gap-4 py-5">
-            <div><p className="text-[24px]" style={serif}>{String(m.title)}</p><p className="text-[14px] font-light text-[#6f6c66]">{when(String(m.startsAt))}{m.seats ? ` · ${m.seats} seats` : ""}</p></div>
+            <div><p className="text-[24px]" style={serif}>{String(m.title)}</p><p className="text-[14px] font-light text-[#5c5a55]">{when(String(m.startsAt))}{m.seats ? ` · ${m.seats} seats` : ""}</p></div>
             {g && <Button href={`/m/${g.slug}`} variant="outline">Reserve a seat</Button>}
           </li>
         ))}
-        {!mcs.length && <li className="py-5 text-[#6f6c66]">The next date will be announced here.</li>}
+        {!mcs.length && <li className="py-5 text-[#5c5a55]">The next date will be announced here.</li>}
       </ul>
       {workshops.length > 0 && (
         <>
           <h2 className="mt-12 text-[30px]" style={serif}>Workshops</h2>
-          <ul className="mt-4 divide-y divide-[#d6d2c9] border-y border-[#d6d2c9]">
+          <ul className="mt-4 divide-y divide-[#e9e6e0] border-y border-[#e9e6e0]">
             {workshops.map((w) => (
               <li key={String(w.id)} className="flex flex-wrap items-center justify-between gap-4 py-5">
-                <div><p className="text-[24px]" style={serif}>{String(w.title)}</p>{w.description ? <p className="line-clamp-2 max-w-xl text-[14px] font-light text-[#6f6c66]">{String(w.description)}</p> : null}</div>
+                <div><p className="text-[24px]" style={serif}>{String(w.title)}</p>{w.description ? <p className="line-clamp-2 max-w-xl text-[14px] font-light text-[#5c5a55]">{String(w.description)}</p> : null}</div>
               </li>
             ))}
           </ul>

@@ -23,7 +23,7 @@ export default function PatternDemo() {
   const result = !any ? "Tick a few statements that sound like you." : !primary ? "None present yet. No pattern is running strongly." : blend.length ? `Blend of ${blend.length + 1}: ${[primary, ...blend].map((x) => x.name).join(" + ")}` : `Single: ${primary.name}`;
 
   return (
-    <section id="pattern-check" className="relative overflow-hidden bg-[#111111] px-4 py-20 text-white md:py-28">
+    <section id="pattern-check" className="on-dark relative overflow-hidden bg-[#141413] px-4 py-20 text-white md:py-28">
       <div className="pointer-events-none absolute -left-40 top-10 h-[420px] w-[420px] rounded-full opacity-30 blur-[110px]" style={{ background: "var(--ac1)" }} />
       <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.25fr_1fr]">
         <div>
@@ -60,7 +60,7 @@ export default function PatternDemo() {
                 <div key={x.id}>
                   <div className="flex justify-between text-[13px]"><span className="text-white/80">{x.name}</span><span className="font-semibold tabular-nums">{x.pct}%</span></div>
                   <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-white/10">
-                    <div className="h-full rounded-full transition-[width] duration-700 [transition-timing-function:var(--ease-out-expo)]" style={{ width: `${x.pct}%`, background: "linear-gradient(90deg, var(--ac1), var(--ac2))" }} />
+                    <div className="h-full rounded-full transition-[width] duration-700 [transition-timing-function:var(--ease-out-expo)]" style={{ width: `${x.pct}%`, background: "linear-gradient(90deg, #e9e6e0, #f4f2ed)" }} />
                   </div>
                 </div>
               ))}

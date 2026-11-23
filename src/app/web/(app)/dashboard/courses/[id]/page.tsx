@@ -46,7 +46,7 @@ export default function CourseEditor({ params }: { params: Promise<{ id: string 
   }
 
   if (col.loading) return <div className="h-40 animate-pulse rounded-[10px] bg-white" />;
-  if (!course) return <Panel className="p-8 text-center"><p>Course not found.</p><Link href="/web/dashboard/courses" className="text-[#1677ff]">Back to courses</Link></Panel>;
+  if (!course) return <Panel className="p-8 text-center"><p>Course not found.</p><Link href="/web/dashboard/courses" className="text-[#141413]">Back to courses</Link></Panel>;
 
   const chapters = sections.reduce((a, s) => a + s.chapters.length, 0);
 
@@ -75,14 +75,14 @@ export default function CourseEditor({ params }: { params: Promise<{ id: string 
                 <div className="divide-y divide-[#f0f0f0]">
                   {s.chapters.map((c) => (
                     <div key={c.id} className="flex items-center gap-3 px-3 py-2.5 text-[14px]">
-                      <span className="grid h-7 w-7 place-items-center rounded bg-[#fdefdf] text-[10px] font-semibold text-[#c7740f]">{c.type.slice(0, 3).toUpperCase()}</span>
+                      <span className="grid h-7 w-7 place-items-center rounded bg-[#e9e6e0] text-[10px] font-semibold text-[#5c5a55]">{c.type.slice(0, 3).toUpperCase()}</span>
                       <span className="flex-1 truncate">{c.title}</span>
-                      {c.free && <span className="rounded bg-[#e6f4ff] px-1.5 text-[11px] text-[#1677ff]">Free preview</span>}
-                      <button className="text-[#6b6b7b] hover:text-[#f2962c]" title="Edit chapter" onClick={() => setChapter({ sid: s.id, ch: c })}><Icon name="edit" className="h-4 w-4" /></button>
+                      {c.free && <span className="rounded bg-[#e9e6e0] px-1.5 text-[11px] text-[#141413]">Free preview</span>}
+                      <button className="text-[#6b6b7b] hover:text-[#141413]" title="Edit chapter" onClick={() => setChapter({ sid: s.id, ch: c })}><Icon name="edit" className="h-4 w-4" /></button>
                       <button className="text-[#6b6b7b] hover:text-[#ff4d4f]" title="Delete chapter" onClick={() => { setSections((x) => x.map((y) => (y.id === s.id ? { ...y, chapters: y.chapters.filter((z) => z.id !== c.id) } : y))); setDirty(true); }}><Icon name="trash" className="h-4 w-4" /></button>
                     </div>
                   ))}
-                  <button className="flex w-full items-center gap-2 px-3 py-2.5 text-[13px] text-[#f2962c]" onClick={() => setChapter({ sid: s.id, ch: { id: crypto.randomUUID(), title: "", type: "Video" } })}><Icon name="plus" className="h-4 w-4" />Add chapter</button>
+                  <button className="flex w-full items-center gap-2 px-3 py-2.5 text-[13px] text-[#141413]" onClick={() => setChapter({ sid: s.id, ch: { id: crypto.randomUUID(), title: "", type: "Video" } })}><Icon name="plus" className="h-4 w-4" />Add chapter</button>
                 </div>
               </div>
             ))}
@@ -100,7 +100,7 @@ export default function CourseEditor({ params }: { params: Promise<{ id: string 
           <Field label="Linked mangoes" hint="Buyers of these mangoes get access to this course.">
             <div className="flex flex-wrap gap-2">
               {mangoes.length === 0 && <span className="text-[13px] text-[#9b9bab]">No mangoes yet</span>}
-              {mangoes.map((m) => <button key={m} type="button" onClick={() => touch(setLinked)(linked.includes(m) ? linked.filter((x) => x !== m) : [...linked, m])} className={`rounded-md border px-2.5 py-1 text-[12px] ${linked.includes(m) ? "border-[#f2962c] bg-[#fdefdf] text-[#c7740f]" : "border-[#e1e1e1] text-[#4a4a59]"}`}>{linked.includes(m) ? "✓ " : ""}{m}</button>)}
+              {mangoes.map((m) => <button key={m} type="button" onClick={() => touch(setLinked)(linked.includes(m) ? linked.filter((x) => x !== m) : [...linked, m])} className={`rounded-md border px-2.5 py-1 text-[12px] ${linked.includes(m) ? "border-[#141413] bg-[#e9e6e0] text-[#5c5a55]" : "border-[#e1e1e1] text-[#4a4a59]"}`}>{linked.includes(m) ? "✓ " : ""}{m}</button>)}
             </div>
           </Field>
         </Panel>

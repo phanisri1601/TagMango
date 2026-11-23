@@ -21,7 +21,7 @@ function Affiliates() {
 
   const cols: Col<Row>[] = [
     { key: "n", label: "Affiliate", render: (r) => <div><p className="font-medium">{String(r.name)}</p><p className="text-[12px] text-[#6b6b7b]">{String(r.email)}</p></div> },
-    { key: "code", label: "Referral link", render: (r) => <button className="text-left text-[13px] text-[#1677ff] hover:underline" onClick={() => copy(`${location.origin}/web/lite/store/${r.userId || ""}?ref=${r.code}`, "Referral link")}><code className="rounded bg-[#fdefdf] px-1.5 text-[#c7740f]">{String(r.code)}</code> copy link</button> },
+    { key: "code", label: "Referral link", render: (r) => <button className="text-left text-[13px] text-[#141413] hover:underline" onClick={() => copy(`${location.origin}/web/lite/store/${r.userId || ""}?ref=${r.code}`, "Referral link")}><code className="rounded bg-[#e9e6e0] px-1.5 text-[#5c5a55]">{String(r.code)}</code> copy link</button> },
     { key: "c", label: "Commission", render: (r) => `${String(r.commission)}%` },
     { key: "s", label: "Sales", render: (r) => credited(r).length, sort: (a, b) => credited(a).length - credited(b).length },
     { key: "e", label: "Earned", render: (r) => <b>{inr(earned(r))}</b>, sort: (a, b) => earned(a) - earned(b) },

@@ -18,7 +18,7 @@ const FADE = "linear-gradient(rgb(0,0,0) 0%, rgb(0,0,0) 52%, rgba(0,0,0,0.78) 61
 
 export default function Hero() {
   return (
-    <section className="relative z-10 bg-[#111111] text-white">
+    <section className="on-dark relative z-10 bg-[#141413] text-white">
       <div className="absolute inset-0 overflow-hidden">
         {/* Mobile: one combined portrait image */}
         <div className="animate-column-up absolute inset-x-0 top-0 aspect-[390/420] md:hidden" style={{ maskImage: FADE, WebkitMaskImage: FADE }}>

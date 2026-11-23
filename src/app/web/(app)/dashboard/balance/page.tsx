@@ -84,7 +84,7 @@ function WithdrawDrawer({ max, onClose }: { max: number; onClose: () => void }) 
       <p className="text-[14px]">Withdrawable balance: <b>{inr(max)}</b></p>
       <p className="mt-1 text-[13px] text-[#6b6b7b]">To {me.bank!.holder}, A/C ••••{me.bank!.account.slice(-4)} ({me.bank!.ifsc})</p>
       <div className="mt-4"><Field label="Amount (₹)" required><input autoFocus type="number" min={100} className={inputCls} value={amt} onChange={(e) => setAmt(e.target.value)} /></Field></div>
-      <button className="mt-2 text-[13px] text-[#1677ff]" onClick={() => setAmt(String(Math.floor(max)))}>Withdraw full balance</button>
+      <button className="mt-2 text-[13px] text-[#141413]" onClick={() => setAmt(String(Math.floor(max)))}>Withdraw full balance</button>
     </Drawer>
   );
 }
@@ -125,10 +125,10 @@ function Inner() {
   return (
     <>
       <Walkthrough title="Request withdrawals" />
-      <div className="mb-4"><div className="rounded-md border border-[#ffe58f] bg-[#fffbe6] px-4 py-2.5 text-[13px]"><b>Please note:</b> Earnings become Withdrawable after 72 hours due to payment gateway settlement time. And creators providing GST-based services are subject to monthly <b>GST TCS deduction</b>.</div></div>
+      <div className="mb-4"><div className="rounded-md border border-[#e9e6e0] bg-[#f4f2ed] px-4 py-2.5 text-[13px]"><b>Please note:</b> Earnings become Withdrawable after 72 hours due to payment gateway settlement time. And creators providing GST-based services are subject to monthly <b>GST TCS deduction</b>.</div></div>
       {!ready && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md bg-[#2b1149] px-4 py-3 text-white">
-          <span className="flex items-center gap-2 text-[14px]"><Icon name="warning" className="h-5 w-5 text-[#f2962c]" />Complete KYC and add your bank account to withdraw.</span>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md bg-[#171716] px-4 py-3 text-white">
+          <span className="flex items-center gap-2 text-[14px]"><Icon name="warning" className="h-5 w-5 text-[#141413]" />Complete KYC and add your bank account to withdraw.</span>
           <Btn onClick={() => setKyc(true)}>Update KYC</Btn>
         </div>
       )}
@@ -160,8 +160,8 @@ function Inner() {
 function StatBox({ icon, label, value, at }: { icon: string; label: string; value: string; at: string }) {
   return (
     <div className="animate-rise flex min-w-[220px] flex-1 items-center gap-3 rounded-[10px] border border-[#ededed] p-4">
-      <span className="grid h-11 w-11 place-items-center rounded-lg bg-[#fdefdf] text-[#f2962c]"><Icon name={icon} className="h-5 w-5" /></span>
-      <div><p className="text-[12px] text-[#6b6b7b]">{label}</p><p className="text-[22px] font-semibold text-[#f2962c]">{value}</p><p className="text-[11px] text-[#9b9bab]">Updated on {at}</p></div>
+      <span className="grid h-11 w-11 place-items-center rounded-lg bg-[#e9e6e0] text-[#141413]"><Icon name={icon} className="h-5 w-5" /></span>
+      <div><p className="text-[12px] text-[#6b6b7b]">{label}</p><p className="text-[22px] font-semibold text-[#141413]">{value}</p><p className="text-[11px] text-[#9b9bab]">Updated on {at}</p></div>
     </div>
   );
 }

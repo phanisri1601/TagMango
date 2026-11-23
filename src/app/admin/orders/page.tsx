@@ -34,7 +34,7 @@ export default function Orders() {
     { key: "mango", label: "Mango", render: (o) => <span>{o.mango}{o.cycle && o.cycle !== "One-time" && <span className="ml-1 text-[11px] text-[#9b9bab]">({o.cycle})</span>}</span> },
     { key: "amount", label: "Amount", render: (o) => <b>{inr(o.amount)}</b>, sort: (a, b) => a.amount - b.amount },
     { key: "fee", label: "Fee", render: (o) => <span className="text-[#6b6b7b]">{inr(o.fee)}</span>, sort: (a, b) => a.fee - b.fee },
-    { key: "coupon", label: "Coupon", render: (o) => (o.coupon ? <code className="rounded bg-[#fdefdf] px-1.5 text-[12px] text-[#c7740f]">{o.coupon}</code> : "-") },
+    { key: "coupon", label: "Coupon", render: (o) => (o.coupon ? <code className="rounded bg-[#e9e6e0] px-1.5 text-[12px] text-[#5c5a55]">{o.coupon}</code> : "-") },
     { key: "status", label: "Status", render: (o) => <Pill tone={o.status === "Success" ? "green" : o.status === "Refunded" ? "red" : "orange"}>{o.status}</Pill> },
     { key: "a", label: "", render: (o) => (o.status === "Success" ? <RowAction icon="refresh" title="Refund order" danger onClick={() => setAct({ o, to: "Refunded" })} /> : o.status === "Refunded" ? <RowAction icon="check" title="Restore order" onClick={() => setAct({ o, to: "Success" })} /> : null) },
   ];

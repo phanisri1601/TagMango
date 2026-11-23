@@ -26,7 +26,7 @@ function Inner() {
 
   const cols: Col<Row>[] = [
     { key: "mango", label: "Mango", render: (r) => String(r.mango || "All mangoes") },
-    { key: "code", label: "Coupon Code", render: (r) => <button onClick={() => copy(String(r.code), "Coupon code")} className="rounded bg-[#fdefdf] px-2 py-1 font-mono text-[13px] font-semibold text-[#c7740f]" title="Copy">{String(r.code)}</button> },
+    { key: "code", label: "Coupon Code", render: (r) => <button onClick={() => copy(String(r.code), "Coupon code")} className="rounded bg-[#e9e6e0] px-2 py-1 font-mono text-[13px] font-semibold text-[#5c5a55]" title="Copy">{String(r.code)}</button> },
     { key: "status", label: "Status", render: (r) => <div className="flex items-center gap-2"><Toggle on={Boolean(r.active)} onChange={async (v) => { await col.update(r.id, { active: v }); toast(v ? "Coupon activated" : "Coupon deactivated"); }} label="Active" />{isActive(r) ? <Pill>Active</Pill> : <Pill tone="grey">Inactive</Pill>}</div> },
     { key: "duration", label: "Duration", render: (r) => <span className="text-[13px]">{r.start ? fmtDate(String(r.start)) : "Now"} → {r.end ? fmtDate(String(r.end)) : "No end"}</span> },
     { key: "usage", label: "Usage", render: (r) => `${used(r.code)}${r.maxUses ? ` / ${r.maxUses}` : ""}` },
@@ -39,7 +39,7 @@ function Inner() {
       <Panel className="p-5">
         <Title right={<Btn variant="black" icon="plus" onClick={() => setEdit("new")}>Create Coupon</Btn>}>Coupons</Title>
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <div className="flex gap-4 text-[14px]">{(["All", "Active", "Inactive"] as const).map((s) => <label key={s} className="flex cursor-pointer items-center gap-1.5"><input type="radio" className="accent-[#f2962c]" checked={status === s} onChange={() => setStatus(s)} />{s}</label>)}</div>
+          <div className="flex gap-4 text-[14px]">{(["All", "Active", "Inactive"] as const).map((s) => <label key={s} className="flex cursor-pointer items-center gap-1.5"><input type="radio" className="accent-[#141413]" checked={status === s} onChange={() => setStatus(s)} />{s}</label>)}</div>
           <Search value={q} onChange={setQ} placeholder="Search by coupon code" />
           <Btn variant="outline" icon="filter" onClick={() => setFilterOpen(true)}>Filter by</Btn>
         </div>
@@ -54,7 +54,7 @@ function Inner() {
       {edit && (
         <FormDrawer
           title={edit === "new" ? "Create Coupon" : "Edit Coupon"}
-          intro={<div className="rounded-md bg-[#fdefdf] px-3 py-2 text-[12.5px]">Note: Coupon won&apos;t apply if the discount reduces the final price below €1 / $1 or exceeds 80% off</div>}
+          intro={<div className="rounded-md bg-[#e9e6e0] px-3 py-2 text-[12.5px]">Note: Coupon won&apos;t apply if the discount reduces the final price below €1 / $1 or exceeds 80% off</div>}
           fields={[
             { key: "code", label: "Coupon Code", required: true, placeholder: "Enter Coupon Code", maxLength: 100 },
             { key: "mango", label: "Mango", type: "select", options: ["All mangoes", ...oneTime], required: true, hint: "Applies to all mangoes · Coupons can't be created for subscription based mangoes" },

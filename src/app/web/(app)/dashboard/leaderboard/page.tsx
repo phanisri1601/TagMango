@@ -32,10 +32,10 @@ function Board() {
   }, [sales.rows, bookings.rows, list, badges.rows, period, rules]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cols: Col<Entry>[] = [
-    { key: "rank", label: "Rank", render: (r) => { const i = rows.indexOf(r); return <span className={`grid h-7 w-7 place-items-center rounded-full text-[12px] font-semibold ${i === 0 ? "bg-[#ffd666]" : i === 1 ? "bg-[#d9d9d9]" : i === 2 ? "bg-[#ffbb96]" : "bg-[#f2f2f2]"}`}>{i + 1}</span>; } },
+    { key: "rank", label: "Rank", render: (r) => { const i = rows.indexOf(r); return <span className={`grid h-7 w-7 place-items-center rounded-full text-[12px] font-semibold ${i === 0 ? "bg-[#e9e6e0]" : i === 1 ? "bg-[#d9d9d9]" : i === 2 ? "bg-[#e9e6e0]" : "bg-[#f2f2f2]"}`}>{i + 1}</span>; } },
     { key: "name", label: "Member", render: (r) => <div><p className="font-medium">{r.name}</p><p className="text-[12px] text-[#6b6b7b]">{r.email}</p></div> },
     { key: "badge", label: "Badge", render: (r) => r.badge || "-" },
-    { key: "points", label: "Points", render: (r) => <b className="text-[#f2962c]">{r.points}</b> },
+    { key: "points", label: "Points", render: (r) => <b className="text-[#141413]">{r.points}</b> },
   ];
 
   return (

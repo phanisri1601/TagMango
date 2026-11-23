@@ -14,11 +14,11 @@ export default async function About() {
       <Section>
         <Label>About</Label>
         <H1 className="mt-4">About {coach}</H1>
-        <div className="mt-8 max-w-2xl space-y-5 text-[18px] font-light leading-relaxed text-[#3d3b36]">
+        <div className="mt-8 max-w-2xl space-y-5 text-[18px] font-light leading-relaxed text-[#5c5a55]">
           <p>{coach} works with people who are capable, well-liked and still stuck in a loop: the same reaction, the same regret, a different day.</p>
           <p>Her work starts from a simple idea. Most of what we call personality is a set of patterns that formed for good reasons and now run without a vote. When a pattern has a name, it loses some of its grip.</p>
           <p>{g?.programme || "THE HUMAN OS™"} is the programme built from that idea: a six-week path from seeing the pattern to changing how you respond.</p>
-          <p className="text-[14px] text-[#8a867d]">Draft copy. Replace this text with your own bio and photograph.</p>
+          <p className="text-[14px] text-[#5c5a55]">Draft copy. Replace this text with your own bio and photograph.</p>
         </div>
         <div className="mt-8 flex gap-3"><Button href="/stories">Stories and proof</Button><Button href="/programme" variant="outline">The programme</Button></div>
       </Section>

@@ -38,7 +38,7 @@ function FlowCard({ f, reload }: { f: Flow; reload: () => void }) {
         </div>
       </div>
       {f.note && <p className="mt-2 text-[12.5px] text-[#6b6b7b]">{f.note}</p>}
-      {f.steps.length > 0 && <button className="mt-3 text-[13px] text-[#1677ff] underline" onClick={() => setOpen(!open)}>{open ? "Hide messages" : `Show ${f.steps.length} message${f.steps.length > 1 ? "s" : ""}`}</button>}
+      {f.steps.length > 0 && <button className="mt-3 text-[13px] text-[#141413] underline" onClick={() => setOpen(!open)}>{open ? "Hide messages" : `Show ${f.steps.length} message${f.steps.length > 1 ? "s" : ""}`}</button>}
       {open && (
         <div className="mt-3 space-y-3">
           {f.steps.map((s) => {
@@ -53,7 +53,7 @@ function FlowCard({ f, reload }: { f: Flow; reload: () => void }) {
                 </div>
                 {s.channel === "email" && <input className={`${inputCls} mt-2`} value={o.subject ?? s.subject ?? ""} onChange={(e) => set({ subject: e.target.value })} />}
                 <textarea className={`${areaCls} mt-2 min-h-24`} value={o.body ?? s.body} onChange={(e) => set({ body: e.target.value })} />
-                <label className="mt-1 flex items-center gap-2 text-[12.5px]"><input type="checkbox" className="accent-[#f2962c]" checked={!!o.off} onChange={(e) => set({ off: e.target.checked })} /> Turn this message off</label>
+                <label className="mt-1 flex items-center gap-2 text-[12.5px]"><input type="checkbox" className="accent-[#141413]" checked={!!o.off} onChange={(e) => set({ off: e.target.checked })} /> Turn this message off</label>
               </div>
             );
           })}

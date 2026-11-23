@@ -13,7 +13,7 @@ const loadRzp = () => new Promise<boolean>((res) => {
 
 type Props = { mangoId: string; title: string; price: number; type: string; cycle?: string; terms?: string; successText?: string; successButton?: string; redirectUrl?: string; accent?: string };
 
-export default function CheckoutBox({ mangoId, title, price, type, cycle, terms, successText, successButton, redirectUrl, accent = "#f2962c" }: Props) {
+export default function CheckoutBox({ mangoId, title, price, type, cycle, terms, successText, successButton, redirectUrl, accent = "#141413" }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -38,8 +38,8 @@ export default function CheckoutBox({ mangoId, title, price, type, cycle, terms,
 
   if (done) {
     return (
-      <div className="animate-soft-fade rounded-2xl border border-[#ededed] bg-white p-6 text-center shadow-[0_20px_50px_-25px_rgba(0,0,0,0.3)]">
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#2e9e4f] text-[26px] text-white">✓</div>
+      <div style={{ ["--ck" as string]: accent }} className="animate-soft-fade rounded-2xl border border-[#ededed] bg-white p-6 text-center shadow-[0_20px_50px_-25px_rgba(0,0,0,0.3)]">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--ck,#2e9e4f)] text-[26px] text-white">✓</div>
         <p className="mt-3 text-[20px] font-semibold">Payment Successful</p>
         <p className="text-[24px] font-bold">₹{done.price.toLocaleString("en-IN")}</p>
         <div className="mt-4 space-y-1.5 rounded-lg bg-[#f7f7f8] p-4 text-left text-[13px]">
@@ -52,9 +52,10 @@ export default function CheckoutBox({ mangoId, title, price, type, cycle, terms,
     );
   }
 
-  const inp = "w-full rounded-lg border border-[#e1e1e1] px-3.5 py-2.5 text-[14px] outline-none focus:border-[#f2962c]";
+  const inp = "w-full rounded-lg border border-[#e1e1e1] px-3.5 py-2.5 text-[14px] outline-none focus:border-[var(--ck,#141413)]";
   return (
     <form
+      style={{ ["--ck" as string]: accent }}
       className="space-y-3 rounded-2xl border border-[#ededed] bg-white p-6 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.3)]"
       onSubmit={async (e) => {
         e.preventDefault();
@@ -105,7 +106,7 @@ export default function CheckoutBox({ mangoId, title, price, type, cycle, terms,
         </div>
       )}
       {terms ? (
-        <label className="flex gap-2 text-[12px] text-[#4a4a59]"><input type="checkbox" className="mt-0.5 accent-[#f2962c]" checked={agree} onChange={(e) => setAgree(e.target.checked)} /><span>I agree to the <details className="inline"><summary className="inline cursor-pointer text-[#1677ff]">Terms &amp; Conditions</summary><span className="mt-1 block whitespace-pre-wrap">{terms}</span></details></span></label>
+        <label className="flex gap-2 text-[12px] text-[#4a4a59]"><input type="checkbox" className="mt-0.5 accent-[var(--ck,#141413)]" checked={agree} onChange={(e) => setAgree(e.target.checked)} /><span>I agree to the <details className="inline"><summary className="inline cursor-pointer text-[#141413]">Terms &amp; Conditions</summary><span className="mt-1 block whitespace-pre-wrap">{terms}</span></details></span></label>
       ) : null}
       {msg && <p className={`text-[13px] ${msg.ok ? "text-[#00a400]" : "text-[#ff4d4f]"}`}>{msg.t}</p>}
       <button disabled={busy} style={{ background: accent }} className="w-full rounded-lg py-3 font-semibold text-white transition hover:opacity-90 disabled:opacity-60">

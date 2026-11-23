@@ -23,7 +23,7 @@ export default async function Result({ params }: { params: Promise<{ slug: strin
       <h1 className="mt-2 text-center text-[32px] font-semibold leading-tight">{prim?.name}</h1>
       <p className="mt-1 text-center text-[14px] text-[#666]">{r.type}{r.secondary ? ` with ${nm(r.secondary)?.name}` : ""}{r.third ? ` and ${nm(r.third)?.name}` : ""}</p>
       {prim?.blurb && <p className="mt-4 text-center text-[16px] text-[#444]">{prim.blurb}</p>}
-      {r.flag && <p className="mt-4 rounded-lg bg-[#f1efe8] p-3 text-center text-[14px] text-[#555]">{r.flag === "low" ? "None of the four patterns stands out strongly for you right now. That is useful to know too." : "All four patterns showed up strongly. You are carrying a lot. Be gentle with yourself."}</p>}
+      {r.flag && <p className="mt-4 rounded-lg bg-[#f4f2ed] p-3 text-center text-[14px] text-[#555]">{r.flag === "low" ? "None of the four patterns stands out strongly for you right now. That is useful to know too." : "All four patterns showed up strongly. You are carrying a lot. Be gentle with yourself."}</p>}
       <div className="mt-6 space-y-3">
         {patterns.map((p) => (
           <div key={p.id}>

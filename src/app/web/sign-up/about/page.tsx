@@ -16,7 +16,7 @@ function Chips({ options, value, onChange }: { options: string[]; value?: string
           key={o}
           type="button"
           onClick={() => onChange(o)}
-          className={`rounded-full border px-3.5 py-1.5 text-[13px] transition ${value === o ? "border-[#fb8a1b] bg-orange-50 font-medium text-[#c25f00]" : "border-[#d9d9d9] text-ink/70 hover:border-ink/30"}`}
+          className={`rounded-full border px-3.5 py-1.5 text-[13px] transition ${value === o ? "border-[#141413] bg-orange-50 font-medium text-[#141413]" : "border-[#d9d9d9] text-ink/70 hover:border-ink/30"}`}
         >
           {o}
         </button>

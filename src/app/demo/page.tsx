@@ -10,7 +10,7 @@ export default function Demo() {
       <Navbar />
       <main>
         <section className="relative overflow-hidden bg-ink px-4 pb-24 pt-36 text-white">
-          <div className="pointer-events-none absolute -bottom-40 left-1/2 h-72 w-[900px] -translate-x-1/2 rounded-[50%] bg-[#ff6a00]/30 blur-[90px]" />
+          <div className="pointer-events-none absolute -bottom-40 left-1/2 h-72 w-[900px] -translate-x-1/2 rounded-[50%] bg-[#141413]/30 blur-[90px]" />
           <div className="relative mx-auto grid max-w-5xl gap-12 md:grid-cols-2 md:items-center">
             <div>
               <h1 className="font-display text-[36px] font-bold leading-[1.1] tracking-tight md:text-[52px]">

@@ -45,7 +45,7 @@ export default function Withdrawals() {
       render: (w) => (
         <div className="text-[13px]">
           <p>{w.holder || "—"}</p>
-          <button className="text-left text-[#1677ff] hover:underline" title="Copy account number" onClick={() => copy(w.account, "Account number")}>A/C {w.account || "—"}</button>
+          <button className="text-left text-[#141413] hover:underline" title="Copy account number" onClick={() => copy(w.account, "Account number")}>A/C {w.account || "—"}</button>
           <p className="text-[12px] text-[#6b6b7b]">{w.ifsc}</p>
         </div>
       ),

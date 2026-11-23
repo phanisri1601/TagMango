@@ -49,7 +49,7 @@ export default function LoginForm() {
         <h1 className="text-[30px] font-semibold leading-tight">Enter OTP</h1>
         <p className="mt-2 text-[14px] text-ink/70">
           We sent a 6-digit code to <b>{via === "phone" ? `+91 ${phone}` : email}</b>{" "}
-          <button className="text-[#1a73e8]" onClick={() => { setStage("id"); setError(undefined); }}>Edit</button>
+          <button className="text-[#141413]" onClick={() => { setStage("id"); setError(undefined); }}>Edit</button>
         </p>
         <form className="mt-8 space-y-4" onSubmit={(e) => { e.preventDefault(); verify(); }}>
           <OtpBoxes value={otp} onChange={setOtp} onComplete={verify} />
@@ -76,12 +76,12 @@ export default function LoginForm() {
         <OrangeButton disabled={!ready} loading={loading}>Request OTP</OrangeButton>
         <p className="pt-3 text-center text-[13px] text-ink/80">
           OR,{" "}
-          <button type="button" className="font-medium text-[#1a73e8]" onClick={() => { setVia(via === "phone" ? "email" : "phone"); setError(undefined); }}>
+          <button type="button" className="font-medium text-[#141413]" onClick={() => { setVia(via === "phone" ? "email" : "phone"); setError(undefined); }}>
             Login using {via === "phone" ? "email" : "phone"}
           </button>
         </p>
         <p className="text-center text-[12px] text-ink/70">
-          Not registered yet? <Link href="/web/sign-up" className="font-medium text-[#1a73e8]">Sign Up</Link>
+          Not registered yet? <Link href="/web/sign-up" className="font-medium text-[#141413]">Sign Up</Link>
         </p>
       </form>
     </div>

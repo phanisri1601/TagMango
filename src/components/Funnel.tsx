@@ -27,7 +27,7 @@ export default function Funnel() {
             {STEPS.map((s, i) => (
               <li key={s.n}>
                 <Reveal delay={i * 0.1} className="group h-full">
-                  <div className="relative flex h-full flex-col rounded-[24px] border border-black/[0.06] bg-[#f6f2ef] p-5 transition duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.3)]">
+                  <div className="relative flex h-full flex-col rounded-[24px] border border-black/[0.06] bg-[#f4f2ed] p-5 transition duration-500 [transition-timing-function:var(--ease-out-expo)] hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_24px_50px_-24px_rgba(0,0,0,0.3)]">
                     <span className="bg-mango relative z-10 grid h-[54px] w-[54px] place-items-center rounded-full font-display text-[16px] font-bold text-white shadow-[0_8px_24px_-8px_rgba(var(--accent-rgb),0.7)] transition-transform duration-500 group-hover:scale-110">{s.n}</span>
                     <h3 className="mt-5 font-display text-[20px] font-bold leading-tight text-ink">{s.t}</h3>
                     <p className="mt-1 text-[13px] font-medium text-ink/50">{s.who}</p>

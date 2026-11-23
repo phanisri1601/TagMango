@@ -29,7 +29,7 @@ function Attendance({ mc, onClose }: { mc: Row; onClose: () => void }) {
       <div className="max-h-[50vh] overflow-y-auto rounded border border-[#ededed]">
         {regs.length ? regs.sort((a, b) => Number(a.seat) - Number(b.seat)).map((r) => (
           <label key={r.id} className="flex items-center gap-3 border-b border-[#f3f3f3] px-3 py-2 text-[14px] last:border-0">
-            <input type="checkbox" className="h-4 w-4 accent-[#f2962c]" checked={sel.includes(r.id)} onChange={(e) => setOn(e.target.checked ? [...sel, r.id] : sel.filter((x) => x !== r.id))} />
+            <input type="checkbox" className="h-4 w-4 accent-[#141413]" checked={sel.includes(r.id)} onChange={(e) => setOn(e.target.checked ? [...sel, r.id] : sel.filter((x) => x !== r.id))} />
             <span className="w-10 text-[#6b6b7b]">#{String(r.seat)}</span><span className="flex-1">{String(r.name)}</span><span className="text-[12.5px] text-[#6b6b7b]">{String(r.email)}</span>
           </label>
         )) : <p className="p-6 text-center text-[#6b6b7b]">Nobody has registered yet.</p>}

@@ -6,12 +6,12 @@ import { FormDrawer } from "@/components/dash/forms";
 import { useCustomers, useMangoTitles } from "@/components/dash/hooks";
 
 const DESIGNS = [
-  { id: "classic", name: "Classic", border: "#c9a24d", bg: "#fffdf6", ink: "#3b2f12" },
-  { id: "modern", name: "Modern", border: "#f2962c", bg: "#ffffff", ink: "#0f0f0f" },
-  { id: "navy", name: "Navy", border: "#1e3a8a", bg: "#f5f8ff", ink: "#1e293b" },
-  { id: "dark", name: "Dark", border: "#f2962c", bg: "#111111", ink: "#ffffff" },
+  { id: "classic", name: "Classic", border: "#5c5a55", bg: "#f4f2ed", ink: "#171716" },
+  { id: "modern", name: "Modern", border: "#141413", bg: "#ffffff", ink: "#0f0f0f" },
+  { id: "navy", name: "Navy", border: "#141413", bg: "#f4f2ed", ink: "#171716" },
+  { id: "dark", name: "Dark", border: "#141413", bg: "#111111", ink: "#ffffff" },
   { id: "mint", name: "Mint", border: "#10b981", bg: "#f0fdf8", ink: "#064e3b" },
-  { id: "violet", name: "Violet", border: "#7c3aed", bg: "#faf5ff", ink: "#2e1065" },
+  { id: "violet", name: "Violet", border: "#141413", bg: "#f4f2ed", ink: "#171716" },
   { id: "rose", name: "Rose", border: "#e11d48", bg: "#fff1f2", ink: "#4c0519" },
 ];
 const design = (id: unknown) => DESIGNS.find((d) => d.id === id) || DESIGNS[0];

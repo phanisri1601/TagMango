@@ -26,7 +26,7 @@ function Submit({ a, onDone }: { a: P["assignments"][number]; onDone: () => void
       <input className={input} placeholder="Link to a file (Drive, Dropbox…), optional" value={link} disabled={locked} onChange={(e) => setLink(e.target.value)} />
       {!locked && <button className="rounded-lg bg-[#111] px-4 py-2 text-[14px] text-white" onClick={async () => { const r = await fetch("/api/portal", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "submit", assignmentId: a.id, text, link }) }).then((x) => x.json()); if (r.error) setMsg(r.error); else { setMsg("Submitted"); onDone(); } }}>{a.submission ? "Update submission" : "Submit"}</button>}
       {msg && <p className="text-[13px] text-[#555]">{msg}</p>}
-      {a.submission?.feedback && <div className="rounded-lg bg-[#f1efe8] p-3 text-[14px]"><p className="text-[12px] font-medium uppercase tracking-wide text-[#888]">Feedback</p><p className="whitespace-pre-wrap">{a.submission.feedback}</p></div>}
+      {a.submission?.feedback && <div className="rounded-lg bg-[#f4f2ed] p-3 text-[14px]"><p className="text-[12px] font-medium uppercase tracking-wide text-[#888]">Feedback</p><p className="whitespace-pre-wrap">{a.submission.feedback}</p></div>}
     </div>
   );
 }
@@ -61,7 +61,7 @@ export default function Portal() {
         <section className={card}>
           <div className="flex justify-between text-[14px]"><b>Your progress</b><b>{p.progress}%</b></div>
           <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-[#eee]"><div className="h-full rounded-full bg-[#111] transition-all" style={{ width: `${p.progress}%` }} /></div>
-          {p.completed && <div className="mt-3 flex flex-wrap items-center gap-3 rounded-lg bg-[#f1efe8] p-3 text-[14px]"><span>You have completed the programme.</span><Link className="underline" href="/portal/certificate">View certificate</Link>{p.quizLink && <Link className="underline" href={p.quizLink}>Retake the Pattern Check</Link>}</div>}
+          {p.completed && <div className="mt-3 flex flex-wrap items-center gap-3 rounded-lg bg-[#f4f2ed] p-3 text-[14px]"><span>You have completed the programme.</span><Link className="underline" href="/portal/certificate">View certificate</Link>{p.quizLink && <Link className="underline" href={p.quizLink}>Retake the Pattern Check</Link>}</div>}
         </section>
 
         {p.updates.length > 0 && <section className={card}><h2 className="text-[16px] font-semibold">Announcements</h2><div className="mt-2 space-y-3">{p.updates.slice(0, 3).map((u) => <div key={u.id}><p className="font-medium">{u.title}</p><p className="whitespace-pre-wrap text-[14px] text-[#555]">{u.body}</p></div>)}</div></section>}
@@ -83,7 +83,7 @@ export default function Portal() {
                 <div key={a.id} className="rounded-lg border border-[#eee] p-3 text-[14px]">
                   <p className="text-[12px] uppercase tracking-wide text-[#888]">Assignment{a.dueAt ? ` · due ${new Date(a.dueAt).toLocaleDateString("en-IN", { dateStyle: "medium" })}` : ""}</p>
                   <p className="font-medium">{a.title}</p>{a.brief && <p className="whitespace-pre-wrap text-[#555]">{a.brief}</p>}
-                  {w >= 4 && (p.boundaryLine || p.referralLine) && <p className="mt-2 rounded bg-[#f1efe8] p-2 text-[13px] text-[#555]">{[p.boundaryLine, p.referralLine].filter(Boolean).join(" ")}</p>}
+                  {w >= 4 && (p.boundaryLine || p.referralLine) && <p className="mt-2 rounded bg-[#f4f2ed] p-2 text-[13px] text-[#555]">{[p.boundaryLine, p.referralLine].filter(Boolean).join(" ")}</p>}
                   <Submit a={a} onDone={load} />
                 </div>
               ))}

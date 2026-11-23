@@ -14,10 +14,10 @@ export default async function Contact() {
       <div>
         <Label>Footer and utility</Label>
         <H1 className="mt-4">Contact</H1>
-        <p className="mt-6 max-w-md text-[18px] font-light leading-relaxed text-[#3d3b36]">Questions about the programme, an order or a refund? Write here and we reply within two working days.</p>
-        {g?.alertEmail ? <p className="mt-4 text-[15px] text-[#6f6c66]">{String(g.alertEmail)}</p> : null}
+        <p className="mt-6 max-w-md text-[18px] font-light leading-relaxed text-[#5c5a55]">Questions about the programme, an order or a refund? Write here and we reply within two working days.</p>
+        {g?.alertEmail ? <p className="mt-4 text-[15px] text-[#5c5a55]">{String(g.alertEmail)}</p> : null}
       </div>
-      <div className="border border-[#1c1c1c] bg-[#faf9f6] p-6"><SiteForm kind="contact" consent="" cta="Send message" done={<p className="text-[20px]" style={{ fontFamily: "var(--font-vietnam)" }}>Thank you. Your message has been sent.</p>} /></div>
+      <div className="border border-[#141413] bg-[#ffffff] p-6"><SiteForm kind="contact" consent="" cta="Send message" done={<p className="text-[20px]" style={{ fontFamily: "var(--font-vietnam)" }}>Thank you. Your message has been sent.</p>} /></div>
     </Section>
       <Section><Head label="Ways to reach us" title="Pick what suits you" /><Cards items={[{ t: "Write a message", d: "Use the form above. We reply within two working days." }, { t: "About an order or refund", d: "Quote your receipt number and we will look into it straight away." }, { t: "Media and speaking", d: "See the press page for a short bio and how to ask." }]} /></Section>
       <Section><Head label="Questions" title="Quick answers" /><Questions items={[["How fast will I get a reply?", "Within two working days. Weekends can take a little longer."], ["Where do I find my receipt?", "On the confirmation page after payment, and in the email we sent you."], ["I want to stop emails.", "Use the unsubscribe link at the bottom of any email, or write to us here."]]} /></Section>

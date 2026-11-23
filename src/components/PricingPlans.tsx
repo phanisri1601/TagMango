@@ -56,7 +56,7 @@ export default function PricingPlans() {
   const [sel, setSel] = useState(2);
 
   return (
-    <section className="bg-[#faf6f1] px-4 py-20">
+    <section className="bg-[#f4f2ed] px-4 py-20">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto flex max-w-3xl flex-col items-center justify-between gap-6 rounded-[28px] border border-black/5 bg-white p-6 md:flex-row md:p-8">
           <div>

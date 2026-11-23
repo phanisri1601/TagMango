@@ -17,9 +17,9 @@ function Post({ p, comments }: { p: Row; comments: ReturnType<typeof useCollecti
   return (
     <Panel className="p-5">
       <div className="flex items-center gap-3">
-        <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-[#ff6a00] to-[#f6bb22] font-semibold text-white">{me.name[0]?.toUpperCase()}</span>
+        <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-[#141413] to-[#5c5a55] font-semibold text-white">{me.name[0]?.toUpperCase()}</span>
         <div className="flex-1">
-          <p className="font-semibold">{me.name} <span className="ml-1 rounded bg-[#fdefdf] px-1.5 py-0.5 text-[10px] font-semibold text-[#c7740f]">CREATOR</span></p>
+          <p className="font-semibold">{me.name} <span className="ml-1 rounded bg-[#e9e6e0] px-1.5 py-0.5 text-[10px] font-semibold text-[#5c5a55]">CREATOR</span></p>
           <p className="text-[12px] text-[#6b6b7b]">{ago(p.createdAt)} · {String(p.audience || "Everyone")}</p>
         </div>
         <div className="relative">
@@ -33,7 +33,7 @@ function Post({ p, comments }: { p: Row; comments: ReturnType<typeof useCollecti
           )}
         </div>
       </div>
-      {p.pinned ? <p className="mt-2 text-[12px] font-medium text-[#f2962c]">📌 Pinned</p> : null}
+      {p.pinned ? <p className="mt-2 text-[12px] font-medium text-[#141413]">📌 Pinned</p> : null}
       <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed">{String(p.text)}</p>
       <div className="mt-4 flex gap-6 border-t border-[#f0f0f0] pt-3 text-[14px] text-[#6b6b7b]">
         <button onClick={() => posts.update(p.id, { liked: !liked, likes: Math.max(0, Number(p.likes || 0) + (liked ? -1 : 1)) })} className={`flex items-center gap-1.5 transition ${liked ? "text-[#e5372e]" : "hover:text-[#0f0f0f]"}`}><Icon name="heart" className="h-5 w-5" />{Number(p.likes || 0)}</button>
@@ -43,7 +43,7 @@ function Post({ p, comments }: { p: Row; comments: ReturnType<typeof useCollecti
         <div className="animate-soft-fade mt-3 space-y-2">
           {mine.map((c) => <div key={c.id} className="rounded-lg bg-[#f7f7f8] px-3 py-2 text-[14px]"><b className="mr-1">{me.name}</b>{String(c.text)}</div>)}
           <form className="flex gap-2" onSubmit={async (e) => { e.preventDefault(); if (!text.trim()) return; await comments.create({ postId: p.id, text: text.trim() }); setText(""); }}>
-            <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Write a comment…" className="h-10 flex-1 rounded-md border border-[#e1e1e1] px-3 text-[14px] outline-none focus:border-[#f2962c]" />
+            <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Write a comment…" className="h-10 flex-1 rounded-md border border-[#e1e1e1] px-3 text-[14px] outline-none focus:border-[#141413]" />
             <Btn>Reply</Btn>
           </form>
         </div>
@@ -68,7 +68,7 @@ export default function Feed() {
       {live.length > 0 && (
         <div className="flex snap-x gap-3 overflow-x-auto">
           {live.map((b) => (
-            <a key={b.id} href={b.link ? String(b.link) : undefined} target="_blank" rel="noreferrer" className="relative grid aspect-[3/1] min-w-full snap-start place-items-center overflow-hidden rounded-[10px] bg-gradient-to-r from-[#3a1606] to-[#f2962c] text-white">
+            <a key={b.id} href={b.link ? String(b.link) : undefined} target="_blank" rel="noreferrer" className="relative grid aspect-[3/1] min-w-full snap-start place-items-center overflow-hidden rounded-[10px] bg-gradient-to-r from-[#171716] to-[#141413] text-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {b.image ? <img src={String(b.image)} alt="" className="absolute inset-0 h-full w-full object-cover" /> : null}
               <p className="relative px-4 text-center text-[20px] font-bold drop-shadow">{String(b.title)}</p>
@@ -78,7 +78,7 @@ export default function Feed() {
       )}
       <Panel className="p-5">
         <div className="flex gap-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#ff6a00] to-[#f6bb22] font-semibold text-white">{me.name[0]?.toUpperCase()}</span>
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#141413] to-[#5c5a55] font-semibold text-white">{me.name[0]?.toUpperCase()}</span>
           <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Share an update with your community…" className={`${areaCls} min-h-20 flex-1 resize-none`} />
         </div>
         <div className="mt-3 flex items-center justify-between gap-3">

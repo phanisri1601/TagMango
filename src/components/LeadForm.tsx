@@ -6,10 +6,10 @@ export default function LeadForm({ slug }: { slug: string }) {
   const [state, setState] = useState<"idle" | "busy" | "done">("idle");
   const [err, setErr] = useState<string>();
   if (state === "done") return <p className="animate-soft-fade rounded-lg bg-[#e9f9ee] p-4 text-[14px] text-[#166534]">Thanks! The creator will get in touch with you soon.</p>;
-  const inp = "w-full rounded-lg border border-[#e1e1e1] px-3.5 py-2.5 text-[14px] outline-none focus:border-[#f2962c]";
+  const inp = "w-full rounded-lg border border-[#e1e1e1] px-3.5 py-2.5 text-[14px] outline-none focus:border-[#141413]";
   return (
     <form
-      className="space-y-2 rounded-xl border border-dashed border-[#f2962c]/60 p-4"
+      className="space-y-2 rounded-xl border border-dashed border-[#141413]/60 p-4"
       onSubmit={async (e) => {
         e.preventDefault();
         setState("busy");

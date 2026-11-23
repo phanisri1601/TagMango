@@ -23,7 +23,7 @@ export async function findStore(userId: string) {
   if (st.active === false) return { off: true as const, creator: { name: o.name } };
   const hidden = new Set((st.hidden as string[]) || []);
   const mangoes = asRows(await store.find("mangoes", [["userId", userId], ["active", true]])).filter((m) => !hidden.has(m.id));
-  return { off: false as const, creator: { name: String(st.name || o.name), tagline: String(st.tagline || o.about?.category || ""), bio: String(st.bio || ""), avatar: String(st.avatar || ""), color: String(st.color || "#f2962c"), instagram: String(st.instagram || ""), youtube: String(st.youtube || "") }, mangoes };
+  return { off: false as const, creator: { name: String(st.name || o.name), tagline: String(st.tagline || o.about?.category || ""), bio: String(st.bio || ""), avatar: String(st.avatar || ""), color: String(st.color || "#141413"), instagram: String(st.instagram || ""), youtube: String(st.youtube || "") }, mangoes };
 }
 
 export async function findMango(id: string) {

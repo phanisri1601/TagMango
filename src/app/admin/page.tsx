@@ -8,13 +8,13 @@ import { Icon } from "@/components/dash/icons";
 import { HBar, LineChart } from "@/components/admin/charts";
 import { ErrorBox, PageHead, PlanBadge, Skeleton, when } from "@/components/admin/ui";
 
-const PLAN_COLOR = { basic: "#bfbfbf", pro: "#1677ff", advanced: "#f2962c", ultimate: "#7c3aed" } as const;
+const PLAN_COLOR = { basic: "#bfbfbf", pro: "#141413", advanced: "#141413", ultimate: "#141413" } as const;
 const ACT_ICON = { signup: "user", order: "sales", withdrawal: "download", report: "warning" } as const;
 
 function Attention({ href, icon, value, label, tone }: { href: string; icon: string; value: string | number; label: string; tone: "orange" | "red" | "grey" }) {
-  const t = { orange: "bg-[#fff1e3] text-[#c7740f]", red: "bg-[#fff2f0] text-[#cf1322]", grey: "bg-[#f2f2f2] text-[#4a4a59]" }[tone];
+  const t = { orange: "bg-[#f4f2ed] text-[#5c5a55]", red: "bg-[#fff2f0] text-[#cf1322]", grey: "bg-[#f2f2f2] text-[#4a4a59]" }[tone];
   return (
-    <Link href={href} className="animate-rise flex min-w-[220px] flex-1 items-center gap-3 rounded-[10px] border border-[#ededed] bg-white p-4 transition hover:border-[#f2962c] hover:shadow-sm">
+    <Link href={href} className="animate-rise flex min-w-[220px] flex-1 items-center gap-3 rounded-[10px] border border-[#ededed] bg-white p-4 transition hover:border-[#141413] hover:shadow-sm">
       <span className={`grid h-11 w-11 place-items-center rounded-lg ${t}`}><Icon name={icon} className="h-5 w-5" /></span>
       <div><p className="text-[22px] font-semibold leading-none">{value}</p><p className="mt-1 text-[12px] text-[#6b6b7b]">{label}</p></div>
       <Icon name="chevron" className="ml-auto h-4 w-4 -rotate-90 text-[#bfbfbf]" />
@@ -49,11 +49,11 @@ export default function Overview() {
       <div className="mt-5 grid gap-5 xl:grid-cols-2">
         <Panel className="p-5" delay={0.05}>
           <Title sub="Successful orders, last 30 days">Gross merchandise value</Title>
-          <div className="mt-3"><LineChart labels={d.series.labels} money series={[{ name: "GMV", color: "#f2962c", values: d.series.gmv }]} /></div>
+          <div className="mt-3"><LineChart labels={d.series.labels} money series={[{ name: "GMV", color: "#141413", values: d.series.gmv }]} /></div>
         </Panel>
         <Panel className="p-5" delay={0.1}>
           <Title sub="Last 30 days">Orders & sign-ups</Title>
-          <div className="mt-3"><LineChart labels={d.series.labels} series={[{ name: "Orders", color: "#1677ff", values: d.series.orders }, { name: "New creators", color: "#00a400", values: d.series.signups }]} /></div>
+          <div className="mt-3"><LineChart labels={d.series.labels} series={[{ name: "Orders", color: "#141413", values: d.series.orders }, { name: "New creators", color: "#00a400", values: d.series.signups }]} /></div>
         </Panel>
       </div>
 
@@ -64,7 +64,7 @@ export default function Overview() {
         </Panel>
 
         <Panel className="p-5" delay={0.16}>
-          <Title right={<Link href="/admin/creators" className="text-[13px] text-[#1677ff]">All creators</Link>} sub="By lifetime GMV">Top creators</Title>
+          <Title right={<Link href="/admin/creators" className="text-[13px] text-[#141413]">All creators</Link>} sub="By lifetime GMV">Top creators</Title>
           <div className="mt-4 divide-y divide-[#f0f0f0]">
             {d.top.length === 0 && <p className="py-6 text-center text-[13px] text-[#9b9bab]">No creators yet</p>}
             {d.top.map((c, i) => (
@@ -84,7 +84,7 @@ export default function Overview() {
             {d.activity.length === 0 && <p className="py-6 text-center text-[13px] text-[#9b9bab]">Nothing yet</p>}
             {d.activity.map((a, i) => (
               <div key={i} className="flex gap-3 text-[13px]">
-                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#fdefdf] text-[#f2962c]"><Icon name={ACT_ICON[a.type]} className="h-3.5 w-3.5" /></span>
+                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#e9e6e0] text-[#141413]"><Icon name={ACT_ICON[a.type]} className="h-3.5 w-3.5" /></span>
                 <div className="min-w-0"><p className="leading-snug">{a.text}</p><p className="text-[11px] text-[#9b9bab]">{when(a.at)}</p></div>
               </div>
             ))}

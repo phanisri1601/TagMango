@@ -23,16 +23,16 @@ function Receipt() {
       {err && <p className="mt-6 text-[#b3261e]">{err}</p>}
       {r && (
         <>
-          <p className="mt-4 text-[17px] font-light text-[#4a4843]">{r.status === "Success" ? "Thank you. A receipt has been sent to your email, and your learner portal is open." : r.status === "Pending" ? "We are waiting for the bank to confirm. This page updates when you refresh." : r.status === "Failed" ? "The payment did not go through. You can try again; no money was taken." : ""}</p>
-          <dl className="mt-8 border border-[#1c1c1c] bg-[#faf9f6]">
-            {rows.map(([k, v]) => <div key={k} className="grid grid-cols-[130px_1fr] gap-3 border-b border-[#d6d2c9] px-5 py-3 text-[15px] last:border-0"><dt className="text-[#6f6c66]">{k}</dt><dd className="break-words">{v}</dd></div>)}
+          <p className="mt-4 text-[17px] font-light text-[#5c5a55]">{r.status === "Success" ? "Thank you. A receipt has been sent to your email, and your learner portal is open." : r.status === "Pending" ? "We are waiting for the bank to confirm. This page updates when you refresh." : r.status === "Failed" ? "The payment did not go through. You can try again; no money was taken." : ""}</p>
+          <dl className="mt-8 border border-[#141413] bg-[#ffffff]">
+            {rows.map(([k, v]) => <div key={k} className="grid grid-cols-[130px_1fr] gap-3 border-b border-[#e9e6e0] px-5 py-3 text-[15px] last:border-0"><dt className="text-[#5c5a55]">{k}</dt><dd className="break-words">{v}</dd></div>)}
           </dl>
           <div className="mt-8 flex flex-wrap gap-3 print:hidden">
-            <button onClick={() => window.print()} className="border border-[#1c1c1c] px-6 py-3 text-[14px]">Print or save receipt</button>
-            {r.status === "Success" && <Link href="/portal" className="bg-[#1c1c1c] px-6 py-3 text-[14px] text-[#f3f1ec]">Go to the learner portal</Link>}
-            {r.status === "Failed" && <Link href="/enrol" className="bg-[#1c1c1c] px-6 py-3 text-[14px] text-[#f3f1ec]">Try again</Link>}
+            <button onClick={() => window.print()} className="border border-[#141413] px-6 py-3 text-[14px]">Print or save receipt</button>
+            {r.status === "Success" && <Link href="/portal" className="bg-[#141413] px-6 py-3 text-[14px] text-[#f4f2ed]">Go to the learner portal</Link>}
+            {r.status === "Failed" && <Link href="/enrol" className="bg-[#141413] px-6 py-3 text-[14px] text-[#f4f2ed]">Try again</Link>}
           </div>
-          <p className="mt-8 text-[13px] text-[#8a867d]" style={serif}>Questions about this order? Use the contact page and quote the receipt number.</p>
+          <p className="mt-8 text-[13px] text-[#5c5a55]" style={serif}>Questions about this order? Use the contact page and quote the receipt number.</p>
         </>
       )}
     </Section>

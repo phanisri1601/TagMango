@@ -11,12 +11,12 @@ export default function Method() {
     <Section>
       <Label>Programme</Label>
       <H1 className="mt-4">The method</H1>
-      <p className="mt-6 max-w-2xl text-[18px] font-light leading-relaxed text-[#3d3b36]">Five moves, in order. Each one is small enough to do in a working week.</p>
+      <p className="mt-6 max-w-2xl text-[18px] font-light leading-relaxed text-[#5c5a55]">Five moves, in order. Each one is small enough to do in a working week.</p>
       <ol className="mt-10 max-w-3xl">
         {METHOD_STEPS.map((s) => (
-          <li key={s.n} className="grid grid-cols-[64px_1fr] gap-4 border-t border-[#1c1c1c] py-6">
-            <span className="text-[36px] leading-none text-[#8a867d]" style={serif}>{s.n}</span>
-            <div><h2 className="text-[32px] leading-none" style={serif}>{s.t}</h2><p className="mt-2 text-[16px] font-light leading-relaxed text-[#4a4843]">{s.d}</p></div>
+          <li key={s.n} className="grid grid-cols-[64px_1fr] gap-4 border-t border-[#141413] py-6">
+            <span className="text-[36px] leading-none text-[#5c5a55]" style={serif}>{s.n}</span>
+            <div><h2 className="text-[32px] leading-none" style={serif}>{s.t}</h2><p className="mt-2 text-[16px] font-light leading-relaxed text-[#5c5a55]">{s.d}</p></div>
           </li>
         ))}
       </ol>

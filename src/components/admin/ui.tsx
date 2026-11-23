@@ -15,9 +15,9 @@ export function PageHead({ title, sub, right }: { title: string; sub?: React.Rea
 
 const PLAN: Record<Plan, string> = {
   basic: "bg-[#f0f0f0] text-[#4a4a59]",
-  pro: "bg-[#e6f4ff] text-[#0958d9]",
-  advanced: "bg-[#fff1e3] text-[#c7740f]",
-  ultimate: "bg-[#f3e8ff] text-[#7c3aed]",
+  pro: "bg-[#e9e6e0] text-[#0958d9]",
+  advanced: "bg-[#f4f2ed] text-[#5c5a55]",
+  ultimate: "bg-[#e9e6e0] text-[#141413]",
 };
 export function PlanBadge({ plan }: { plan: Plan }) {
   return <span className={`inline-flex h-5 items-center rounded-full px-2.5 text-[11px] font-semibold uppercase tracking-wide ${PLAN[plan]}`}>{plan}</span>;

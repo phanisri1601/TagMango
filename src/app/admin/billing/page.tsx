@@ -8,7 +8,7 @@ import { Btn, DataTable, EmptySearch, Panel, Pill, Search, StatCard, Title, type
 import { HBar } from "@/components/admin/charts";
 import { ErrorBox, PageHead, day } from "@/components/admin/ui";
 
-const COLOR = { basic: "#bfbfbf", pro: "#1677ff", advanced: "#f2962c", ultimate: "#7c3aed" } as const;
+const COLOR = { basic: "#bfbfbf", pro: "#141413", advanced: "#141413", ultimate: "#141413" } as const;
 
 export default function Billing() {
   const { data, loading, error, reload } = useAdminData<{ invoices: AInvoice[]; plans: { plan: Plan; price: number; count: number }[]; mrr: number; invoiced: number; freedom: number }>("/api/admin/billing");

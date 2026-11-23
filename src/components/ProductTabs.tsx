@@ -113,7 +113,7 @@ export default function ProductTabs() {
                         </div>
                       </div>
                   ) : <div />}
-                  <div className={`hidden overflow-hidden rounded-[20px] bg-[#f6f2ef] transition-all duration-500 [transition-timing-function:var(--ease-out-expo)] sm:block ${i === active ? "scale-100 opacity-100" : "scale-[0.97] opacity-0"}`}>
+                  <div className={`hidden overflow-hidden rounded-[20px] bg-[#f4f2ed] transition-all duration-500 [transition-timing-function:var(--ease-out-expo)] sm:block ${i === active ? "scale-100 opacity-100" : "scale-[0.97] opacity-0"}`}>
                     <Lottie src={t.lottie} playing={i === active} className="aspect-[698/386] w-full" />
                   </div>
                 </div>

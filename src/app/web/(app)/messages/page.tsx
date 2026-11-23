@@ -39,8 +39,8 @@ export default function Messages() {
           {people.map((p) => {
             const last = msgs.rows.find((m) => m.to === p.email);
             return (
-              <button key={p.email} onClick={() => setActive(p.email)} className={`flex w-full items-center gap-3 px-4 py-3 text-left transition ${cur?.email === p.email ? "bg-[#fdefdf]" : "hover:bg-[#fafafa]"}`}>
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#fdefdf] font-semibold text-[#c7740f]">{p.name[0]?.toUpperCase()}</span>
+              <button key={p.email} onClick={() => setActive(p.email)} className={`flex w-full items-center gap-3 px-4 py-3 text-left transition ${cur?.email === p.email ? "bg-[#e9e6e0]" : "hover:bg-[#fafafa]"}`}>
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#e9e6e0] font-semibold text-[#5c5a55]">{p.name[0]?.toUpperCase()}</span>
                 <span className="min-w-0 flex-1"><b className="block truncate text-[14px]">{p.name}</b><span className="block truncate text-[12px] text-[#6b6b7b]">{last ? String(last.text) : p.email}</span></span>
               </button>
             );
@@ -50,20 +50,20 @@ export default function Messages() {
       {cur && (
         <div className="flex min-h-0 flex-col">
           <div className="flex items-center gap-3 border-b border-[#ededed] px-5 py-3">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-[#fdefdf] font-semibold text-[#c7740f]">{cur.name[0]?.toUpperCase()}</span>
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-[#e9e6e0] font-semibold text-[#5c5a55]">{cur.name[0]?.toUpperCase()}</span>
             <div><p className="font-semibold">{cur.name}</p><p className="text-[12px] text-[#6b6b7b]">{cur.mangoes.join(", ")}</p></div>
           </div>
           <div className="flex-1 space-y-2 overflow-y-auto bg-[#f7f7f8] p-5">
             {thread.length === 0 && <p className="pt-10 text-center text-[13px] text-[#9b9bab]">Say hello to {cur.name.split(" ")[0]} 👋</p>}
             {thread.map((m) => (
-              <div key={m.id} className="animate-soft-fade ml-auto w-fit max-w-[75%] rounded-2xl rounded-br-sm bg-[#f2962c] px-4 py-2 text-[14px] text-white">
+              <div key={m.id} className="animate-soft-fade ml-auto w-fit max-w-[75%] rounded-2xl rounded-br-sm bg-[#141413] px-4 py-2 text-[14px] text-white">
                 {String(m.text)}<span className="mt-0.5 block text-right text-[10px] text-white/75">{new Date(m.createdAt).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</span>
               </div>
             ))}
             <div ref={end} />
           </div>
           <form className="flex gap-2 border-t border-[#ededed] p-3" onSubmit={async (e) => { e.preventDefault(); const t = text.trim(); if (!t) return; setText(""); await msgs.create({ to: cur.email, text: t }); }}>
-            <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type a message…" className="h-10 flex-1 rounded-md border border-[#e1e1e1] px-3.5 text-[14px] outline-none focus:border-[#f2962c]" />
+            <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type a message…" className="h-10 flex-1 rounded-md border border-[#e1e1e1] px-3.5 text-[14px] outline-none focus:border-[#141413]" />
             <Btn aria-label="Send" icon="send" />
           </form>
         </div>

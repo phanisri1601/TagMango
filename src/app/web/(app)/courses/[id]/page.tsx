@@ -38,7 +38,7 @@ export default function CoursePlayer({ params }: { params: Promise<{ id: string 
   };
 
   if (col.loading) return <div className="mx-auto h-64 max-w-6xl animate-pulse rounded-[10px] bg-white" />;
-  if (!course) return <Panel className="mx-auto max-w-xl p-8 text-center">Course not found. <Link href="/web/courses" className="text-[#1677ff]">Back</Link></Panel>;
+  if (!course) return <Panel className="mx-auto max-w-xl p-8 text-center">Course not found. <Link href="/web/courses" className="text-[#141413]">Back</Link></Panel>;
   const ch = all.find((c) => c.id === cur);
   const pct = all.length ? Math.round((done.filter((d) => all.some((c) => c.id === d)).length / all.length) * 100) : 0;
   const src = ch?.url ? embed(ch.url) : null;
@@ -73,7 +73,7 @@ export default function CoursePlayer({ params }: { params: Promise<{ id: string 
             <div key={s.id}>
               <p className="text-[12px] font-semibold uppercase tracking-wide text-[#6b6b7b]">{s.title}</p>
               {s.chapters.map((c) => (
-                <button key={c.id} onClick={() => setCur(c.id)} className={`mt-1 flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[13px] ${cur === c.id ? "bg-[#fdefdf] text-[#c7740f]" : "hover:bg-[#f7f7f7]"}`}>
+                <button key={c.id} onClick={() => setCur(c.id)} className={`mt-1 flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-[13px] ${cur === c.id ? "bg-[#e9e6e0] text-[#5c5a55]" : "hover:bg-[#f7f7f7]"}`}>
                   <span className={`grid h-4 w-4 shrink-0 place-items-center rounded-full text-[9px] ${done.includes(c.id) ? "bg-[#00a400] text-white" : "border border-[#bfbfbf]"}`}>{done.includes(c.id) ? "✓" : ""}</span>
                   <span className="truncate">{c.title}</span>
                 </button>

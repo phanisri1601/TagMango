@@ -41,7 +41,7 @@ function Feedback({ s, onClose, onSave }: { s: Row; onClose: () => void; onSave:
   return (
     <Modal title={`${s.name}: ${s.assignment}`} onClose={onClose} wide>
       <div className="rounded border border-[#ededed] bg-[#fafafa] p-3 text-[14px] whitespace-pre-wrap">{String(s.text || "—")}</div>
-      {s.link ? <p className="mt-2 text-[13px]"><a className="text-[#1677ff] underline" href={String(s.link)} target="_blank" rel="noreferrer">Attached link</a></p> : null}
+      {s.link ? <p className="mt-2 text-[13px]"><a className="text-[#141413] underline" href={String(s.link)} target="_blank" rel="noreferrer">Attached link</a></p> : null}
       <Field label="Your feedback"><textarea className={`${areaCls} mt-1 min-h-28`} value={t} onChange={(e) => setT(e.target.value)} /></Field>
       <div className="mt-4 flex justify-end gap-2"><Btn variant="outline" onClick={onClose}>Cancel</Btn><Btn disabled={!t.trim()} onClick={async () => { await onSave(t); onClose(); }}>Send feedback</Btn></div>
     </Modal>
@@ -54,7 +54,7 @@ function ClassAttendance({ c, learners, onClose }: { c: Row; learners: Row[]; on
     <Modal title={`Attendance: ${c.title}`} onClose={onClose}>
       <p className="mb-3 text-[13px] text-[#4a4a59]">Anyone not ticked gets a warm “we saved your seat” message with the replay. A second miss alerts you.</p>
       <div className="max-h-[50vh] overflow-y-auto rounded border border-[#ededed]">
-        {learners.map((l) => <label key={l.id} className="flex items-center gap-3 border-b border-[#f3f3f3] px-3 py-2 text-[14px] last:border-0"><input type="checkbox" className="h-4 w-4 accent-[#f2962c]" checked={on.includes(l.id)} onChange={(e) => setOn(e.target.checked ? [...on, l.id] : on.filter((x) => x !== l.id))} />{String(l.name)}</label>)}
+        {learners.map((l) => <label key={l.id} className="flex items-center gap-3 border-b border-[#f3f3f3] px-3 py-2 text-[14px] last:border-0"><input type="checkbox" className="h-4 w-4 accent-[#141413]" checked={on.includes(l.id)} onChange={(e) => setOn(e.target.checked ? [...on, l.id] : on.filter((x) => x !== l.id))} />{String(l.name)}</label>)}
         {!learners.length && <p className="p-5 text-center text-[#6b6b7b]">No learners yet.</p>}
       </div>
       <div className="mt-4 flex justify-end gap-2"><Btn variant="outline" onClick={onClose}>Cancel</Btn><Btn disabled={!learners.length} onClick={async () => { await api("/api/growth", "POST", { action: "class-attendance", classId: c.id, present: on }); toast("Attendance saved"); onClose(); }}>Save</Btn></div>

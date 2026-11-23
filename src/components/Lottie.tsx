@@ -39,5 +39,5 @@ export default function Lottie({ src, playing = true, className = "" }: { src: s
     else anim.current.pause();
   }, [playing]);
 
-  return <div ref={box} className={className} aria-hidden />;
+  return <div ref={box} className={`lottie-box ${className}`} aria-hidden />;
 }

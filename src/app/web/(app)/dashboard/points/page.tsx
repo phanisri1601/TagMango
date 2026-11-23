@@ -32,7 +32,7 @@ function Points() {
           return (
             <div key={k} className="flex items-center gap-3 px-4 py-3">
               <span className="flex-1 text-[14px]">{k}</span>
-              <input type="number" min={0} max={1000} className="h-9 w-24 rounded-md border border-[#e1e1e1] px-2 text-[14px] outline-none focus:border-[#f2962c]" defaultValue={r.pts} onBlur={(e) => { const v = Math.max(0, Math.min(1000, Number(e.target.value) || 0)); if (v !== r.pts) set(k, d, { pts: v }); }} aria-label={`${k} points`} />
+              <input type="number" min={0} max={1000} className="h-9 w-24 rounded-md border border-[#e1e1e1] px-2 text-[14px] outline-none focus:border-[#141413]" defaultValue={r.pts} onBlur={(e) => { const v = Math.max(0, Math.min(1000, Number(e.target.value) || 0)); if (v !== r.pts) set(k, d, { pts: v }); }} aria-label={`${k} points`} />
               <span className="w-10 text-[12px] text-[#6b6b7b]">pts</span>
               <Toggle on={r.on} onChange={(v) => set(k, d, { on: v })} label={`Enable ${k}`} />
             </div>

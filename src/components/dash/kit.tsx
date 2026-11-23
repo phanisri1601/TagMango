@@ -41,9 +41,9 @@ export function Updated({ at }: { at: number }) {
 type BtnVariant = "orange" | "black" | "outline" | "ghost" | "danger" | "soft";
 export function Btn({ children, variant = "orange", className = "", icon, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: BtnVariant; icon?: string }) {
   const v: Record<BtnVariant, string> = {
-    orange: "bg-[#f2962c] text-white hover:bg-[#e8861a] disabled:bg-[#f6c48b]",
+    orange: "bg-[#141413] text-white hover:bg-[#141413] disabled:bg-[#e9e6e0]",
     black: "bg-black text-white hover:bg-[#262626] disabled:bg-black/40",
-    outline: "border border-[#d9d9d9] bg-white text-[#0f0f0f] hover:border-[#f2962c] hover:text-[#f2962c] disabled:text-black/30",
+    outline: "border border-[#d9d9d9] bg-white text-[#0f0f0f] hover:border-[#141413] hover:text-[#141413] disabled:text-black/30",
     ghost: "text-[#0f0f0f] hover:bg-black/5",
     danger: "border border-[#ffccc7] bg-[#fff2f0] text-[#ff4d4f] hover:bg-[#ffe5e2] disabled:opacity-50",
     soft: "bg-[#f2f2f2] text-[#0f0f0f] hover:bg-[#e8e8e8] disabled:text-black/30",
@@ -57,13 +57,13 @@ export function Btn({ children, variant = "orange", className = "", icon, ...res
 }
 
 export const inputCls =
-  "h-10 w-full rounded-md border border-[#e1e1e1] bg-white px-3 text-[14px] outline-none transition placeholder:text-[#9b9bab] focus:border-[#f2962c] focus:ring-2 focus:ring-[#f2962c]/15";
+  "h-10 w-full rounded-md border border-[#e1e1e1] bg-white px-3 text-[14px] outline-none transition placeholder:text-[#9b9bab] focus:border-[#141413] focus:ring-2 focus:ring-[#141413]/15";
 export const areaCls =
-  "w-full rounded-md border border-[#e1e1e1] bg-white px-3 py-2 text-[14px] outline-none transition placeholder:text-[#9b9bab] focus:border-[#f2962c] focus:ring-2 focus:ring-[#f2962c]/15";
+  "w-full rounded-md border border-[#e1e1e1] bg-white px-3 py-2 text-[14px] outline-none transition placeholder:text-[#9b9bab] focus:border-[#141413] focus:ring-2 focus:ring-[#141413]/15";
 
 export function Search({ value, onChange, placeholder, className = "" }: { value: string; onChange: (v: string) => void; placeholder: string; className?: string }) {
   return (
-    <label className={`flex h-10 min-w-[220px] flex-1 items-center gap-2 rounded-md border border-[#e1e1e1] bg-white px-3 focus-within:border-[#f2962c] ${className}`}>
+    <label className={`flex h-10 min-w-[220px] flex-1 items-center gap-2 rounded-md border border-[#e1e1e1] bg-white px-3 focus-within:border-[#141413] ${className}`}>
       <Icon name="search" className="h-4 w-4 text-[#9b9bab]" />
       <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="w-full bg-transparent text-[14px] outline-none placeholder:text-[#9b9bab]" />
     </label>
@@ -83,7 +83,7 @@ export function DateRange({ from, to, onChange, type = "date" }: { from: string;
 
 export function Select({ value, onChange, options, className = "" }: { value: string; onChange: (v: string) => void; options: (string | [string, string])[]; className?: string }) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className={`h-10 rounded-md border border-[#e1e1e1] bg-white px-3 text-[14px] outline-none focus:border-[#f2962c] ${className}`}>
+    <select value={value} onChange={(e) => onChange(e.target.value)} className={`h-10 rounded-md border border-[#e1e1e1] bg-white px-3 text-[14px] outline-none focus:border-[#141413] ${className}`}>
       {options.map((o) => {
         const [v, l] = Array.isArray(o) ? o : [o, o];
         return <option key={v} value={v}>{l}</option>;
@@ -94,7 +94,7 @@ export function Select({ value, onChange, options, className = "" }: { value: st
 
 export function Toggle({ on, onChange, label, disabled }: { on: boolean; onChange: (v: boolean) => void; label?: string; disabled?: boolean }) {
   return (
-    <button type="button" role="switch" aria-checked={on} aria-label={label} disabled={disabled} onClick={() => onChange(!on)} className={`relative h-[22px] w-[44px] shrink-0 rounded-full transition-colors duration-300 disabled:opacity-50 ${on ? "bg-[#f2962c]" : "bg-[#bfbfbf]"}`}>
+    <button type="button" role="switch" aria-checked={on} aria-label={label} disabled={disabled} onClick={() => onChange(!on)} className={`relative h-[22px] w-[44px] shrink-0 rounded-full transition-colors duration-300 disabled:opacity-50 ${on ? "bg-[#141413]" : "bg-[#bfbfbf]"}`}>
       <span className={`absolute top-[2px] h-[18px] w-[18px] rounded-full bg-white shadow transition-all duration-300 [transition-timing-function:var(--ease-out-expo)] ${on ? "left-[24px]" : "left-[2px]"}`} />
     </button>
   );
@@ -113,15 +113,15 @@ export function Field({ label, hint, children, required }: { label: React.ReactN
 /* ---------- small display ---------- */
 
 export function Pill({ tone = "green", children }: { tone?: "green" | "grey" | "red" | "orange" | "blue"; children: React.ReactNode }) {
-  const t = { green: "bg-[#00a400] text-white", grey: "bg-[#8c8c8c] text-white", red: "bg-[#ff4d4f] text-white", orange: "bg-[#f2962c] text-white", blue: "bg-[#1677ff] text-white" }[tone];
+  const t = { green: "bg-[#00a400] text-white", grey: "bg-[#8c8c8c] text-white", red: "bg-[#ff4d4f] text-white", orange: "bg-[#141413] text-white", blue: "bg-[#141413] text-white" }[tone];
   return <span className={`inline-flex h-5 items-center rounded-[25px] px-2 text-[10px] font-semibold uppercase tracking-wide ${t}`}>{children}</span>;
 }
 
 export function Note({ tone = "orange", children }: { tone?: "orange" | "yellow" | "blue"; children: React.ReactNode }) {
-  const t = { orange: "bg-[#fdefdf] text-[#0f0f0f]", yellow: "border border-[#ffe58f] bg-[#fffbe6] text-[#0f0f0f]", blue: "bg-[#e6f4ff] text-[#0f0f0f]" }[tone];
+  const t = { orange: "bg-[#e9e6e0] text-[#0f0f0f]", yellow: "border border-[#e9e6e0] bg-[#f4f2ed] text-[#0f0f0f]", blue: "bg-[#e9e6e0] text-[#0f0f0f]" }[tone];
   return (
     <div className={`flex items-start gap-2 rounded-md px-3 py-2 text-[12.5px] ${t}`}>
-      <Icon name="info" className="mt-0.5 h-4 w-4 shrink-0 text-[#f2962c]" />
+      <Icon name="info" className="mt-0.5 h-4 w-4 shrink-0 text-[#141413]" />
       <div>{children}</div>
     </div>
   );
@@ -130,10 +130,10 @@ export function Note({ tone = "orange", children }: { tone?: "orange" | "yellow"
 export function StatCard({ label, value, sub, icon, delay = 0 }: { label: string; value: React.ReactNode; sub?: React.ReactNode; icon?: string; delay?: number }) {
   return (
     <div className="animate-rise flex min-w-[180px] flex-1 items-start gap-3 rounded-[10px] border border-[#ededed] bg-white p-4" style={{ ["--delay" as string]: `${delay}s` }}>
-      {icon && <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-[#fdefdf] text-[#f2962c]"><Icon name={icon} className="h-5 w-5" /></span>}
+      {icon && <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-[#e9e6e0] text-[#141413]"><Icon name={icon} className="h-5 w-5" /></span>}
       <div className="min-w-0">
         <p className="text-[12px] text-[#6b6b7b]">{label}</p>
-        <p className="mt-0.5 text-[22px] font-semibold text-[#f2962c]">{value}</p>
+        <p className="mt-0.5 text-[22px] font-semibold text-[#141413]">{value}</p>
         {sub && <p className="text-[11px] text-[#9b9bab]">{sub}</p>}
       </div>
     </div>
@@ -144,10 +144,10 @@ export function Tabs<T extends string>({ tabs, value, onChange, locked = [] }: {
   return (
     <div className="flex gap-6 overflow-x-auto border-b border-[#ededed]">
       {tabs.map((t) => (
-        <button key={t} onClick={() => onChange(t)} className={`relative flex shrink-0 items-center gap-1 pb-2.5 pt-1 text-[14px] transition-colors ${t === value ? "text-[#f2962c]" : "text-[#4a4a59] hover:text-[#0f0f0f]"}`}>
+        <button key={t} onClick={() => onChange(t)} className={`relative flex shrink-0 items-center gap-1 pb-2.5 pt-1 text-[14px] transition-colors ${t === value ? "text-[#141413]" : "text-[#4a4a59] hover:text-[#0f0f0f]"}`}>
           {t}
-          {locked.includes(t) && <Icon name="lock" className="h-3.5 w-3.5 text-[#f2962c]" />}
-          <span className={`absolute inset-x-0 bottom-0 h-[2px] bg-[#f2962c] transition-transform duration-300 ${t === value ? "scale-x-100" : "scale-x-0"}`} />
+          {locked.includes(t) && <Icon name="lock" className="h-3.5 w-3.5 text-[#141413]" />}
+          <span className={`absolute inset-x-0 bottom-0 h-[2px] bg-[#141413] transition-transform duration-300 ${t === value ? "scale-x-100" : "scale-x-0"}`} />
         </button>
       ))}
     </div>
@@ -158,7 +158,7 @@ export function Segmented<T extends string>({ options, value, onChange }: { opti
   return (
     <div className="inline-flex rounded-md border border-[#e1e1e1] bg-white p-0.5">
       {options.map((o) => (
-        <button key={o} onClick={() => onChange(o)} className={`h-8 rounded px-3.5 text-[13px] transition ${o === value ? "bg-[#fdefdf] font-medium text-[#f2962c]" : "text-[#4a4a59] hover:text-[#0f0f0f]"}`}>{o}</button>
+        <button key={o} onClick={() => onChange(o)} className={`h-8 rounded px-3.5 text-[13px] transition ${o === value ? "bg-[#e9e6e0] font-medium text-[#141413]" : "text-[#4a4a59] hover:text-[#0f0f0f]"}`}>{o}</button>
       ))}
     </div>
   );
@@ -186,10 +186,10 @@ export function EmptySearch({ title, text }: { title: string; text?: React.React
   return (
     <div className="flex flex-col items-center px-6 py-12 text-center">
       <svg viewBox="0 0 96 96" className="h-24 w-24" aria-hidden>
-        <circle cx="48" cy="48" r="40" fill="#f1f6ff" />
-        <circle cx="44" cy="42" r="18" fill="#fff" stroke="#9fb7e0" strokeWidth="3" />
-        <path d="m57 55 14 14" stroke="#f2962c" strokeWidth="6" strokeLinecap="round" />
-        <circle cx="38" cy="38" r="3" fill="#cfe0ff" />
+        <circle cx="48" cy="48" r="40" fill="#f4f2ed" />
+        <circle cx="44" cy="42" r="18" fill="#fff" stroke="#e9e6e0" strokeWidth="3" />
+        <path d="m57 55 14 14" stroke="#141413" strokeWidth="6" strokeLinecap="round" />
+        <circle cx="38" cy="38" r="3" fill="#e9e6e0" />
       </svg>
       <p className="mt-3 text-[15px] font-medium text-[#0f0f0f]">{title}</p>
       {text && <div className="mt-1 max-w-md text-[13px] text-[#6b6b7b]">{text}</div>}
@@ -241,7 +241,7 @@ export function DataTable<T extends { id: string }>({
             <tr className="border-b border-[#f0f0f0]">
               {selectable && (
                 <th className="w-10 px-4 py-4">
-                  <input type="checkbox" className="h-4 w-4 accent-[#f2962c]" checked={allOn} onChange={() => onSelect?.(allOn ? sel.filter((id) => !view.some((r) => r.id === id)) : [...new Set([...sel, ...view.map((r) => r.id)])])} aria-label="Select all" />
+                  <input type="checkbox" className="h-4 w-4 accent-[#141413]" checked={allOn} onChange={() => onSelect?.(allOn ? sel.filter((id) => !view.some((r) => r.id === id)) : [...new Set([...sel, ...view.map((r) => r.id)])])} aria-label="Select all" />
                 </th>
               )}
               {cols.map((c) => (
@@ -249,7 +249,7 @@ export function DataTable<T extends { id: string }>({
                   {c.sort ? (
                     <button className="inline-flex items-center gap-1" onClick={() => setSort((s) => (s?.key === c.key ? { key: c.key, dir: s.dir === 1 ? -1 : 1 } : { key: c.key, dir: 1 }))}>
                       {c.label}
-                      <span className="flex flex-col text-[8px] leading-[6px] text-[#bfbfbf]"><span className={sort?.key === c.key && sort.dir === 1 ? "text-[#f2962c]" : ""}>▲</span><span className={sort?.key === c.key && sort.dir === -1 ? "text-[#f2962c]" : ""}>▼</span></span>
+                      <span className="flex flex-col text-[8px] leading-[6px] text-[#bfbfbf]"><span className={sort?.key === c.key && sort.dir === 1 ? "text-[#141413]" : ""}>▲</span><span className={sort?.key === c.key && sort.dir === -1 ? "text-[#141413]" : ""}>▼</span></span>
                     </button>
                   ) : c.label}
                 </th>
@@ -267,7 +267,7 @@ export function DataTable<T extends { id: string }>({
               view.map((r, i) => (
                 <tr key={r.id} className="animate-soft-fade border-b border-[#f0f0f0] transition-colors last:border-0 hover:bg-[#fafafa]" style={{ ["--delay" as string]: `${Math.min(i, 10) * 0.025}s` }}>
                   {selectable && (
-                    <td className="px-4 py-3"><input type="checkbox" className="h-4 w-4 accent-[#f2962c]" checked={sel.includes(r.id)} onChange={() => onSelect?.(sel.includes(r.id) ? sel.filter((x) => x !== r.id) : [...sel, r.id])} aria-label="Select row" /></td>
+                    <td className="px-4 py-3"><input type="checkbox" className="h-4 w-4 accent-[#141413]" checked={sel.includes(r.id)} onChange={() => onSelect?.(sel.includes(r.id) ? sel.filter((x) => x !== r.id) : [...sel, r.id])} aria-label="Select row" /></td>
                   )}
                   {cols.map((c) => (
                     <td key={c.key} className={`px-4 py-3 align-middle text-[#0f0f0f] ${c.className ?? ""}`}>{c.render ? c.render(r) : String((r as Record<string, unknown>)[c.key] ?? "-")}</td>
@@ -282,7 +282,7 @@ export function DataTable<T extends { id: string }>({
         <div className="flex items-center justify-end gap-1 px-4 py-3 text-[13px]">
           <button disabled={cur <= 1} onClick={() => setPage(cur - 1)} className="grid h-8 w-8 place-items-center rounded-md text-[#4a4a59] hover:bg-black/5 disabled:opacity-30" aria-label="Previous page">‹</button>
           {Array.from({ length: pages }, (_, i) => i + 1).slice(Math.max(0, cur - 3), Math.max(0, cur - 3) + 5).map((p) => (
-            <button key={p} onClick={() => setPage(p)} className={`h-8 min-w-8 rounded-md border px-2 ${p === cur ? "border-[#f2962c] text-[#f2962c]" : "border-transparent text-[#4a4a59] hover:bg-black/5"}`}>{p}</button>
+            <button key={p} onClick={() => setPage(p)} className={`h-8 min-w-8 rounded-md border px-2 ${p === cur ? "border-[#141413] text-[#141413]" : "border-transparent text-[#4a4a59] hover:bg-black/5"}`}>{p}</button>
           ))}
           <button disabled={cur >= pages} onClick={() => setPage(cur + 1)} className="grid h-8 w-8 place-items-center rounded-md text-[#4a4a59] hover:bg-black/5 disabled:opacity-30" aria-label="Next page">›</button>
         </div>
@@ -292,7 +292,7 @@ export function DataTable<T extends { id: string }>({
 }
 
 export function RowAction({ icon, title, onClick, href, danger }: { icon: string; title: string; onClick?: () => void; href?: string; danger?: boolean }) {
-  const cls = `grid h-8 w-8 place-items-center rounded-md border border-[#ededed] bg-white transition ${danger ? "text-[#ff4d4f] hover:bg-[#fff2f0]" : "text-[#4a4a59] hover:border-[#f2962c] hover:text-[#f2962c]"}`;
+  const cls = `grid h-8 w-8 place-items-center rounded-md border border-[#ededed] bg-white transition ${danger ? "text-[#ff4d4f] hover:bg-[#fff2f0]" : "text-[#4a4a59] hover:border-[#141413] hover:text-[#141413]"}`;
   if (href) return <a href={href} target="_blank" rel="noreferrer" title={title} aria-label={title} className={cls}><Icon name={icon} className="h-4 w-4" /></a>;
   return <button title={title} aria-label={title} onClick={onClick} className={cls}><Icon name={icon} className="h-4 w-4" /></button>;
 }
@@ -371,26 +371,26 @@ export function Walkthrough({ title, steps }: { title: string; steps?: [string, 
   const slides = steps && steps.length ? steps : [[title, "A short walkthrough of this page. Use the controls on the page to create, filter and export your data."]] as [string, string][];
   return (
     <>
-      <button onClick={() => { setI(0); setOpen(true); }} className="animate-soft-fade mb-4 flex h-10 w-full items-center gap-2 rounded-md bg-[#e9f1ff] px-3 text-left text-[13px] text-[#0f0f0f] transition hover:bg-[#dde9ff]">
-        <span className="grid h-5 w-5 place-items-center rounded-full bg-[#1677ff] text-white"><Icon name="play" className="ml-0.5 h-3 w-3" /></span>
+      <button onClick={() => { setI(0); setOpen(true); }} className="animate-soft-fade mb-4 flex h-10 w-full items-center gap-2 rounded-md bg-[#f4f2ed] px-3 text-left text-[13px] text-[#0f0f0f] transition hover:bg-[#e9e6e0]">
+        <span className="grid h-5 w-5 place-items-center rounded-full bg-[#141413] text-white"><Icon name="play" className="ml-0.5 h-3 w-3" /></span>
         <span className="text-[#4a4a59]">Video walkthrough</span>
         <span className="text-[#9b9bab]">&gt;</span>
         <span className="flex-1 truncate font-medium">{title}</span>
-        <span className="text-[12px] font-semibold tracking-wide text-[#1677ff]">WATCH</span>
+        <span className="text-[12px] font-semibold tracking-wide text-[#141413]">WATCH</span>
       </button>
       {open && (
         <Modal title={title} onClose={() => setOpen(false)} wide>
           <div key={i} className="animate-soft-fade">
-            <div className="grid aspect-video place-items-center rounded-lg bg-gradient-to-br from-[#1d1d1d] to-[#3a2410] text-white">
+            <div className="grid aspect-video place-items-center rounded-lg bg-gradient-to-br from-[#1d1d1d] to-[#171716] text-white">
               <div className="px-8 text-center">
-                <p className="text-[12px] uppercase tracking-[0.2em] text-[#f2962c]">Step {i + 1} of {slides.length}</p>
+                <p className="text-[12px] uppercase tracking-[0.2em] text-[#141413]">Step {i + 1} of {slides.length}</p>
                 <p className="mt-2 text-[24px] font-semibold">{slides[i][0]}</p>
               </div>
             </div>
             <p className="mt-4 text-[14px] text-[#4a4a59]">{slides[i][1]}</p>
           </div>
           <div className="mt-5 flex items-center justify-between">
-            <div className="flex gap-1.5">{slides.map((_, k) => <span key={k} className={`h-1.5 rounded-full transition-all ${k === i ? "w-6 bg-[#f2962c]" : "w-1.5 bg-black/15"}`} />)}</div>
+            <div className="flex gap-1.5">{slides.map((_, k) => <span key={k} className={`h-1.5 rounded-full transition-all ${k === i ? "w-6 bg-[#141413]" : "w-1.5 bg-black/15"}`} />)}</div>
             <div className="flex gap-2">
               {i > 0 && <Btn variant="outline" onClick={() => setI(i - 1)}>Back</Btn>}
               <Btn onClick={() => (i < slides.length - 1 ? setI(i + 1) : setOpen(false))}>{i < slides.length - 1 ? "Next" : "Done"}</Btn>
@@ -410,7 +410,7 @@ export function LockedCard({ title }: { title: string }) {
         <Icon name="lock" className="h-12 w-12 text-[#0f0f0f]" />
         <p className="mt-3 text-[22px] font-semibold">This feature is locked!</p>
         <p className="mt-2 text-[13px] text-[#4a4a59]">
-          To access this premium feature, upgrade your plan from Billing &amp; Plans &gt; <Link href={dash("plans")} className="text-[#1677ff] hover:underline">Plans</Link>.
+          To access this premium feature, upgrade your plan from Billing &amp; Plans &gt; <Link href={dash("plans")} className="text-[#141413] hover:underline">Plans</Link>.
         </p>
       </div>
     </Panel>

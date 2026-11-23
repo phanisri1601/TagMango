@@ -38,7 +38,7 @@ export default function Navbar({ light = false }: { light?: boolean }) {
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:px-4">
       <nav
         className={`flex w-full max-w-[940px] items-center justify-between rounded-full border pl-5 pr-2 backdrop-blur-xl transition-all duration-300 ease-out ${scrolled ? "py-1" : "py-1.5"} ${
-          dark ? "border-black/10 bg-white/90 shadow-[0_6px_24px_-12px_rgba(0,0,0,0.25)]" : scrolled ? "border-white/10 bg-[#141414]/[0.97] shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] backdrop-blur-2xl" : "border-white/10 bg-white/[0.06]"
+          dark ? "border-black/10 bg-white/90 shadow-[0_6px_24px_-12px_rgba(0,0,0,0.25)]" : scrolled ? "border-white/10 bg-[#141413]/[0.97] shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] backdrop-blur-2xl" : "border-white/10 bg-white/[0.06]"
         }`}
       >
         <Logo dark={dark} className="!text-[22px] shrink-0" />
@@ -53,7 +53,7 @@ export default function Navbar({ light = false }: { light?: boolean }) {
                 </button>
                 {/* pt-3 is an invisible bridge so the menu does not close while the pointer crosses the gap */}
                 <div className="invisible absolute left-1/2 top-full z-10 w-[270px] -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition-all duration-200 ease-out group-has-[:focus-visible]:visible group-has-[:focus-visible]:translate-y-0 group-has-[:focus-visible]:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-                  <ul className={`rounded-2xl border p-1.5 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)] backdrop-blur-xl ${dark ? "border-black/10 bg-white" : "border-white/10 bg-[#1a1a1a]/95"}`}>
+                  <ul className={`rounded-2xl border p-1.5 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)] backdrop-blur-xl ${dark ? "border-black/10 bg-white" : "border-white/10 bg-[#171716]/95"}`}>
                     {g.items!.map(([t, h, d]) => (
                       <li key={h}>
                         <Link href={h} className={`block rounded-xl px-3.5 py-2.5 transition-colors ${dark ? "hover:bg-black/5" : "hover:bg-white/10"} ${path === h ? (dark ? "bg-black/5" : "bg-white/10") : ""}`}>
@@ -75,7 +75,7 @@ export default function Navbar({ light = false }: { light?: boolean }) {
           </svg>
         </button>
       </nav>
-      <div className={`absolute inset-x-3 top-[68px] max-h-[75vh] origin-top overflow-auto rounded-3xl border border-white/10 bg-[#161616]/95 p-3 backdrop-blur-xl transition-all duration-300 ease-out md:hidden ${open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}>
+      <div className={`absolute inset-x-3 top-[68px] max-h-[75vh] origin-top overflow-auto rounded-3xl border border-white/10 bg-[#171716]/95 p-3 backdrop-blur-xl transition-all duration-300 ease-out md:hidden ${open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}>
         {NAV_GROUPS.map((g) => (
           <div key={g.label} className="px-1 py-1">
             {g.href ? <Link href={g.href} className="block rounded-2xl px-3 py-2.5 text-white/90 hover:bg-white/5">{g.label}</Link> : (

@@ -8,9 +8,9 @@ import { PLAN_ORDER, type Plan } from "@/components/dash/nav";
 
 const PLANS: { id: Plan; name: string; price: string; fee: string; sub: string; lead?: string; items: string[]; tint: string; tag?: string }[] = [
   { id: "basic", name: "Basic", price: "Zero", fee: "10% commissions", sub: "(including Indian Payment Gateway)", tint: "from-[#eaf7ee]", items: ["200 students", "Landing pages (3 templates)", "Course Storage 20 GB media upload", "Team Management", "Advanced Analytics", "Chat Rooms", "WhatsApp Integration (Automations & Broadcast)**", "Email Broadcasting (10 email credits/user) & Automations", "Storefront", "Certificates & Security", "Access to the Community", "Zapier & Pabbly Integration", "Path"] },
-  { id: "pro", name: "Pro", price: "₹5,000", fee: "+5.5% commissions", sub: "(including Indian Payment Gateway)", lead: "Basic", tint: "from-[#fff4e5]", items: ["Unlimited students", "Unlimited storage", "Refund Automation", "Free Products using 100% OFF coupons", "50k email/month for broadcast", "Exclusive Landing Page templates", "Build Custom Certificates", "Timer"] },
-  { id: "advanced", name: "Advanced", price: "₹15,000", fee: "+3.5% commissions", sub: "(including Indian Payment Gateway)", lead: "Pro", tint: "from-[#eef3ff]", items: ["Community Channels & Forums", "Multi-Media Uploads", "Advanced Message Room & Threads", "Affiliate", "Gamification", "DRM Course Protection", "Zoom Webinar - 500 people", "Up-Sell on Check-Out", "User Addition"] },
-  { id: "ultimate", name: "Ultimate", price: "₹35,000", fee: "Zero commissions", sub: "Lowest Indian Gateway charge 1.9%", lead: "Advanced", tint: "from-[#f6efff]", tag: "NEW LAUNCH", items: ["AI-Verse Stack Included", "Mango AI", "Theme AI", "AI Funnel Builder", "AI App Builder", "1000 AI Credits", "Customer Success Manager", "Habit and Task Tracker", "Challenges", "Link-Up & Achievements", "Check-Up & Certifications", "Sparks(200 GB)", "Connect", "Flexi-Pay", "Instant Withdrawal", "No Cost EMI", "Menu Customisation"] },
+  { id: "pro", name: "Pro", price: "₹5,000", fee: "+5.5% commissions", sub: "(including Indian Payment Gateway)", lead: "Basic", tint: "from-[#f4f2ed]", items: ["Unlimited students", "Unlimited storage", "Refund Automation", "Free Products using 100% OFF coupons", "50k email/month for broadcast", "Exclusive Landing Page templates", "Build Custom Certificates", "Timer"] },
+  { id: "advanced", name: "Advanced", price: "₹15,000", fee: "+3.5% commissions", sub: "(including Indian Payment Gateway)", lead: "Pro", tint: "from-[#f4f2ed]", items: ["Community Channels & Forums", "Multi-Media Uploads", "Advanced Message Room & Threads", "Affiliate", "Gamification", "DRM Course Protection", "Zoom Webinar - 500 people", "Up-Sell on Check-Out", "User Addition"] },
+  { id: "ultimate", name: "Ultimate", price: "₹35,000", fee: "Zero commissions", sub: "Lowest Indian Gateway charge 1.9%", lead: "Advanced", tint: "from-[#f4f2ed]", tag: "NEW LAUNCH", items: ["AI-Verse Stack Included", "Mango AI", "Theme AI", "AI Funnel Builder", "AI App Builder", "1000 AI Credits", "Customer Success Manager", "Habit and Task Tracker", "Challenges", "Link-Up & Achievements", "Check-Up & Certifications", "Sparks(200 GB)", "Connect", "Flexi-Pay", "Instant Withdrawal", "No Cost EMI", "Menu Customisation"] },
 ];
 
 export default function Plans() {
@@ -40,12 +40,12 @@ export default function Plans() {
         <h1 className="text-[26px] font-semibold">Subscription Plans</h1>
         <p className="text-[14px] text-[#6b6b7b]">Pick your setup, power it with a plan. Simple</p>
       </div>
-      <div className="animate-rise flex items-center justify-between rounded-md bg-[#2b1149] px-4 py-2.5 text-[13px] text-white" style={{ ["--delay" as string]: "0.04s" }}>
+      <div className="animate-rise flex items-center justify-between rounded-md bg-[#171716] px-4 py-2.5 text-[13px] text-white" style={{ ["--delay" as string]: "0.04s" }}>
         <span>✨ Newly launched AI features unlock on any plan as an add-on</span>
         <Link href="/pricing" className="font-semibold">View ›</Link>
       </div>
 
-      <div className="animate-rise grid items-center gap-4 rounded-[12px] border border-[#ededed] bg-gradient-to-r from-[#fff4e5] to-white p-6 md:grid-cols-[1fr_auto]" style={{ ["--delay" as string]: "0.08s" }}>
+      <div className="animate-rise grid items-center gap-4 rounded-[12px] border border-[#ededed] bg-gradient-to-r from-[#f4f2ed] to-white p-6 md:grid-cols-[1fr_auto]" style={{ ["--delay" as string]: "0.08s" }}>
         <div>
           <p className="text-[22px]"><b>Freedom</b> Setup</p>
           <p className="text-[13px] text-[#6b6b7b]">To unlock your own branding (custom domain)</p>
@@ -60,15 +60,15 @@ export default function Plans() {
           const idx = PLAN_ORDER.indexOf(p.id);
           const isCur = idx === cur;
           return (
-            <div key={p.id} className={`animate-plan-show relative flex flex-col rounded-[12px] border bg-white ${isCur ? "border-[#f2962c] shadow-[0_10px_30px_-12px_rgba(242,150,44,0.5)]" : "border-[#ededed]"}`} style={{ ["--delay" as string]: `${i * 0.06}s` }}>
+            <div key={p.id} className={`animate-plan-show relative flex flex-col rounded-[12px] border bg-white ${isCur ? "border-[#141413] shadow-[0_10px_30px_-12px_rgba(20,20,19,0.5)]" : "border-[#ededed]"}`} style={{ ["--delay" as string]: `${i * 0.06}s` }}>
               {p.tag && <span className="absolute -top-2.5 right-4 rounded bg-[#e5372e] px-2 py-0.5 text-[10px] font-bold text-white">{p.tag}</span>}
               <div className={`rounded-t-[12px] bg-gradient-to-b ${p.tint} to-white p-5`}>
-                <p className="flex items-center gap-2 text-[17px] font-semibold"><Icon name="star" className="h-4 w-4 text-[#f2962c]" />{p.name}</p>
+                <p className="flex items-center gap-2 text-[17px] font-semibold"><Icon name="star" className="h-4 w-4 text-[#141413]" />{p.name}</p>
                 <p className="mt-2 text-[28px] font-bold">{p.price}<span className="text-[13px] font-normal text-[#6b6b7b]">{p.id === "basic" ? "Fixed Fee" : "+GST /month"}</span></p>
                 <p className="mt-2 text-[14px] font-semibold">{p.fee}</p>
                 <p className="text-[11px] text-[#6b6b7b]">{p.sub}</p>
                 {isCur ? (
-                  <span className="mt-4 block rounded-md bg-[#fdefdf] py-2 text-center text-[14px] font-medium text-[#c7740f]">Current plan</span>
+                  <span className="mt-4 block rounded-md bg-[#e9e6e0] py-2 text-center text-[14px] font-medium text-[#5c5a55]">Current plan</span>
                 ) : idx > cur ? (
                   <Btn className="mt-4 w-full" onClick={() => setConfirm(p.id)}>Upgrade</Btn>
                 ) : (

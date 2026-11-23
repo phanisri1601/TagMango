@@ -93,11 +93,11 @@ export default function Analytics() {
           </div>
           <div className="mt-4"><Note tone="blue">Visibility is limited to data generated on or after {new Date(me.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.</Note></div>
           <div className="mt-4 rounded-[10px] border border-[#ededed] p-4">
-            {tab === "Checkout Page" && <Chart labels={labels} title="No. of Visits and Purchases" series={[{ name: "Visits", color: "#1677ff", values: per(checkoutViews) }, { name: "Purchases", color: "#f2962c", values: per(okSales) }]} />}
-            {tab === "Transactions" && <Chart labels={labels} title="Orders and revenue (₹ hundreds)" series={[{ name: "Orders", color: "#f2962c", values: per(okSales) }, { name: "Revenue / 100", color: "#00a400", values: per(okSales, (s) => Math.round(Number(s.amount || 0) / 100)) }]} />}
-            {tab === "Users" && <Chart labels={labels} title="New customers per day" series={[{ name: "New customers", color: "#f2962c", values: per(newUsers) }]} />}
-            {tab === "Broadcasts" && <Chart labels={labels} title="Broadcasts sent per day" series={[{ name: "Broadcasts", color: "#7c3aed", values: per(sent.map((b) => ({ ...b, createdAt: String(b.sendAt || b.createdAt) }))) }]} />}
-            {tab === "Page Views" && <Chart labels={labels} title="Page views per day" series={[{ name: "Views", color: "#1677ff", values: per(pageViews) }]} />}
+            {tab === "Checkout Page" && <Chart labels={labels} title="No. of Visits and Purchases" series={[{ name: "Visits", color: "#141413", values: per(checkoutViews) }, { name: "Purchases", color: "#141413", values: per(okSales) }]} />}
+            {tab === "Transactions" && <Chart labels={labels} title="Orders and revenue (₹ hundreds)" series={[{ name: "Orders", color: "#141413", values: per(okSales) }, { name: "Revenue / 100", color: "#00a400", values: per(okSales, (s) => Math.round(Number(s.amount || 0) / 100)) }]} />}
+            {tab === "Users" && <Chart labels={labels} title="New customers per day" series={[{ name: "New customers", color: "#141413", values: per(newUsers) }]} />}
+            {tab === "Broadcasts" && <Chart labels={labels} title="Broadcasts sent per day" series={[{ name: "Broadcasts", color: "#141413", values: per(sent.map((b) => ({ ...b, createdAt: String(b.sendAt || b.createdAt) }))) }]} />}
+            {tab === "Page Views" && <Chart labels={labels} title="Page views per day" series={[{ name: "Views", color: "#141413", values: per(pageViews) }]} />}
           </div>
         </>
       )}

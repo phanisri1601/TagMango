@@ -51,7 +51,7 @@ export default function Faq() {
                   setCat(c);
                   setOpen(0);
                 }}
-                className={`shrink-0 rounded-xl px-4 py-2.5 text-left text-[15px] font-medium transition ${c === cat ? "bg-[#f4f1ec] text-ink" : "text-ink/60 hover:text-ink"}`}
+                className={`shrink-0 rounded-xl px-4 py-2.5 text-left text-[15px] font-medium transition ${c === cat ? "bg-[#f4f2ed] text-ink" : "text-ink/60 hover:text-ink"}`}
               >
                 {c}
               </button>

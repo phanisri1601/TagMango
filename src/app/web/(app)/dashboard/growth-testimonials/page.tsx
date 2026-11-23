@@ -30,7 +30,7 @@ export default function Testimonials() {
           </div>
           <div className="mt-3 space-y-2 text-[14px]">
             {((t.answers as string[]) || []).map((a, i) => a ? <div key={i}><p className="text-[12px] text-[#6b6b7b]">{Q[i]}</p><p>{a}</p></div> : null)}
-            {t.voiceUrl ? <p><a className="text-[#1677ff] underline" href={String(t.voiceUrl)} target="_blank" rel="noreferrer">Voice note</a></p> : null}
+            {t.voiceUrl ? <p><a className="text-[#141413] underline" href={String(t.voiceUrl)} target="_blank" rel="noreferrer">Voice note</a></p> : null}
           </div>
         </Panel>
       ))}

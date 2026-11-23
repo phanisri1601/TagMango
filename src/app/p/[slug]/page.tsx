@@ -46,7 +46,7 @@ export default async function MangoPage({ params }: { params: Promise<{ slug: st
           )}
         </div>
       </section>
-      <p className="pb-8 text-center text-[12px] text-[#9b9bab]">Powered by tag<span className="text-[#f2962c]">mango</span></p>
+      <p className="pb-8 text-center text-[12px] text-[#9b9bab]">Powered by tag<span className="text-[#141413]">mango</span></p>
     </div>
   );
 }

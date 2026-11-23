@@ -59,7 +59,7 @@ export default function Announcements() {
               {data!.announcements.map((a) => (
                 <div key={a.id} className="animate-soft-fade rounded-[10px] border border-[#ededed] p-4">
                   <div className="flex items-start gap-3">
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#fdefdf] text-[#f2962c]"><Icon name="bell" className="h-4 w-4" /></span>
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#e9e6e0] text-[#141413]"><Icon name="bell" className="h-4 w-4" /></span>
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold">{a.title}</p>
                       <p className="mt-0.5 text-[13px] text-[#4a4a59]">{a.body}</p>
