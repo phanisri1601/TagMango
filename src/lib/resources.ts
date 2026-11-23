@@ -1,7 +1,8 @@
 import "server-only";
 import type { Tx } from "./store";
 import { asUser, type User } from "./db";
-import { hasFeature } from "./plans";
+import { hasFeature, limitCheck } from "./plans";
+import { tpl } from "@/components/dash/templates";
 import { balanceOf } from "./money";
 
 /**
@@ -37,18 +38,23 @@ const email = (v: unknown) => /^\S+@\S+\.\S+$/.test(String(v || ""));
 const SLUG = /^[a-z0-9][a-z0-9-]{1,59}$/;
 const num = (v: unknown) => Number(v);
 
+/** Run several checks in order and return the first complaint. */
+const all = (...fs: (Rule["check"] | undefined)[]): Rule["check"] => async (c, op) => {
+  for (const f of fs) { const r = f && (await f(c, op)); if (r) return r; }
+};
+
 export const RULES: Record<string, Rule> = {
   mangoes: {
     ops: "rcud",
     required: ["title"],
     unique: ["title"],
-    check: ({ data }) => {
+    check: all(limitCheck("mangoes", "mangoes"), ({ data }) => {
       if ("price" in data && !(num(data.price) >= 0)) return "Price must be 0 or more";
-    },
+    }),
   },
-  courses: { ops: "rcud", required: ["title"] },
-  workshops: { ops: "rcud", required: ["title"] },
-  events: { ops: "rcud", required: ["title"] },
+  courses: { ops: "rcud", required: ["title"], check: limitCheck("courses", "courses") },
+  workshops: { ops: "rcud", required: ["title"], check: limitCheck("workshops", "workshops") },
+  events: { ops: "rcud", required: ["title"], check: limitCheck("events", "events") },
   bookings: {
     ops: "ru",
     updatable: ["status"],
@@ -66,7 +72,7 @@ export const RULES: Record<string, Rule> = {
       const amount = num(data.amount);
       const u = asUser(await t.get("users", me.id));
       if (!u.bank) throw new Error("Add your bank account first");
-      if (!(u.kycDone || u.kyc?.status === "verified")) throw new Error(u.kyc?.status === "pending" ? "Your KYC is awaiting review" : "Complete KYC first");
+      if (!(u.kycDone || u.kyc?.status === "verified")) throw new Error(["pending", "assigned", "reviewed"].includes(String(u.kyc?.status)) ? "Your KYC is awaiting review" : "Complete KYC first");
       if (!Number.isFinite(amount) || amount < 100) throw new Error("Minimum withdrawal is ₹100");
       const b = await balanceOf(t, u);
       if (amount > b.withdrawable) throw new Error("Amount is more than your withdrawable balance");
@@ -79,14 +85,17 @@ export const RULES: Record<string, Rule> = {
     ops: "rcud",
     required: ["slug"],
     globalUnique: ["slug"],
-    check: ({ data }) => (SLUG.test(String(data.slug ?? "ok-slug")) ? undefined : "Link must be 2–60 letters, numbers or dashes"),
+    check: all(({ me, data }) => {
+      if (!SLUG.test(String(data.slug ?? "ok-slug"))) return "Link must be 2–60 letters, numbers or dashes";
+      if (data.template && tpl(data.template).premium && !hasFeature(me, "premium-templates")) return "That design is a Pro design. Upgrade your plan to use it.";
+    }, limitCheck("pages", "pages")),
   },
   sites: {
     ops: "rcud",
     gate: "landing-page",
     required: ["slug"],
     globalUnique: ["slug"],
-    check: ({ data }) => (SLUG.test(String(data.slug ?? "ok-slug")) ? undefined : "Link must be 2–60 letters, numbers or dashes"),
+    check: all(limitCheck("sites", "sites"), ({ data }) => (SLUG.test(String(data.slug ?? "ok-slug")) ? undefined : "Link must be 2–60 letters, numbers or dashes")),
   },
   leads: { ops: "rd" },
   broadcasts: {
@@ -109,7 +118,9 @@ export const RULES: Record<string, Rule> = {
   unsubscribed: { ops: "rcud", gate: "unsubscribed-users", required: ["email"], unique: ["email"], check: ({ data }) => (!("email" in data) || email(data.email) ? undefined : "Enter a valid email") },
   paths: { ops: "rcud", gate: "path" },
   waTemplates: { ops: "rcud", gate: "whatsapp-templates" },
-  certificates: { ops: "rcud" },
+  certificates: { ops: "rcud", protect: ["sentTo", "lastSent"], check: limitCheck("certificates", "certificates") },
+  certIssues: { ops: "r" },
+  customFlows: { ops: "r" },
   affiliates: {
     ops: "rcud",
     gate: "affiliate",
@@ -168,7 +179,16 @@ Object.assign(RULES, {
   },
   crm: { ops: "rud", updatable: ["notes"] },
   masterclasses: { ops: "rcud", required: ["title", "startsAt"], protect: ["attendanceTaken"], check: ({ data }) => ("seats" in data && data.seats !== "" && !(num(data.seats) >= 1) ? "Seats must be at least 1" : undefined) },
-  slots: { ops: "rcud", required: ["startsAt"], unique: ["startsAt"], protect: ["leadId", "bookedAt"] },
+  slots: {
+    ops: "rcud",
+    required: ["startsAt"],
+    unique: ["startsAt"],
+    protect: ["leadId", "bookedAt"],
+    check: ({ data }) => {
+      if ("startsAt" in data && Number.isNaN(new Date(String(data.startsAt)).getTime())) return "Enter a valid time";
+      if (data.link && !/^https?:\/\/\S+$/.test(String(data.link))) return "Meeting link must start with http(s)://";
+    },
+  },
   trackedLinks: {
     ops: "rcud",
     required: ["label", "code"],
@@ -183,6 +203,7 @@ Object.assign(RULES, {
   testimonials: { ops: "rud", updatable: ["status", "featured"] },
   blogPosts: {
     ops: "rcud",
+    gate: "website-blog",
     required: ["title", "slug"],
     unique: ["slug"],
     check: ({ data }) => (data.slug !== undefined && !SLUG.test(String(data.slug)) ? "Address can use lowercase letters, numbers and dashes only" : undefined),

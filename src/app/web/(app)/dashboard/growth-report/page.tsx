@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api, toast, useCollection } from "@/lib/client";
-import { Btn, Field, Panel, Select, Title, inputCls } from "@/components/dash/kit";
+import { Gate, Btn, Field, Panel, Select, Title, inputCls } from "@/components/dash/kit";
 import { Bar, Section } from "@/components/growth/shared";
 import { PLATFORMS, type Funnel } from "@/lib/growth/model";
 
@@ -13,7 +13,7 @@ const TARGETS: Record<string, { key: string; label: string; target: number }[]> 
 const mondayOf = (d: Date) => { const x = new Date(d); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x.toISOString().slice(0, 10); };
 const lastWeeks = (n: number) => Array.from({ length: n }, (_, i) => mondayOf(new Date(Date.now() - i * 7 * 864e5)));
 
-export default function GrowthReport() {
+function GrowthReport() {
   const [week, setWeek] = useState(mondayOf(new Date()));
   const [r, setR] = useState<Report | null>(null);
   const stats = useCollection("socialStats");
@@ -75,4 +75,8 @@ export default function GrowthReport() {
       </Section>
     </div>
   );
+}
+
+export default function Page() {
+  return <Gate feature="growth-report" title="Weekly Report"><GrowthReport /></Gate>;
 }

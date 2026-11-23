@@ -107,4 +107,50 @@ const cloudinary: FileStorage = {
   },
 };
 
+/* ---- Cloudinary direct upload and signed delivery ----
+ * Large files must not pass through the app server (serverless hosts cap request and response bodies at about 4.5 MB).
+ * The browser uploads straight to Cloudinary with a one-off signature; playback is a redirect to a signed URL
+ * that the app only hands out after its own permission check (see /api/cloud/[id]). Images, video and audio use this path.
+ * Other documents stay on the server path above. */
+export type CldType = "image" | "video" | "raw";
+export const cldTypeOf = (mime: string): CldType => (mime.startsWith("image/") ? "image" : mime.startsWith("video/") || mime.startsWith("audio/") ? "video" : "raw");
+
+const sha1 = (s: string) => crypto.createHash("sha1").update(s).digest();
+
+/** Parameters the browser needs to upload one file straight to Cloudinary. Null when Cloudinary is not configured. */
+export function cldSignUpload(userId: string, id: string, mime: string) {
+  const c = cloudinaryCfg();
+  if (!c || !safe(userId) || !safe(id)) return null;
+  const rtype = cldTypeOf(mime);
+  const p = { public_id: objectPath(userId, id), timestamp: String(Math.floor(Date.now() / 1000)), type: "authenticated" };
+  return { url: `https://api.cloudinary.com/v1_1/${c.name}/${rtype}/upload`, rtype, fields: { ...p, api_key: c.key, signature: sign(p, c.secret) } };
+}
+
+/** Ask Cloudinary what it really stored (size, format), so the browser's word is never trusted. */
+export async function cldInfo(rtype: CldType, userId: string, id: string): Promise<{ bytes: number; format?: string } | null> {
+  const c = cloudinaryCfg();
+  if (!c || !safe(userId) || !safe(id)) return null;
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${c.name}/resources/${rtype}/authenticated/${objectPath(userId, id).split("/").map(encodeURIComponent).join("/")}`, {
+    headers: { authorization: "Basic " + Buffer.from(`${c.key}:${c.secret}`).toString("base64") },
+  });
+  if (!r.ok) return null;
+  const j = (await r.json()) as { bytes?: number; format?: string };
+  return { bytes: Number(j.bytes || 0), format: j.format };
+}
+
+/** Signed delivery URL for an authenticated image or video. */
+export function cldDeliveryUrl(rtype: "image" | "video", userId: string, id: string, format: string) {
+  const c = cloudinaryCfg()!;
+  const pid = `${objectPath(userId, id)}.${format}`;
+  const s = "s--" + Buffer.from(sha1(pid + c.secret)).toString("base64url").slice(0, 8) + "--";
+  return `https://res.cloudinary.com/${c.name}/${rtype}/authenticated/${s}/${pid}`;
+}
+
+export async function cldRemove(rtype: CldType, userId: string, id: string) {
+  const c = cloudinaryCfg();
+  if (!c) return;
+  const p = { public_id: objectPath(userId, id), timestamp: String(Math.floor(Date.now() / 1000)), type: "authenticated" };
+  await fetch(`https://api.cloudinary.com/v1_1/${c.name}/${rtype}/destroy`, { method: "POST", body: new URLSearchParams({ ...p, api_key: c.key, signature: sign(p, c.secret) }) }).catch(() => {});
+}
+
 export const fileStorage = (): FileStorage => (cloudinaryConfigured() ? cloudinary : storeKind() === "firestore" ? firebase : local);

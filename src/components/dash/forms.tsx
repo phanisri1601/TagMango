@@ -1,11 +1,15 @@
 "use client";
+import MediaField, { type MediaKind } from "@/components/dash/MediaField";
+import { isLink } from "@/lib/upload";
 import { useState } from "react";
 import { Btn, Drawer, Field, Toggle, areaCls, inputCls } from "./kit";
 
 export type FieldDef = {
   key: string;
   label: string;
-  type?: "text" | "number" | "textarea" | "select" | "multi" | "date" | "datetime-local" | "time" | "toggle" | "email" | "url" | "color";
+  type?: "text" | "number" | "textarea" | "select" | "multi" | "date" | "datetime-local" | "time" | "toggle" | "email" | "url" | "color" | "media";
+  /** For type "media": what can be uploaded (the field also accepts a pasted link). */
+  media?: MediaKind;
   options?: string[];
   required?: boolean;
   placeholder?: string;
@@ -22,7 +26,8 @@ export function FormFields({ fields, data, set }: { fields: FieldDef[]; data: Re
       {fields.filter((f) => !f.show || f.show(data)).map((f) => {
         const v = data[f.key];
         let input: React.ReactNode;
-        if (f.type === "textarea") input = <textarea className={`${areaCls} min-h-24`} placeholder={f.placeholder} maxLength={f.maxLength} value={String(v ?? "")} onChange={(e) => set(f.key, e.target.value)} />;
+        if (f.type === "media") input = <MediaField value={String(v ?? "")} onChange={(x) => set(f.key, x)} kind={f.media || "image"} placeholder={f.placeholder} />;
+        else if (f.type === "textarea") input = <textarea className={`${areaCls} min-h-24`} placeholder={f.placeholder} maxLength={f.maxLength} value={String(v ?? "")} onChange={(e) => set(f.key, e.target.value)} />;
         else if (f.type === "select")
           input = (
             <select className={inputCls} value={String(v ?? "")} onChange={(e) => set(f.key, e.target.value)}>
@@ -73,7 +78,7 @@ export function validate(fields: FieldDef[], data: Record<string, unknown>): str
     const v = data[f.key];
     if (f.required && (v === undefined || v === "" || (Array.isArray(v) && !v.length))) return `${f.label} is required`;
     if (f.type === "email" && v && !/^\S+@\S+\.\S+$/.test(String(v))) return `${f.label} must be a valid email`;
-    if (f.type === "url" && v && !/^https?:\/\//.test(String(v))) return `${f.label} must start with http:// or https://`;
+    if ((f.type === "url" || f.type === "media") && v && !isLink(v)) return `${f.label} must be a web address starting with http:// or https://, or an uploaded file`;
     if (f.type === "number" && v !== "" && v !== undefined) {
       const n = Number(v);
       if (Number.isNaN(n)) return `${f.label} must be a number`;

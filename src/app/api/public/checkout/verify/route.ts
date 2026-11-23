@@ -5,6 +5,8 @@ import { fetchPayment, verifyPaymentSignature } from "@/lib/razorpay";
 import { rateLimited } from "@/lib/ratelimit";
 
 /** The browser reports a finished Razorpay payment; we trust only the signature, never the amount from the browser. */
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   if (await rateLimited("payverify", 30)) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   const b = await req.json().catch(() => ({}));

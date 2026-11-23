@@ -25,7 +25,9 @@ export default function Messages() {
   }, [list, q]);
   const cur = people.find((p) => p.email === active) || people[0];
   const thread = msgs.rows.filter((m) => m.to === cur?.email).slice().reverse();
-  useEffect(() => end.current?.scrollIntoView({ behavior: "smooth" }), [thread.length, cur?.email]);
+  useEffect(() => {
+    end.current?.scrollIntoView({ behavior: "smooth" });
+  }, [thread.length, cur?.email]);
 
   if (!list.length) return <div className="mx-auto max-w-4xl"><Panel><EmptyBox title="No conversations yet" text="Once people buy your mangoes, you can message them here." /></Panel></div>;
 

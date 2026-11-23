@@ -3,9 +3,9 @@ import type { Plan } from "@/components/dash/nav";
 
 export function PageHead({ title, sub, right }: { title: string; sub?: React.ReactNode; right?: React.ReactNode }) {
   return (
-    <div className="animate-soft-fade mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div className="animate-soft-fade mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-[#e6e3dc] pb-5">
       <div>
-        <h1 className="text-[26px] font-bold leading-tight">{title}</h1>
+        <h1 className="font-display text-[28px] font-bold leading-tight tracking-tight">{title}</h1>
         {sub && <p className="mt-1 text-[14px] text-[#6b6b7b]">{sub}</p>}
       </div>
       {right && <div className="flex flex-wrap items-center gap-2">{right}</div>}

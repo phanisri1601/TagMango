@@ -13,26 +13,6 @@ export function Logo({ className = "", dark = false }: { className?: string; dar
   );
 }
 
-export function MangoIcon({ className = "h-10 w-10" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden>
-      <defs>
-        <linearGradient id="mg" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" style={{ stopColor: "var(--ac3)" }} />
-          <stop offset="0.6" style={{ stopColor: "var(--ac2)" }} />
-          <stop offset="1" style={{ stopColor: "var(--ac1)" }} />
-        </linearGradient>
-      </defs>
-      <path
-        d="M14 40c0-14 11-24 24-24 8 0 12 5 12 12 0 15-13 26-26 26-6 0-10-5-10-14z"
-        fill="url(#mg)"
-      />
-      <path d="M40 17c2-6 7-9 13-9-1 6-5 10-11 11z" fill="#141413" />
-      <path d="M22 44c3-8 9-14 18-17" stroke="#fff" strokeOpacity=".35" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export function Arrow({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 20 20" fill="none" className={className} aria-hidden>

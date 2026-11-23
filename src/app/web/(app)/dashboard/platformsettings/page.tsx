@@ -1,4 +1,5 @@
 "use client";
+import MediaField from "@/components/dash/MediaField";
 import Link from "next/link";
 import { useState } from "react";
 import { patchMe, toast, useCollection, useMe } from "@/lib/client";
@@ -41,8 +42,8 @@ function Branding() {
       <div className="space-y-4">
         <Field label="Platform name"><input className={inputCls} value={d.name} onChange={(e) => setD({ ...d, name: e.target.value })} /></Field>
         <Field label="Brand colour"><input type="color" className={`${inputCls} p-1`} value={d.color} onChange={(e) => setD({ ...d, color: e.target.value })} /></Field>
-        <Field label="Logo URL"><input className={inputCls} placeholder="https://…/logo.png" value={d.logo} onChange={(e) => setD({ ...d, logo: e.target.value })} /></Field>
-        <Field label="Favicon URL"><input className={inputCls} placeholder="https://…/favicon.png" value={d.favicon} onChange={(e) => setD({ ...d, favicon: e.target.value })} /></Field>
+        <Field label="Logo"><MediaField kind="image" value={d.logo || ""} onChange={(v) => setD({ ...d, logo: v })} placeholder="https://…/logo.png" /></Field>
+        <Field label="Favicon"><MediaField kind="image" value={d.favicon || ""} onChange={(v) => setD({ ...d, favicon: v })} placeholder="https://…/favicon.png" /></Field>
         <Btn onClick={async () => { const r = await patchMe({ settings: { branding: d } }); setMe(r.user); toast("Branding saved"); }}>Save</Btn>
       </div>
       <div className="rounded-[10px] border border-[#ededed] p-4">

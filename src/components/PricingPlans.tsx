@@ -2,47 +2,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Arrow } from "./ui";
+import { PLAN_CARDS } from "@/lib/planInfo";
 
-const plans = [
-  {
-    name: "Basic",
-    price: "Zero",
-    unit: "Fixed Fee",
-    fee: "10% commissions",
-    lead: "",
-    items: ["200 students", "Landing pages (3 templates)", "Course storage 20 GB media upload", "Team management", "Advanced analytics", "Chat rooms", "WhatsApp integration (automations & broadcast)", "Email broadcasting & automations", "Storefront", "Certificates & security", "Zapier & Pabbly integration"],
-  },
-  {
-    name: "Pro",
-    price: "₹5,000",
-    unit: "+GST /month",
-    fee: "+ 5.5% commissions",
-    lead: "Everything in Basic +",
-    items: ["Unlimited students", "Unlimited storage", "Refund automation", "Free products using 100% OFF coupons", "50K email/month for broadcast", "Exclusive landing page templates", "Build custom certificates", "Timer"],
-  },
-  {
-    name: "Advanced",
-    price: "₹15,000",
-    unit: "+GST /month",
-    fee: "+ 3.5% commissions",
-    lead: "Everything in Pro +",
-    popular: true,
-    items: ["Community features (channels, threads, multimedia)", "Affiliate", "Gamification", "Forums", "DRM for course videos", "Webinars – 500 people", "Up-sell on check-out", "User addition"],
-  },
-  {
-    name: "Ultimate",
-    price: "₹35,000",
-    unit: "+GST /month",
-    fee: "Zero commissions",
-    lead: "Everything in Advanced +",
-    items: ["AI stack included", "Mango AI", "Theme AI", "AI funnel builder", "AI software builder", "1000 AI credits", "Dedicated success manager", "Habit and task tracker", "Challenges", "Achievements & certifications", "Flexi-pay & no-cost EMI", "Menu customisation"],
-  },
-];
-
-const addons = [
-  { name: "AI Stack", desc: "Add AI on top of the plan you choose.", items: ["Mango AI: your AI co-founder for every next move", "Theme AI: make your platform uniquely yours", "AI Funnel Builder: ideas to live funnels in seconds", "1000 AI credits"], price: "₹49,999", unit: "+ GST / year" },
-  { name: "Branded Apps Stack", desc: "Give your learners a seamless, on-brand app experience.", items: ["Your own Play Store and App Store apps", "Meetings for 300 people (2 years)"], price: "₹74,999", unit: "One-time + GST" },
-];
+const plans = PLAN_CARDS.map((p) => ({ name: p.name, price: p.price, unit: p.unit, fee: p.fee, lead: p.lead || "", popular: p.popular, items: p.items }));
 
 function Check() {
   return (
@@ -103,24 +65,6 @@ export default function PricingPlans() {
         </div>
         <p className="mt-6 text-center text-xs text-ink/50">*International payment gateway charges are exclusive. All variable charges are exclusive of GST.</p>
 
-        <p className="mt-20 text-center text-xs font-semibold uppercase tracking-wider text-ink/40">Add-ons</p>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {addons.map((a) => (
-            <div key={a.name} className="flex flex-col rounded-[24px] border border-black/5 bg-white p-6 md:p-8">
-              <p className="font-display text-2xl font-semibold">{a.name}</p>
-              <p className="mt-1 text-ink/60">{a.desc}</p>
-              <ul className="mt-5 flex-1 space-y-2 text-sm text-ink/70">
-                {a.items.map((it) => (
-                  <li key={it} className="flex gap-2"><Check />{it}</li>
-                ))}
-              </ul>
-              <div className="mt-6 flex items-end justify-between">
-                <p className="font-display text-3xl font-bold">{a.price} <span className="text-sm font-medium text-ink/50">{a.unit}</span></p>
-                <Link href="/demo" className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white">Book a Call</Link>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

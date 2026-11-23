@@ -114,7 +114,7 @@ export function Field({ label, hint, children, required }: { label: React.ReactN
 
 export function Pill({ tone = "green", children }: { tone?: "green" | "grey" | "red" | "orange" | "blue"; children: React.ReactNode }) {
   const t = { green: "bg-[#00a400] text-white", grey: "bg-[#8c8c8c] text-white", red: "bg-[#ff4d4f] text-white", orange: "bg-[#141413] text-white", blue: "bg-[#141413] text-white" }[tone];
-  return <span className={`inline-flex h-5 items-center rounded-[25px] px-2 text-[10px] font-semibold uppercase tracking-wide ${t}`}>{children}</span>;
+  return <span className={`inline-flex h-5 items-center whitespace-nowrap rounded-[25px] px-2 text-[10px] font-semibold uppercase tracking-wide ${t}`}>{children}</span>;
 }
 
 export function Note({ tone = "orange", children }: { tone?: "orange" | "yellow" | "blue"; children: React.ReactNode }) {
@@ -245,7 +245,7 @@ export function DataTable<T extends { id: string }>({
                 </th>
               )}
               {cols.map((c) => (
-                <th key={c.key} className={`px-4 py-4 text-[14px] font-medium text-[#0f0f0f] ${c.className ?? ""}`}>
+                <th key={c.key} className={`whitespace-nowrap px-4 py-4 text-[14px] font-medium text-[#0f0f0f] ${c.className ?? ""}`}>
                   {c.sort ? (
                     <button className="inline-flex items-center gap-1" onClick={() => setSort((s) => (s?.key === c.key ? { key: c.key, dir: s.dir === 1 ? -1 : 1 } : { key: c.key, dir: 1 }))}>
                       {c.label}

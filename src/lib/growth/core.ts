@@ -3,8 +3,8 @@ import { asUser, id as newId, now, store, type User } from "../db";
 import { sendEmail, sendWhatsApp } from "../messaging";
 import { unsubToken } from "../unsub";
 import {
-  DEFAULT_CONSENT, DEFAULT_PATTERNS, DEFAULT_RULES, FLOW_BY_ID, MILESTONE_FLOW, fill,
-  type FlowDef, type Lead, type Milestone, type Pattern, type QuizRules, type StepDef,
+  DEFAULT_CONSENT, DEFAULT_PATTERNS, DEFAULT_RULES, FLOW_BY_ID, MILESTONE_FLOW, customToDef, fill,
+  type CustomFlow, type FlowDef, type Lead, type Milestone, type Pattern, type QuizRules, type StepDef,
 } from "./model";
 
 export const unsubLink = (creatorId: string, email: string) => `${appUrl()}/unsubscribe?c=${creatorId}&e=${encodeURIComponent(email.toLowerCase())}&t=${unsubToken(creatorId, email)}`;
@@ -160,6 +160,10 @@ export async function mark(creatorId: string, leadId: string, key: Milestone, o:
   if (out.fresh && out.implied) await creditActed(creatorId, leadId, "captured");
   const flowId = MILESTONE_FLOW[key];
   if (flowId && !o.silent && (out.fresh || o.refire)) await fireFlow(creatorId, flowId, lead, { eventAt: o.eventAt, key: o.ctxKey, extra: o.extra });
+  // workflows the coach made themselves, started by the same moment
+  if (!o.silent && (out.fresh || o.refire)) {
+    for (const cf of await store.find("customFlows", [["userId", creatorId], ["trigger", key]])) await fireFlow(creatorId, `c_${cf.id}`, lead, { eventAt: o.eventAt, key: o.ctxKey, extra: o.extra }).catch(() => {});
+  }
   return out.fresh;
 }
 
@@ -197,15 +201,27 @@ export async function alertCoach(creatorId: string, text: string) {
 
 type FlowDoc = { id: string; flowId: string; enabled?: boolean; overrides?: Record<string, { subject?: string; body?: string; off?: boolean }> };
 async function flowDoc(creatorId: string, flowId: string) {
+  if (flowId.startsWith("c_")) {
+    const d = await store.get("customFlows", flowId.slice(2));
+    return d && d.userId === creatorId ? ({ id: d.id, flowId, enabled: d.enabled !== false, overrides: {} } as FlowDoc) : null;
+  }
   const [d] = await store.find("flows", [["userId", creatorId], ["flowId", flowId]], { limit: 1 });
   return (d as unknown as FlowDoc) || null;
+}
+
+/** A workflow by id: one of the built-in sixteen, or one this coach made ("c_<id>"). */
+export async function defFor(creatorId: string, flowId: string): Promise<FlowDef | null> {
+  if (FLOW_BY_ID[flowId]) return FLOW_BY_ID[flowId];
+  if (!flowId.startsWith("c_")) return null;
+  const d = await store.get("customFlows", flowId.slice(2));
+  return d && d.userId === creatorId ? customToDef(d as unknown as CustomFlow) : null;
 }
 
 type RunStep = { key: string; channel: "email" | "whatsapp"; dueAt: string; status: "pending" | "sent" | "skipped" | "stopped" | "failed"; note?: string };
 type Run = { id: string; userId: string; leadId: string; flowId: string; key?: string; eventAt?: string; extra?: Record<string, string>; steps: RunStep[]; done: boolean; alerted?: boolean };
 
 export async function fireFlow(creatorId: string, flowId: string, lead: Lead, ctx: { eventAt?: string; key?: string; extra?: Record<string, string> } = {}) {
-  const def = FLOW_BY_ID[flowId];
+  const def = await defFor(creatorId, flowId);
   if (!def) return;
   const doc = await flowDoc(creatorId, flowId);
   if (doc?.enabled === false) return;
@@ -314,7 +330,7 @@ async function sendStep(c: Ctx, def: FlowDef, s: StepDef, ov: FlowDoc["overrides
 export async function processRun(runId: string) {
   const run = (await store.get("flowRuns", runId)) as unknown as Run | null;
   if (!run || run.done) return 0;
-  const def = FLOW_BY_ID[run.flowId];
+  const def = await defFor(run.userId, run.flowId);
   const [u, g, leadRaw, doc] = await Promise.all([store.get("users", run.userId), getGrowth(run.userId), store.get("crm", run.leadId), flowDoc(run.userId, run.flowId)]);
   if (!def || !u || !g || !leadRaw || asUser(u).suspended) {
     await store.write([{ type: "update", coll: "flowRuns", id: runId, patch: { done: true } }]);

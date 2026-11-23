@@ -8,7 +8,19 @@ export { store, authCache };
 export const PLANS = ["basic", "pro", "advanced", "ultimate"] as const;
 export type Plan = (typeof PLANS)[number];
 
-export type Kyc = { pan: string; legalName: string; status: "pending" | "verified" | "rejected"; submittedAt: string; reviewedAt?: string; note?: string };
+/** KYC case. pending = submitted, assigned = with a reviewer, reviewed = reviewer's recommendation is in, then the super admin decides: verified, rejected or resubmit. */
+export type KycStatus = "pending" | "assigned" | "reviewed" | "verified" | "rejected" | "resubmit";
+export type KycEvent = { at: string; by: string; role: "creator" | "admin" | "reviewer"; action: string; note?: string };
+export type Kyc = {
+  pan: string; legalName: string; status: KycStatus; submittedAt: string; note?: string;
+  dob?: string; address?: string; phone?: string;
+  /** Cloud file ids of the uploaded documents (private: only the owner, the assigned reviewer and admins can open them). */
+  docs?: { pan?: string; id?: string; idType?: string; selfie?: string };
+  reviewerId?: string; reviewerEmail?: string; reviewerName?: string; assignedAt?: string; assignedBy?: string;
+  reviewedBy?: string; reviewedAt?: string; reviewerRemarks?: string; recommendation?: "approve" | "corrections";
+  finalBy?: string; finalAt?: string;
+  history?: KycEvent[];
+};
 
 export type User = {
   id: string;

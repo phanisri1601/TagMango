@@ -8,11 +8,11 @@ export const ROW_COLLECTIONS = [
   "notifications", "views", "outbox",
   // growth funnel + learning portal
   "growth", "crm", "masterclasses", "slots", "trackedLinks", "linkClicks", "flows", "flowRuns", "msgLog", "testimonials", "socialStats",
-  "lessons", "classes", "assignments", "submissions", "enrolments", "updates", "blogPosts",
+  "lessons", "classes", "assignments", "submissions", "enrolments", "updates", "blogPosts", "certIssues", "customFlows",
 ] as const;
 
 /** Written by admins (userId = the admin). Kept when a creator is deleted. */
-export const ADMIN_COLLECTIONS = ["audit", "announcements"] as const;
+export const ADMIN_COLLECTIONS = ["audit", "announcements", "kycReviewers"] as const;
 
 /** Auth / bookkeeping collections. */
 export const SYSTEM_COLLECTIONS = ["users", "sessions", "otps", "claims"] as const;

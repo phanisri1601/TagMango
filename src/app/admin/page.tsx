@@ -24,6 +24,7 @@ function Attention({ href, icon, value, label, tone }: { href: string; icon: str
 
 export default function Overview() {
   const { data: d, loading, error, reload, updatedAt } = useAdminData<AOverview>("/api/admin/overview");
+  const { data: kyc } = useAdminData<{ kyc: number }>("/api/admin/counts");
   if (error && !d) return <ErrorBox message={error} retry={reload} />;
   if (loading || !d) return <div className="space-y-4"><Skeleton h={90} /><Skeleton h={110} /><Skeleton h={300} /></div>;
 
@@ -32,12 +33,17 @@ export default function Overview() {
       <PageHead title="Platform overview" sub={<Updated at={updatedAt} />} right={<Btn variant="outline" icon="refresh" onClick={reload}>Refresh</Btn>} />
 
       <div className="flex flex-wrap gap-3">
+        <Attention href="/admin/kyc" icon="check" tone="orange" value={kyc?.kyc ?? 0} label="KYC cases waiting" />
         <Attention href="/admin/withdrawals" icon="download" tone="orange" value={d.pending.withdrawals} label={`Withdrawals to review · ${inr(d.pending.withdrawalAmount)}`} />
         <Attention href="/admin/reports" icon="warning" tone={d.pending.reports ? "red" : "grey"} value={d.pending.reports} label="Open content reports" />
         <Attention href="/admin/creators" icon="lock" tone={d.creators.suspended ? "red" : "grey"} value={d.creators.suspended} label="Suspended creators" />
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-3">
+      <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+        {[["/admin/kyc", "Review KYC"], ["/admin/leads", "See leads and funnel"], ["/admin/learners", "Learners and certificates"], ["/admin/announcements", "Send announcement"], ["/admin/health", "Check system health"]].map(([h, l]) => <Link key={h} href={h} className="rounded-lg border border-[#e1e1e1] bg-white px-4 py-2.5 text-center text-[13px] font-medium transition hover:border-[#141413]">{l}</Link>)}
+      </div>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 [&>*]:min-w-0">
         <StatCard icon="customers" label="Creators" value={d.creators.total} sub={`+${d.creators.new30} in the last 30 days`} />
         <StatCard icon="sales" label="GMV (30 days)" value={inr(d.money.gmv30)} sub={`${inr(d.money.gmvAll)} all time`} delay={0.04} />
         <StatCard icon="products" label="Orders (30 days)" value={d.money.orders30} sub={`${d.money.refunds30} refunded`} delay={0.08} />

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
 import { id as newId, now, store } from "@/lib/db";
 import { activeLearners, alertCoach, appUrl, enrol, ensureGrowth, getGrowth, mark, processFlows, recordMiss } from "@/lib/growth/core";
-import { FLOWS, GROUPS, computeFunnel, type ClickRow, type Lead, type Milestone } from "@/lib/growth/model";
+import { FLOWS, GROUPS, MILESTONES, TRIGGERS, computeFunnel, type ClickRow, type Lead, type Milestone } from "@/lib/growth/model";
+import { hasFeature, limitOf } from "@/lib/plans";
 import { buildReport, weekStart } from "@/lib/growth/report";
 
 const bad = (m: string, status = 400) => NextResponse.json({ error: m }, { status });
@@ -41,14 +42,22 @@ export async function GET(req: Request) {
       const m = msgs.filter((x) => x.flowId === flowId && x.sentAt && (!step || x.stepKey === step));
       return { sent: m.length, opened: m.filter((x) => x.openedAt).length, clicked: m.filter((x) => x.clickedAt).length, acted: m.filter((x) => x.actedAt).length };
     };
+    const custom = (await store.find("customFlows", [["userId", me.id]])).sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
     return NextResponse.json({
       flows: FLOWS.map((f) => {
         const d = docs.find((x) => x.flowId === f.id);
         return { ...f, enabled: d?.enabled !== false, overrides: d?.overrides || {}, stats: stat(f.id), stepStats: Object.fromEntries(f.steps.map((s) => [s.key, stat(f.id, s.key)])) };
       }),
+      custom: custom.map((c) => {
+        const id = `c_${c.id}`;
+        const steps = ((c.steps as { channel: string; at: number }[]) || []);
+        return { ...c, flowId: id, stats: stat(id), stepStats: Object.fromEntries(steps.map((_, i) => [`s${i + 1}`, stat(id, `s${i + 1}`)])) };
+      }),
+      can: { edit: hasFeature(me, "edit-workflows"), create: hasFeature(me, "custom-workflows"), max: limitOf(me, "customWorkflows") },
     });
   }
 
+  if (what === "report" && !hasFeature(me, "growth-report")) return bad("Upgrade to Pro to see the weekly report", 403);
   if (what === "report") return NextResponse.json(await buildReport(me.id, q.get("week") || weekStart()));
   return bad("Unknown query");
 }
@@ -132,9 +141,48 @@ export async function POST(req: Request) {
       if (Object.keys(r).length) ov[s.key] = r;
     }
     const [cur] = await store.find("flows", [["userId", me.id], ["flowId", flowId]], { limit: 1 });
+    if (Object.keys(ov).length && !hasFeature(me, "edit-workflows")) return bad("Editing workflow messages is a Pro feature. You can still switch workflows on or off.", 403);
     const data = { enabled: body.enabled !== false, overrides: ov };
     if (cur) await store.write([{ type: "update", coll: "flows", id: cur.id, patch: data }]);
     else await store.write([{ type: "set", coll: "flows", id: newId(), data: { userId: me.id, createdAt: now(), flowId, ...data } }]);
+    return NextResponse.json({ ok: true });
+  }
+
+  if (action === "custom-flow-save") {
+    if (!hasFeature(me, "custom-workflows")) return bad("Creating your own workflows is a Pro feature. Upgrade your plan.", 403);
+    const name = String(body.name || "").trim().slice(0, 60);
+    if (!name) return bad("Give the workflow a name");
+    const trigger = String(body.trigger || "") as Milestone;
+    if (!TRIGGERS.some(([k]) => k === trigger)) return bad("Choose when the workflow starts");
+    const steps = (Array.isArray(body.steps) ? body.steps : []).slice(0, 10).map((s: Record<string, unknown>) => ({
+      channel: s.channel === "whatsapp" ? "whatsapp" : "email",
+      at: Math.min(60 * 1440, Math.max(0, Math.round(Number(s.at) || 0))),
+      subject: String(s.subject || "").slice(0, 200),
+      body: String(s.body || "").trim().slice(0, 3000),
+    }));
+    if (!steps.length) return bad("Add at least one message");
+    if (steps.some((s: { body: string }) => !s.body)) return bad("Every message needs some text");
+    if (steps.some((s: { channel: string; subject: string }) => s.channel === "email" && !s.subject.trim())) return bad("Every email needs a subject");
+    const stopOn = (Array.isArray(body.stopOn) ? body.stopOn : []).map(String).filter((k: string) => (MILESTONES as readonly string[]).includes(k));
+    const goal = (MILESTONES as readonly string[]).includes(String(body.goal)) ? String(body.goal) : null;
+    const data = { name, trigger, steps, stopOn, goal, sales: !!body.sales, enabled: body.enabled !== false };
+    if (body.id) {
+      const cur = await store.get("customFlows", String(body.id));
+      if (!cur || cur.userId !== me.id) return bad("Workflow not found", 404);
+      await store.write([{ type: "update", coll: "customFlows", id: cur.id, patch: data }]);
+      return NextResponse.json({ ok: true, id: cur.id });
+    }
+    const have = (await store.find("customFlows", [["userId", me.id]])).length;
+    if (have >= limitOf(me, "customWorkflows")) return bad(`Your plan allows up to ${limitOf(me, "customWorkflows")} custom workflows. Upgrade to add more.`, 403);
+    const id = newId();
+    await store.write([{ type: "set", coll: "customFlows", id, data: { userId: me.id, createdAt: now(), ...data } }]);
+    return NextResponse.json({ ok: true, id });
+  }
+
+  if (action === "custom-flow-delete") {
+    const cur = await store.get("customFlows", String(body.id || ""));
+    if (!cur || cur.userId !== me.id) return bad("Workflow not found", 404);
+    await store.write([{ type: "delete", coll: "customFlows", id: cur.id }]);
     return NextResponse.json({ ok: true });
   }
 

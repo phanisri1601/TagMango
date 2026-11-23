@@ -5,13 +5,60 @@ import { downloadCsv, fmtDate, inr, patchMe, toast, useMe } from "@/lib/client";
 import { Btn, DataTable, DateRange, Drawer, EmptySearch, Field, Panel, Pill, Segmented, Title, Updated, Walkthrough, inputCls, type Col } from "@/components/dash/kit";
 import { Icon } from "@/components/dash/icons";
 import { inRange, useMoney } from "@/components/dash/hooks";
+import { uploadFile } from "@/lib/upload";
 
 type Line = { id: string; createdAt: string; desc: string; debit: number; credit: number; balance: number; status: string };
 
+const ID_TYPES = ["Aadhaar", "Passport", "Driving licence", "Voter ID"];
+const IN_REVIEW = ["pending", "assigned", "reviewed"];
+
+/** One document to upload. It is stored privately: only you, the reviewer on your case and the admin can open it. */
+function DocUpload({ label, hint, value, onChange, required }: { label: string; hint?: string; value: string; onChange: (id: string, name: string) => void; required?: boolean }) {
+  const [pct, setPct] = useState<number | null>(null);
+  const [name, setName] = useState("");
+  const [err, setErr] = useState("");
+  async function pick(f?: File | null) {
+    if (!f) return;
+    setErr(""); setPct(0);
+    try { const u = await uploadFile(f, setPct, { private: true }); setName(f.name); onChange(u.url.split("/").pop() || "", f.name); } catch (e) { setErr((e as Error).message); }
+    setPct(null);
+  }
+  return (
+    <Field label={label} required={required} hint={hint}>
+      <label className={`flex cursor-pointer items-center gap-3 rounded-md border border-dashed px-3 py-3 text-[13.5px] transition hover:border-[#141413] ${value ? "border-[#141413] bg-[#f4f2ed]" : "border-[#bdb8ac]"}`}>
+        <Icon name="upload" className="h-4 w-4 shrink-0" />
+        <span className="min-w-0 flex-1 truncate">{pct !== null ? `Uploading… ${pct}%` : value ? `✓ ${name || "Uploaded"}  (tap to replace)` : "Choose a photo or PDF"}</span>
+        <input type="file" hidden accept="image/*,application/pdf" onChange={(e) => pick(e.target.files?.[0])} />
+      </label>
+      {err && <p className="mt-1 text-[12px] text-[#cf1322]">{err}</p>}
+    </Field>
+  );
+}
+
+function KycSteps({ status }: { status: string }) {
+  const stage = status === "pending" ? 1 : status === "assigned" ? 2 : status === "reviewed" ? 3 : 4;
+  const steps = ["Submitted", "Documents checked", "Final decision"];
+  return (
+    <ol className="flex items-center gap-2 text-[12.5px]">
+      {steps.map((l, i) => (
+        <li key={l} className="flex flex-1 items-center gap-2"><span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] ${i < stage ? "bg-[#141413] text-white" : "border border-[#bdb8ac] text-[#5c5a55]"}`}>{i < stage ? "✓" : i + 1}</span><span className={i < stage ? "font-medium" : "text-[#5c5a55]"}>{l}</span>{i < steps.length - 1 && <span className="h-px flex-1 bg-[#d3cfc7]" />}</li>
+      ))}
+    </ol>
+  );
+}
+
 function KycDrawer({ onClose }: { onClose: () => void }) {
   const { me, setMe } = useMe();
+  const status = me.kyc?.status;
+  const showForm = !me.kycDone && !IN_REVIEW.includes(String(status));
   const [pan, setPan] = useState("");
   const [legal, setLegal] = useState(me.name);
+  const [dob, setDob] = useState("");
+  const [address, setAddress] = useState("");
+  const [panDoc, setPanDoc] = useState("");
+  const [idType, setIdType] = useState(ID_TYPES[0]);
+  const [idDoc, setIdDoc] = useState("");
+  const [selfie, setSelfie] = useState("");
   const [holder, setHolder] = useState(me.bank?.holder || me.name);
   const [account, setAccount] = useState("");
   const [confirmAcc, setConfirmAcc] = useState("");
@@ -19,9 +66,13 @@ function KycDrawer({ onClose }: { onClose: () => void }) {
   const [busy, setBusy] = useState(false);
 
   async function submit() {
-    if (!me.kycDone && me.kyc?.status !== "pending") {
+    if (showForm) {
       if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) return toast("Enter a valid PAN (e.g. ABCDE1234F)", "err");
       if (legal.trim().length < 3) return toast("Enter your name as on PAN", "err");
+      if (!dob) return toast("Enter your date of birth", "err");
+      if (address.trim().length < 10) return toast("Enter your full address", "err");
+      if (!panDoc) return toast("Upload your PAN card", "err");
+      if (!idDoc) return toast(`Upload your ${idType}`, "err");
     }
     if (account || !me.bank) {
       if (account !== confirmAcc) return toast("Account numbers don't match", "err");
@@ -29,11 +80,11 @@ function KycDrawer({ onClose }: { onClose: () => void }) {
     setBusy(true);
     try {
       const body: Record<string, unknown> = {};
-      if (!me.kycDone && me.kyc?.status !== "pending") body.kyc = { pan, legalName: legal };
+      if (showForm) body.kyc = { pan, legalName: legal, dob, address, docs: { pan: panDoc, id: idDoc, idType, selfie } };
       if (account || !me.bank) body.bank = { holder, account, ifsc };
       const r = await patchMe(body);
       setMe(r.user);
-      toast(r.user.kyc?.status === "pending" ? "Submitted — we will verify your KYC shortly" : "KYC & bank details saved");
+      toast(showForm ? "KYC submitted. A reviewer will check your documents." : "Bank details saved");
       onClose();
     } catch (e) {
       toast((e as Error).message, "err");
@@ -43,15 +94,29 @@ function KycDrawer({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Drawer title="KYC & Bank details" onClose={onClose} footer={<Btn onClick={submit} disabled={busy}>{busy ? "Saving…" : "Submit"}</Btn>}>
+    <Drawer title="KYC & Bank details" onClose={onClose} footer={<Btn onClick={submit} disabled={busy}>{busy ? "Saving…" : showForm ? "Submit KYC" : "Save"}</Btn>}>
       <div className="space-y-6">
         <section className="space-y-3">
-          <p className="flex items-center gap-2 text-[15px] font-semibold">1. KYC verification {me.kycDone && <Pill>Verified</Pill>}{!me.kycDone && me.kyc?.status === "pending" && <Pill tone="orange">Under review</Pill>}{me.kyc?.status === "rejected" && <Pill tone="red">Rejected</Pill>}</p>
-          {me.kyc?.status === "rejected" && me.kyc.note && <p className="text-[13px] text-[#cf1322]">Reason: {me.kyc.note}</p>}
-          {!me.kycDone && me.kyc?.status !== "pending" && (
+          <p className="flex items-center gap-2 text-[15px] font-semibold">1. KYC verification {me.kycDone && <Pill>Verified</Pill>}{IN_REVIEW.includes(String(status)) && <Pill tone="orange">Under review</Pill>}{status === "rejected" && <Pill tone="red">Rejected</Pill>}{status === "resubmit" && <Pill tone="orange">Resubmit</Pill>}</p>
+          {IN_REVIEW.includes(String(status)) && (
+            <div className="space-y-3 rounded-lg bg-[#f4f2ed] p-4">
+              <KycSteps status={String(status)} />
+              <p className="text-[13px] text-[#3f3e3a]">{status === "pending" ? "Your details are submitted and waiting for a reviewer." : status === "assigned" ? "A reviewer is checking your documents." : "The review is done. The final decision is with the admin."} You will get a notification as soon as it is decided.</p>
+            </div>
+          )}
+          {me.kycDone && <p className="rounded-lg bg-[#f4f2ed] p-3 text-[13px]">Your identity is verified. You can withdraw your earnings.</p>}
+          {(status === "rejected" || status === "resubmit") && me.kyc?.note && <p className="rounded-lg border border-[#ffccc7] bg-[#fff2f0] p-3 text-[13px] text-[#cf1322]"><b>{status === "rejected" ? "Rejected" : "Please resubmit"}:</b> {me.kyc.note}</p>}
+          {showForm && (
             <>
               <Field label="Name as on PAN" required><input className={inputCls} value={legal} onChange={(e) => setLegal(e.target.value)} /></Field>
-              <Field label="PAN number" required hint="Format ABCDE1234F. Your PAN is stored securely and reviewed before payouts."><input className={`${inputCls} uppercase`} maxLength={10} placeholder="ABCDE1234F" value={pan} onChange={(e) => setPan(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))} /></Field>
+              <Field label="PAN number" required hint="Format ABCDE1234F. Stored securely and checked before payouts."><input className={`${inputCls} uppercase`} maxLength={10} placeholder="ABCDE1234F" value={pan} onChange={(e) => setPan(e.target.value.toUpperCase())} /></Field>
+              <Field label="Date of birth" required><input type="date" className={inputCls} max={new Date().toISOString().slice(0, 10)} value={dob} onChange={(e) => setDob(e.target.value)} /></Field>
+              <Field label="Address" required hint="As on your ID proof."><textarea className={`${inputCls} min-h-20 py-2`} value={address} onChange={(e) => setAddress(e.target.value)} /></Field>
+              <DocUpload label="PAN card" required hint="A clear photo or PDF. All four corners visible." value={panDoc} onChange={(id) => setPanDoc(id)} />
+              <Field label="ID proof" required><select className={inputCls} value={idType} onChange={(e) => setIdType(e.target.value)}>{ID_TYPES.map((t) => <option key={t}>{t}</option>)}</select></Field>
+              <DocUpload label={`${idType} (front, and back if it has one)`} required value={idDoc} onChange={(id) => setIdDoc(id)} />
+              <DocUpload label="Selfie holding your PAN card (optional)" value={selfie} onChange={(id) => setSelfie(id)} />
+              <p className="text-[12px] text-[#5c5a55]">Your documents are private. Only the reviewer assigned to your case and the admin can open them.</p>
             </>
           )}
         </section>

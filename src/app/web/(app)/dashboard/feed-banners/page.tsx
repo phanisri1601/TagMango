@@ -36,7 +36,7 @@ function Banners() {
           title={edit === "new" ? "Create banner" : "Edit banner"}
           fields={[
             { key: "title", label: "Banner text", required: true, maxLength: 80 },
-            { key: "image", label: "Image URL (1200×400)", type: "url" },
+            { key: "image", label: "Banner image (1200×400)", type: "media", media: "image" },
             { key: "link", label: "Click-through link", type: "url" },
             { key: "order", label: "Display order", type: "number", min: 0 },
             { key: "active", label: "Active", type: "toggle" },

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { fmtDate, useCollection, type Row } from "@/lib/client";
-import { Btn, Confirm, DataTable, Note, Panel, Pill, Title, type Col } from "@/components/dash/kit";
+import { Gate, Btn, Confirm, DataTable, Note, Panel, Pill, Title, type Col } from "@/components/dash/kit";
 import { FormDrawer, type FieldDef } from "@/components/dash/forms";
 import { origin } from "@/components/growth/shared";
 
@@ -10,12 +10,12 @@ const FIELDS: FieldDef[] = [
   { key: "slug", label: "Web address", required: true, hint: "Lowercase letters, numbers and dashes, e.g. why-patterns-repeat", placeholder: "my-first-article" },
   { key: "excerpt", label: "Short summary", type: "textarea", hint: "Shown on the blog list and the home page." },
   { key: "body", label: "Article", type: "textarea", hint: "Leave a blank line between paragraphs." },
-  { key: "image", label: "Cover image link", type: "url", hint: "Upload to Cloud, then paste the link." },
+  { key: "image", label: "Cover image", type: "media", media: "image", hint: "Upload an image or paste a link." },
   { key: "date", label: "Publish date", type: "date" },
   { key: "published", label: "Published", type: "toggle" },
 ];
 
-export default function WebsiteBlog() {
+function WebsiteBlog() {
   const col = useCollection("blogPosts");
   const [form, setForm] = useState<{ row?: Row } | null>(null);
   const [del, setDel] = useState<Row | null>(null);
@@ -45,4 +45,8 @@ export default function WebsiteBlog() {
       {del && <Confirm title="Delete this article?" text="This can't be undone." onOk={async () => { await col.remove(del.id); }} onClose={() => setDel(null)} />}
     </div>
   );
+}
+
+export default function Page() {
+  return <Gate feature="website-blog" title="Website Blog"><WebsiteBlog /></Gate>;
 }

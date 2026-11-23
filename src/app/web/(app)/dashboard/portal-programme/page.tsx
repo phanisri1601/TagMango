@@ -14,15 +14,15 @@ const LESSON: FieldDef[] = [
   { key: "week", label: "Week", type: "select", options: WEEKS, required: true },
   { key: "title", label: "Lesson title", required: true },
   { key: "body", label: "Notes", type: "textarea" },
-  { key: "videoUrl", label: "Video link (private Vimeo / Bunny Stream)", type: "url", hint: "Recordings for paying learners stay private. Never use YouTube unlisted." },
-  { key: "fileUrl", label: "Download link", type: "url" },
+  { key: "videoUrl", label: "Video", type: "media", media: "video", hint: "Upload a video (up to 100 MB) or paste a Vimeo, Bunny Stream or other link. Learners can only watch uploaded videos after they enrol." },
+  { key: "fileUrl", label: "Download file", type: "media", media: "file", hint: "Upload a PDF or document (up to 10 MB) or paste a link." },
 ];
 const CLASS: FieldDef[] = [
   { key: "week", label: "Week", type: "select", options: WEEKS },
   { key: "title", label: "Class title", required: true },
   { key: "startsAt", label: "Starts", type: "datetime-local", required: true },
   { key: "joinLink", label: "Live class link", type: "url", hint: "Leave empty to get a built-in video room automatically (when Metered is set up)." },
-  { key: "recordingUrl", label: "Recording link (private)", type: "url" },
+  { key: "recordingUrl", label: "Recording", type: "media", media: "video", hint: "Upload the recording or paste a private link." },
 ];
 const ASSIGN: FieldDef[] = [
   { key: "week", label: "Week", type: "select", options: WEEKS, required: true },

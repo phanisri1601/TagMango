@@ -25,7 +25,7 @@ function Inner() {
 
   const fields: FieldDef[] = [
     { key: "title", label: "Title", required: true, placeholder: "Add title", maxLength: 100 },
-    { key: "thumbnail", label: "Thumbnail", type: "url", placeholder: "https://…/thumbnail.jpg", hint: "Images should be horizontal. Recommended size is 1280x720px" },
+    { key: "thumbnail", label: "Thumbnail", type: "media", media: "image", placeholder: "https://…/thumbnail.jpg", hint: "Images should be horizontal. Recommended size is 1280x720px" },
     { key: "platform", label: "Meeting platform", type: "select", options: ["Custom Meeting Platform (like Google Meet, Zoom, etc.)", "Live (in-app)"], required: true },
     { key: "link", label: "External meeting link", type: "url", placeholder: "Enter external meeting link", show: (d) => String(d.platform || "").startsWith("Custom"), required: true },
     { key: "timezone", label: "Select timezone for selecting the slots below", type: "select", options: TZ, required: true },

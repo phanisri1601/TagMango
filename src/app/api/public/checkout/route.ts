@@ -19,6 +19,8 @@ const CYCLE: Record<string, { label: string; days: number }> = {
  * never taken from the browser. Plug Razorpay/Stripe in here for real payments.
  * Disabled in production unless ENABLE_TEST_CHECKOUT=1 (otherwise anyone could create free "paid" orders).
  */
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   if (await rateLimited("checkout", 15)) return NextResponse.json({ error: "Too many requests. Try again in a minute." }, { status: 429 });
   const body = await req.json().catch(() => ({}));

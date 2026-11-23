@@ -64,7 +64,8 @@ export async function PATCH(req: Request, { params }: Ctx) {
         changes.push(body.suspended ? `suspended (${reason})` : "reinstated");
       }
       // KYC review: approve / reject a submission, or revoke a verified one
-      if (body.kyc === "approve" || body.kyc === "reject" || body.kyc === "revoke") {
+      if (body.kyc === "approve" || body.kyc === "reject") throw new Error("KYC decisions are made on the KYC page, after a reviewer has recommended one.");
+      if (body.kyc === "revoke") {
         const note = String(body.kycNote || "").trim().slice(0, 200);
         if (body.kyc !== "approve" && !note) throw new Error("Enter a reason");
         if (body.kyc === "approve") {
@@ -80,6 +81,7 @@ export async function PATCH(req: Request, { params }: Ctx) {
           notify(t, u.id, `Your KYC was ${body.kyc === "reject" ? "rejected" : "revoked"}: ${note}. Please resubmit your details under Withdrawals.`);
         }
       } else if (typeof body.kycDone === "boolean" && body.kycDone !== Boolean(u.kycDone)) {
+        if (body.kycDone && u.kyc && u.kyc.status !== "verified") throw new Error("This creator has a KYC case in progress. Decide it on the KYC page.");
         patch.kycDone = body.kycDone;
         if (u.kyc) patch.kyc = { ...u.kyc, status: body.kycDone ? "verified" : "rejected", reviewedAt: now() };
         changes.push(`KYC ${body.kycDone ? "verified" : "revoked"}`);

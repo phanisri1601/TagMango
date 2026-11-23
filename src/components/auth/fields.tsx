@@ -57,7 +57,9 @@ export function OtpBoxes({ value, onChange, onComplete }: { value: string; onCha
   const refs = useRef<(HTMLInputElement | null)[]>([]);
   // Source of truth lives in a ref so fast typing never reads a stale value.
   const digits = useRef<string[]>(Array.from({ length: 6 }, (_, i) => value[i]?.trim() || ""));
-  useEffect(() => refs.current[0]?.focus(), []);
+  useEffect(() => {
+    refs.current[0]?.focus();
+  }, []);
   useEffect(() => {
     if (value === "") digits.current = ["", "", "", "", "", ""];
   }, [value]);

@@ -58,13 +58,37 @@ export async function PATCH(req: Request) {
       }
 
       if (isObj(body.kyc)) {
-        if (u.kyc?.status === "verified") throw new Error("Your KYC is already verified");
+        // Step 1 of the KYC flow: the creator submits personal details and identity documents.
+        const cur = u.kyc?.status;
+        if (cur === "verified") throw new Error("Your KYC is already verified");
+        if (cur === "pending" || cur === "assigned" || cur === "reviewed") throw new Error("Your KYC is already under review");
         const pan = str(body.kyc.pan, 10).toUpperCase();
         const legalName = str(body.kyc.legalName, 80);
+        const dob = str(body.kyc.dob, 10);
+        const address = str(body.kyc.address, 300);
         if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) throw new Error("Enter a valid PAN (e.g. ABCDE1234F)");
         if (!legalName) throw new Error("Enter your name as on the PAN card");
+        const born = new Date(`${dob}T00:00:00Z`).getTime();
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(dob) || Number.isNaN(born)) throw new Error("Enter your date of birth");
+        if (Date.now() - born < 18 * 365.25 * 864e5) throw new Error("You must be at least 18 to complete KYC");
+        if (address.length < 10) throw new Error("Enter your full address");
+        const d = isObj(body.kyc.docs) ? body.kyc.docs : {};
+        const idType = ["Aadhaar", "Passport", "Driving licence", "Voter ID"].includes(String(d.idType)) ? String(d.idType) : "";
+        const ids = { pan: str(d.pan, 40), id: str(d.id, 40), selfie: str(d.selfie, 40) };
+        if (!ids.pan) throw new Error("Upload a photo or PDF of your PAN card");
+        if (!idType || !ids.id) throw new Error("Choose an ID proof and upload it");
+        for (const fid of [ids.pan, ids.id, ids.selfie].filter(Boolean)) {
+          const f = await t.get("cloud", fid);
+          if (!f || f.userId !== u.id) throw new Error("One of the uploaded documents was not found. Please upload it again.");
+          t.update("cloud", fid, { private: true });
+        }
+        const submittedAt = now();
         const auto = kycAutoApprove();
-        const kyc: Kyc = { pan, legalName, status: auto ? "verified" : "pending", submittedAt: now(), ...(auto && { reviewedAt: now() }) };
+        const kyc: Kyc = {
+          pan, legalName, dob, address, phone: u.phone, status: auto ? "verified" : "pending", submittedAt,
+          docs: { pan: ids.pan, id: ids.id, idType, ...(ids.selfie && { selfie: ids.selfie }) },
+          history: [...(u.kyc?.history || []), { at: submittedAt, by: u.email, role: "creator" as const, action: cur ? "Resubmitted KYC" : "Submitted KYC" }].slice(-50),
+        };
         patch.kyc = kyc;
         patch.kycDone = auto;
       }

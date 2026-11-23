@@ -7,27 +7,46 @@ export const COMMISSION: Record<Plan, number> = { basic: 0.1, pro: 0.055, advanc
 
 /** Minimum plan needed for a page/feature. Anything not listed is available on Basic. */
 export const MIN_PLAN: Record<string, Plan> = {
+  // Pro
   "landing-page": "pro",
+  "premium-templates": "pro",
+  "website-blog": "pro",
+  "growth-report": "pro",
+  "edit-workflows": "pro",
+  "custom-workflows": "pro",
   "feed-banners": "pro",
   "unsubscribed-users": "pro",
-  path: "pro",
   "whatsapp-templates": "pro",
   "whatsapp-event-mapping": "pro",
   "whatsapp-account-management": "pro",
-  "team-management": "pro",
-  "restrict-login-devices": "pro",
+  "whatsapp-broadcast": "pro",
   "blocked-users": "pro",
   "add-customers": "pro",
-  "whatsapp-broadcast": "pro",
+  // Advanced
+  path: "advanced",
+  "team-management": "advanced",
+  "restrict-login-devices": "advanced",
   affiliate: "advanced",
   points: "advanced",
   badges: "advanced",
   leaderboard: "advanced",
   "gamification-settings": "advanced",
+  // Ultimate
   "platform-branding": "ultimate",
   "platform-menu": "ultimate",
   "platform-migrate": "ultimate",
 };
+
+/** How many of each thing a plan allows (1e9 = no limit). Checked on the server when something is created. */
+export type LimitKey = "mangoes" | "courses" | "workshops" | "events" | "pages" | "certificates" | "sites" | "customWorkflows" | "storageGB";
+const U = 1e9;
+export const PLAN_LIMITS: Record<Plan, Record<LimitKey, number>> = {
+  basic: { mangoes: 3, courses: 2, workshops: 2, events: 1, pages: 2, certificates: 1, sites: 0, customWorkflows: 0, storageGB: 1 },
+  pro: { mangoes: 25, courses: 25, workshops: 25, events: 10, pages: 25, certificates: 10, sites: 3, customWorkflows: 5, storageGB: 20 },
+  advanced: { mangoes: 100, courses: 100, workshops: 100, events: 50, pages: 100, certificates: 50, sites: 10, customWorkflows: 20, storageGB: 100 },
+  ultimate: { mangoes: U, courses: U, workshops: U, events: U, pages: U, certificates: U, sites: U, customWorkflows: U, storageGB: 500 },
+};
+export const LIMIT_LABEL: Record<LimitKey, string> = { mangoes: "mangoes", courses: "courses", workshops: "workshops", events: "1-1 events", pages: "Mango pages", certificates: "certificate templates", sites: "websites", customWorkflows: "custom workflows", storageGB: "GB of storage" };
 
 export const isLocked = (feature: string, plan: Plan = "basic") => {
   const need = MIN_PLAN[feature];

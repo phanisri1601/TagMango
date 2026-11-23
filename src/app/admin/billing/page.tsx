@@ -16,12 +16,13 @@ export default function Billing() {
   const rows = useMemo(() => (data?.invoices || []).filter((i) => `${i.creator} ${i.creatorEmail} ${i.product} ${i.number}`.toLowerCase().includes(q.toLowerCase())), [data, q]);
 
   const cols: Col<AInvoice>[] = [
-    { key: "n", label: "Invoice", render: (i) => <code className="text-[12px]">{i.number}</code> },
-    { key: "d", label: "Date", render: (i) => day(i.createdAt), sort: (a, b) => a.createdAt.localeCompare(b.createdAt) },
+    { key: "n", label: "Invoice", render: (i) => <code className="whitespace-nowrap text-[12px]">{i.number}</code> },
+    { key: "d", label: "Date", render: (i) => <span className="whitespace-nowrap">{day(i.createdAt)}</span>, sort: (a, b) => a.createdAt.localeCompare(b.createdAt) },
     { key: "c", label: "Creator", render: (i) => <div><p className="font-medium">{i.creator}</p><p className="text-[12px] text-[#6b6b7b]">{i.creatorEmail}</p></div> },
-    { key: "p", label: "Product", render: (i) => i.product },
+    { key: "p", label: "Product", render: (i) => <span className="whitespace-nowrap">{i.product}</span> },
     { key: "a", label: "Amount (incl. GST)", render: (i) => <b>{inr(i.amount)}</b>, sort: (a, b) => a.amount - b.amount },
     { key: "s", label: "Status", render: (i) => <Pill tone={i.status.startsWith("Paid") ? "green" : "blue"}>{i.status}</Pill> },
+    { key: "inv", label: "", render: (i) => <a href={`/invoice/plan/${i.id}`} target="_blank" rel="noreferrer" className="whitespace-nowrap text-[13px] font-medium underline underline-offset-2">Invoice</a> },
   ];
 
   if (error && !data) return <ErrorBox message={error} retry={reload} />;
@@ -35,7 +36,7 @@ export default function Billing() {
         <StatCard icon="star" label="Paid-plan creators" value={(data?.plans || []).filter((p) => p.plan !== "basic").reduce((a, p) => a + p.count, 0)} delay={0.08} />
         <StatCard icon="lock" label="Freedom Setup" value={data?.freedom || 0} sub="custom-domain creators" delay={0.12} />
       </div>
-      <div className="grid gap-5 xl:grid-cols-[360px_1fr]">
+      <div className="grid gap-5 2xl:grid-cols-[340px_minmax(0,1fr)]">
         <Panel className="h-fit p-5" delay={0.05}>
           <Title sub="Creators on each plan">Plan distribution</Title>
           <div className="mt-5"><HBar items={(data?.plans || []).map((p) => ({ label: p.plan[0].toUpperCase() + p.plan.slice(1), sub: p.price ? `₹${p.price.toLocaleString("en-IN")}/mo` : "free", value: p.count, color: COLOR[p.plan] }))} /></div>

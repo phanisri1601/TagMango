@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
 import { id as newId, now, store } from "@/lib/db";
 import { alertCoach, getGrowth, mark } from "@/lib/growth/core";
+import { emailCertificate, issueCertificate } from "@/lib/certificates";
 import type { Lead } from "@/lib/growth/model";
 
 const bad = (m: string, status = 400) => NextResponse.json({ error: m }, { status });
@@ -29,7 +30,16 @@ export async function GET(req: Request) {
   const submitted = new Set(subs.map((s) => String(s.assignmentId)));
   const total = lessons.length + assignments.length;
   const completeCount = lessons.filter((l) => done.includes(l.id)).length + assignments.filter((a) => submitted.has(a.id)).length;
+  const completed = total > 0 && completeCount === total;
+  let certificateCode: string | undefined;
+  if (completed) {
+    const tpl = (await store.find("certificates", [["userId", cid]])).find((c) => c.active && c.forKind === "Course completion") || null;
+    const r = await issueCertificate(cid, tpl, { name: String(e.name), email: me.email, course: g?.programme || "" });
+    certificateCode = r.code;
+    if (r.fresh) await emailCertificate(cid, me.email, String(e.name), String(tpl?.title || "Certificate of Completion"), r.code, g?.programme || "");
+  }
   return NextResponse.json({
+    certificateCode,
     enrolled: true,
     coach: String(g?.coachName || (coach as { name?: string } | null)?.name || "Your coach"),
     programme: g?.programme || "The programme",

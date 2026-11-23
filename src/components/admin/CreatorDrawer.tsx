@@ -89,12 +89,7 @@ export default function CreatorDrawer({ id, onClose }: { id: string; onClose: ()
               {data.user.kyc && (
                 <div className="rounded-lg bg-[#f7f7f8] px-3 py-2.5 text-[13px]">
                   <p>KYC submission: <b>{data.user.kyc.status}</b> · {data.user.kyc.legalName} · PAN {data.user.kyc.pan}</p>
-                  {data.user.kyc.status === "pending" && (
-                    <div className="mt-2 flex gap-2">
-                      <Btn disabled={busy} onClick={() => patch({ kyc: "approve" }, "KYC verified")}>Approve</Btn>
-                      <Btn variant="outline" disabled={busy} onClick={() => { const n = window.prompt("Reason for rejecting?"); if (n?.trim()) patch({ kyc: "reject", kycNote: n }, "KYC rejected"); }}>Reject</Btn>
-                    </div>
-                  )}
+                  {["pending", "assigned", "reviewed", "resubmit"].includes(data.user.kyc.status) && <a href={`/admin/kyc?user=${u.id}`} className="mt-2 inline-block rounded-md bg-[#141413] px-3 py-1.5 text-[12.5px] text-white">Open KYC case</a>}
                 </div>
               )}
               <label className="flex items-center justify-between gap-3">KYC verified<Toggle on={u.kycDone} disabled={busy} onChange={(v) => patch({ kycDone: v }, v ? "KYC verified" : "KYC revoked")} label="KYC verified" /></label>

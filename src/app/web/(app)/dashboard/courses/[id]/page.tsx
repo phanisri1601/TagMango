@@ -1,4 +1,6 @@
 "use client";
+import MediaField from "@/components/dash/MediaField";
+import { isLink } from "@/lib/upload";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 import { toast, useCollection } from "@/lib/client";
@@ -131,14 +133,18 @@ function ChapterForm({ ch, onSave }: { ch: Chapter; onSave: (c: Chapter) => void
       <Field label="Type">
         <div className="flex flex-wrap gap-2">{(["Video", "Audio", "PDF", "Text", "Assignment"] as const).map((t) => <button key={t} type="button" onClick={() => setC({ ...c, type: t })} className={`h-8 rounded-md border px-3 text-[13px] ${c.type === t ? "border-[#0f0f0f] bg-[#0f0f0f] text-white" : "border-[#e1e1e1]"}`}>{t}</button>)}</div>
       </Field>
-      {needsUrl && <Field label={`${c.type} URL`} hint="YouTube/Vimeo link, a file URL, or a link from Cloud."><input className={inputCls} placeholder="https://…" value={c.url || ""} onChange={(e) => setC({ ...c, url: e.target.value })} /></Field>}
+      {needsUrl && (
+        <Field label={c.type === "PDF" ? "PDF file" : c.type === "Audio" ? "Audio" : "Video"} hint={c.type === "Video" ? "Upload a video (up to 100 MB), or paste a YouTube, Vimeo or video link." : c.type === "PDF" ? "Upload a PDF (up to 10 MB), or paste a link." : "Upload an audio file, or paste a link."}>
+          <MediaField key={c.type} kind={c.type === "Video" ? "video" : c.type === "Audio" ? "audio" : "file"} value={c.url || ""} onChange={(v) => setC({ ...c, url: v })} />
+        </Field>
+      )}
       <Field label={c.type === "Assignment" ? "Assignment instructions" : "Notes / text content"}><textarea className={`${areaCls} min-h-24`} value={c.text || ""} onChange={(e) => setC({ ...c, text: e.target.value })} /></Field>
       <label className="flex items-center justify-between text-[14px]">Free preview (visible without purchase)<Toggle on={Boolean(c.free)} onChange={(v) => setC({ ...c, free: v })} /></label>
       <Btn
         className="w-full"
         onClick={() => {
           if (!c.title.trim()) return toast("Chapter title is required", "err");
-          if (needsUrl && c.url && !/^https?:\/\//.test(c.url)) return toast("URL must start with http(s)://", "err");
+          if (needsUrl && c.url && !isLink(c.url)) return toast("Add an uploaded file or a link starting with http(s)://", "err");
           onSave({ ...c, title: c.title.trim() });
         }}
       >

@@ -29,6 +29,7 @@ function Receipt() {
           </dl>
           <div className="mt-8 flex flex-wrap gap-3 print:hidden">
             <button onClick={() => window.print()} className="border border-[#141413] px-6 py-3 text-[14px]">Print or save receipt</button>
+            {r.status === "Success" && <a href={`/invoice/sale/${r.id}`} target="_blank" rel="noreferrer" className="border border-[#141413] bg-[#141413] px-6 py-3 text-[14px] text-white">Download invoice</a>}
             {r.status === "Success" && <Link href="/portal" className="bg-[#141413] px-6 py-3 text-[14px] text-[#f4f2ed]">Go to the learner portal</Link>}
             {r.status === "Failed" && <Link href="/enrol" className="bg-[#141413] px-6 py-3 text-[14px] text-[#f4f2ed]">Try again</Link>}
           </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Be_Vietnam_Pro, Poppins } from "next/font/google";
+import { Inter, Be_Vietnam_Pro, Poppins, Cormorant_Garamond, Jost, Allura } from "next/font/google";
 import "./globals.css";
 import { BRAND } from "@/lib/brand";
 
@@ -16,6 +16,11 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+// certificate typefaces (Brand Book: Cormorant for headlines, Jost Light for body, Allura for one word)
+const certSerif = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600"], style: ["normal", "italic"], variable: "--font-cert-serif", display: "swap" });
+const certSans = Jost({ subsets: ["latin"], weight: ["300", "400", "500"], variable: "--font-cert-sans", display: "swap" });
+const certScript = Allura({ subsets: ["latin"], weight: "400", variable: "--font-cert-script", display: "swap" });
+
 export const metadata: Metadata = {
   title: `${BRAND} | Grow, teach and enrol with one coaching platform`,
   description:
@@ -24,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${vietnam.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${inter.variable} ${vietnam.variable} ${poppins.variable} ${certSerif.variable} ${certSans.variable} ${certScript.variable}`}>
       <body>{children}</body>
     </html>
   );

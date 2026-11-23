@@ -12,7 +12,7 @@ const MC_FIELDS: FieldDef[] = [
   { key: "duration", label: "Length (minutes)", type: "number", min: 15, placeholder: "120" },
   { key: "seats", label: "Numbered seats", type: "number", min: 1, placeholder: "50", hint: "Each person gets a seat number. Leave blank for unlimited." },
   { key: "joinLink", label: "Live class link", type: "url", hint: "Leave empty to get a built-in video room automatically (when Metered is set up)." },
-  { key: "replayUrl", label: "Replay link (private Vimeo / Bunny Stream)", type: "url", hint: "Never use YouTube unlisted for recordings of paying learners." },
+  { key: "replayUrl", label: "Replay", type: "media", media: "video", hint: "Upload the recording (up to 100 MB) or paste a private Vimeo / Bunny Stream link. Never use YouTube unlisted for paying learners." },
   { key: "description", label: "Short description", type: "textarea" },
   { key: "published", label: "Open for registration", type: "toggle" },
 ];
@@ -79,19 +79,28 @@ export default function GrowthEvents() {
         <div className="mb-3 flex flex-wrap items-center gap-2 rounded-md bg-[#f7f7f8] px-3 py-2 text-[13px]"><span className="font-medium">Booking page:</span><code>{base}/call/{g!.slug}</code><Btn variant="outline" className="!h-7 !px-2 text-[12px]" onClick={() => copy(`${base}/call/${g!.slug}`)}>Copy</Btn></div>
         <div className="grid items-end gap-3 sm:grid-cols-5">
           <label className="text-[13px]">Date<input type="date" className={inputCls} value={bulk.date} onChange={(e) => setBulk({ ...bulk, date: e.target.value })} /></label>
-          <label className="text-[13px] sm:col-span-2">Times (comma separated, 24h)<input className={inputCls} value={bulk.times} onChange={(e) => setBulk({ ...bulk, times: e.target.value })} /></label>
+          <label className="text-[13px] sm:col-span-2">Times (IST, 24h, comma separated)<input className={inputCls} value={bulk.times} onChange={(e) => setBulk({ ...bulk, times: e.target.value })} /></label>
           <label className="text-[13px]">Meeting link<input className={inputCls} placeholder="Empty = built-in video room" value={bulk.link} onChange={(e) => setBulk({ ...bulk, link: e.target.value })} /></label>
           <Btn onClick={async () => {
             if (!bulk.date) return toast("Pick a date", "err");
+            const link = bulk.link.trim();
+            if (link) {
+              let ok = false;
+              try { const u = new URL(link); ok = /^https?:$/.test(u.protocol) && (u.pathname.length > 1 || !!u.search); } catch { /* not a link */ }
+              if (!ok) return toast("That meeting link looks incomplete. Paste the full link (for a Google Meet, the one ending in abc-defg-hij), or leave it empty to use the built-in video room.", "err");
+            }
             let n = 0;
             for (const t of bulk.times.split(",").map((x) => x.trim()).filter(Boolean)) {
               if (!/^\d{1,2}:\d{2}$/.test(t)) { toast(`“${t}” is not a time like 10:30`, "err"); continue; }
-              try { await slots.create({ startsAt: new Date(`${bulk.date}T${t.padStart(5, "0")}`).toISOString(), duration: Number(bulk.duration) || 30, ...(bulk.link ? { link: bulk.link } : {}) }); n++; } catch (e) { toast((e as Error).message, "err"); }
+              const at = new Date(`${bulk.date}T${t.padStart(5, "0")}:00+05:30`); // times are Indian Standard Time, whatever the coach's computer says
+              if (Number.isNaN(at.getTime())) { toast(`“${t}” is not a valid time`, "err"); continue; }
+              if (at.getTime() <= Date.now()) { toast(`${t} on ${bulk.date} has already passed. Pick a later time.`, "err"); continue; }
+              try { await slots.create({ startsAt: at.toISOString(), duration: Number(bulk.duration) || 30, ...(link ? { link } : {}) }); n++; } catch (e) { toast((e as Error).message, "err"); }
             }
             if (n) toast(`${n} slot(s) added`);
           }}>Add slots</Btn>
         </div>
-        <div className="mt-3"><DataTable cols={slotCols} rows={slots.rows.filter((s) => new Date(String(s.startsAt)).getTime() > Date.now() - 864e5)} loading={slots.loading} empty={<p className="py-6 text-center text-[#6b6b7b]">No upcoming slots.</p>} /></div>
+        <div className="mt-3"><DataTable cols={slotCols} rows={slots.rows.filter((s) => { const t = new Date(String(s.startsAt)).getTime(); return t > Date.now() || (!!s.leadId && t > Date.now() - 864e5); }).sort((a, b) => String(a.startsAt).localeCompare(String(b.startsAt)))} loading={slots.loading} empty={<p className="py-6 text-center text-[#6b6b7b]">No upcoming slots.</p>} /></div>
       </Section>
 
       {edit && (

@@ -28,7 +28,9 @@ export default function Navbar({ light = false }: { light?: boolean }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    setOpen(false);
+  }, [path]);
 
   const dark = light && !scrolled; // dark text on a light page
   const text = dark ? "text-ink/75 hover:bg-black/5 hover:text-ink" : "text-white/80 hover:bg-white/10 hover:text-white";

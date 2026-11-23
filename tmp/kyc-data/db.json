@@ -1,0 +1,337 @@
+{
+  "otps": [],
+  "users": [
+    {
+      "id": "IZDjJdp-a_k8",
+      "name": "Kyc Creator",
+      "email": "kyc.creator@example.com",
+      "phone": "9876500001",
+      "marketingOptIn": false,
+      "createdAt": "2026-11-23T10:37:11.237Z",
+      "kyc": {
+        "pan": "ABCDE1234F",
+        "legalName": "Kyc Creator",
+        "dob": "1990-05-05",
+        "address": "12 Long Street, Chennai",
+        "phone": "9876500001",
+        "status": "verified",
+        "submittedAt": "2026-11-23T10:37:21.224Z",
+        "docs": {
+          "pan": "amrFv7SYXipF",
+          "id": "9pEvk9s7FWli",
+          "idType": "Aadhaar"
+        },
+        "history": [
+          {
+            "at": "2026-11-23T10:37:17.669Z",
+            "by": "kyc.creator@example.com",
+            "role": "creator",
+            "action": "Submitted KYC"
+          },
+          {
+            "at": "2026-11-23T10:37:19.849Z",
+            "by": "kyc.admin@example.test",
+            "role": "admin",
+            "action": "Assigned to Rev One"
+          },
+          {
+            "at": "2026-11-23T10:37:21.031Z",
+            "by": "kyc.reviewer@example.com",
+            "role": "reviewer",
+            "action": "Recommended approval",
+            "note": "Name and PAN match the card; photo is clear."
+          },
+          {
+            "at": "2026-11-23T10:37:21.178Z",
+            "by": "kyc.admin@example.test",
+            "role": "admin",
+            "action": "Asked to resubmit",
+            "note": "PAN photo is blurry"
+          },
+          {
+            "at": "2026-11-23T10:37:21.224Z",
+            "by": "kyc.creator@example.com",
+            "role": "creator",
+            "action": "Resubmitted KYC"
+          },
+          {
+            "at": "2026-11-23T10:37:21.299Z",
+            "by": "kyc.admin@example.test",
+            "role": "admin",
+            "action": "Assigned to Rev One"
+          },
+          {
+            "at": "2026-11-23T10:37:21.329Z",
+            "by": "kyc.reviewer@example.com",
+            "role": "reviewer",
+            "action": "Recommended approval",
+            "note": "Clear photo now. Matches."
+          },
+          {
+            "at": "2026-11-23T10:37:22.132Z",
+            "by": "kyc.admin@example.test",
+            "role": "admin",
+            "action": "Approved",
+            "note": ""
+          }
+        ],
+        "reviewerId": "wYsGHnWqN2CZ",
+        "reviewerEmail": "kyc.reviewer@example.com",
+        "reviewerName": "Rev One",
+        "assignedAt": "2026-11-23T10:37:21.299Z",
+        "assignedBy": "kyc.admin@example.test",
+        "recommendation": "approve",
+        "reviewedBy": "kyc.reviewer@example.com",
+        "reviewedAt": "2026-11-23T10:37:21.329Z",
+        "reviewerRemarks": "Clear photo now. Matches.",
+        "finalBy": "kyc.admin@example.test",
+        "finalAt": "2026-11-23T10:37:22.132Z"
+      },
+      "kycDone": true
+    },
+    {
+      "id": "IKYMU-KX4mub",
+      "name": "Kyc Admin",
+      "email": "kyc.admin@example.test",
+      "phone": "9876500002",
+      "marketingOptIn": false,
+      "createdAt": "2026-11-23T10:37:11.753Z"
+    },
+    {
+      "id": "S3RbzVEEasFk",
+      "name": "Kyc Reviewer",
+      "email": "kyc.reviewer@example.com",
+      "phone": "9876500003",
+      "marketingOptIn": false,
+      "createdAt": "2026-11-23T10:37:13.260Z"
+    },
+    {
+      "id": "ibM0xNhOEqmQ",
+      "name": "Kyc Other",
+      "email": "kyc.other@example.com",
+      "phone": "9876500004",
+      "marketingOptIn": false,
+      "createdAt": "2026-11-23T10:37:15.143Z"
+    }
+  ],
+  "claims": [
+    {
+      "userId": "IZDjJdp-a_k8",
+      "kind": "email",
+      "id": "70dc3d1950b18e593109613e4ebf36c9c20233893ce7d65f947dc98bdb37c1a1"
+    },
+    {
+      "userId": "IZDjJdp-a_k8",
+      "kind": "phone",
+      "id": "238613e9aa6d7c89fd4a62c1d9a5768dd36a4dc7e34b452cb96d616f04c17cbd"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "kind": "email",
+      "id": "e1b54eecc668f41650f484f1716b65ede83f4a545de8caf2c9c3fbf39375daff"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "kind": "phone",
+      "id": "c634bfa852c1bfa8416a9097de0fe516dc786fb5d43fa4c66b0a7fca53b5829b"
+    },
+    {
+      "userId": "S3RbzVEEasFk",
+      "kind": "email",
+      "id": "4ca0c9680af867a8195c8a9b93c951ea028e8feb2008e25b5a19e5f2a40f5606"
+    },
+    {
+      "userId": "S3RbzVEEasFk",
+      "kind": "phone",
+      "id": "af6b89cb1d990a1ac609414c392a6c51286a9269c6f80a832dc17df448c6eba6"
+    },
+    {
+      "userId": "ibM0xNhOEqmQ",
+      "kind": "email",
+      "id": "c376594471ac9930448a026151b47e09ca25a72f09d84f67070ab007159788bb"
+    },
+    {
+      "userId": "ibM0xNhOEqmQ",
+      "kind": "phone",
+      "id": "4f42b17485cf0e58e9f5948d758f26d3d0cd323ad1474876181f6b49f87920d1"
+    }
+  ],
+  "sessions": [
+    {
+      "userId": "IZDjJdp-a_k8",
+      "createdAt": "2026-11-23T10:37:11.240Z",
+      "lastSeen": "2026-11-23T10:37:11.240Z",
+      "userAgent": "curl/8.7.1",
+      "ip": "::1",
+      "id": "8ef0b921c3fdecfa90e20456810a9c53859b51bea7c4b022a41c2b89177cdb95"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:11.755Z",
+      "lastSeen": "2026-11-23T10:37:11.755Z",
+      "userAgent": "curl/8.7.1",
+      "ip": "::1",
+      "id": "15c1067e5121363b5adb048b1f94952e7f3a93b30a402572260014e348e64f3a"
+    },
+    {
+      "userId": "S3RbzVEEasFk",
+      "createdAt": "2026-11-23T10:37:13.262Z",
+      "lastSeen": "2026-11-23T10:37:13.262Z",
+      "userAgent": "curl/8.7.1",
+      "ip": "::1",
+      "id": "5b607e2928b39e1d49fb0444abdab193aafc3dda5457455c2094a2c18a5f0ca0"
+    },
+    {
+      "userId": "ibM0xNhOEqmQ",
+      "createdAt": "2026-11-23T10:37:15.145Z",
+      "lastSeen": "2026-11-23T10:37:15.145Z",
+      "userAgent": "curl/8.7.1",
+      "ip": "::1",
+      "id": "942621f8b7509c487463cf0cc00d7e8c7482acfaec9625f0f0534dca55c2ab55"
+    }
+  ],
+  "cloud": [
+    {
+      "userId": "IZDjJdp-a_k8",
+      "createdAt": "2026-11-23T10:37:16.738Z",
+      "title": "kyc_pan.png",
+      "size": 67,
+      "mime": "image/png",
+      "kind": "Image",
+      "private": true,
+      "id": "amrFv7SYXipF"
+    },
+    {
+      "userId": "IZDjJdp-a_k8",
+      "createdAt": "2026-11-23T10:37:17.433Z",
+      "title": "kyc_pan.png",
+      "size": 67,
+      "mime": "image/png",
+      "kind": "Image",
+      "private": true,
+      "id": "9pEvk9s7FWli"
+    }
+  ],
+  "kycReviewers": [
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:19.668Z",
+      "email": "kyc.reviewer@example.com",
+      "name": "Rev One",
+      "id": "wYsGHnWqN2CZ"
+    }
+  ],
+  "audit": [
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:19.668Z",
+      "admin": "kyc.admin@example.test",
+      "action": "KYC reviewer added",
+      "target": "kyc.reviewer@example.com",
+      "detail": "",
+      "id": "sT-9o3AH2toC"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:19.849Z",
+      "admin": "kyc.admin@example.test",
+      "action": "KYC assigned",
+      "target": "kyc.creator@example.com",
+      "detail": "to kyc.reviewer@example.com",
+      "id": "lkf5lci-jd7K"
+    },
+    {
+      "userId": "S3RbzVEEasFk",
+      "createdAt": "2026-11-23T10:37:21.031Z",
+      "admin": "kyc.reviewer@example.com",
+      "action": "KYC recommendation",
+      "target": "kyc.creator@example.com",
+      "detail": "approve",
+      "id": "0jilYaJ3Y7U3"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:21.178Z",
+      "admin": "kyc.admin@example.test",
+      "action": "KYC resubmit",
+      "target": "kyc.creator@example.com",
+      "detail": "PAN photo is blurry",
+      "id": "Y2FxeaSXe0qx"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:21.299Z",
+      "admin": "kyc.admin@example.test",
+      "action": "KYC assigned",
+      "target": "kyc.creator@example.com",
+      "detail": "to kyc.reviewer@example.com",
+      "id": "gXED3apSp0Ry"
+    },
+    {
+      "userId": "S3RbzVEEasFk",
+      "createdAt": "2026-11-23T10:37:21.329Z",
+      "admin": "kyc.reviewer@example.com",
+      "action": "KYC recommendation",
+      "target": "kyc.creator@example.com",
+      "detail": "approve",
+      "id": "K3I2qhrJmIas"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:22.132Z",
+      "admin": "kyc.admin@example.test",
+      "action": "KYC approve",
+      "target": "kyc.creator@example.com",
+      "detail": "",
+      "id": "QeoWhqzX44QN"
+    }
+  ],
+  "notifications": [
+    {
+      "userId": "S3RbzVEEasFk",
+      "createdAt": "2026-11-23T10:37:19.849Z",
+      "read": false,
+      "text": "A KYC case for Kyc Creator was assigned to you.",
+      "link": "/reviewer",
+      "id": "-hhdBvnCh1ym"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:21.031Z",
+      "read": false,
+      "text": "KYC review ready for your decision: Kyc Creator (approval recommended).",
+      "link": "/admin/kyc",
+      "id": "JEuqdEVoLuG_"
+    },
+    {
+      "userId": "IZDjJdp-a_k8",
+      "createdAt": "2026-11-23T10:37:21.178Z",
+      "read": false,
+      "text": "Please resubmit your KYC: PAN photo is blurry",
+      "id": "Y3_7Isg8Ong0"
+    },
+    {
+      "userId": "S3RbzVEEasFk",
+      "createdAt": "2026-11-23T10:37:21.299Z",
+      "read": false,
+      "text": "A KYC case for Kyc Creator was assigned to you.",
+      "link": "/reviewer",
+      "id": "-LRBx8UzFlpT"
+    },
+    {
+      "userId": "IKYMU-KX4mub",
+      "createdAt": "2026-11-23T10:37:21.329Z",
+      "read": false,
+      "text": "KYC review ready for your decision: Kyc Creator (approval recommended).",
+      "link": "/admin/kyc",
+      "id": "EcDIYKoxjgq-"
+    },
+    {
+      "userId": "IZDjJdp-a_k8",
+      "createdAt": "2026-11-23T10:37:22.132Z",
+      "read": false,
+      "text": "Your KYC has been verified. You can now withdraw your earnings.",
+      "id": "AUZruASCtrp5"
+    }
+  ]
+}

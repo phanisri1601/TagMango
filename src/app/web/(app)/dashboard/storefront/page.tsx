@@ -54,7 +54,7 @@ function Inner() {
             { key: "name", label: "Display name", required: true, maxLength: 60 },
             { key: "tagline", label: "Tagline", maxLength: 120, placeholder: "e.g. Fitness coach · 5L+ lives impacted" },
             { key: "bio", label: "About you", type: "textarea" },
-            { key: "avatar", label: "Profile photo URL", type: "url" },
+            { key: "avatar", label: "Profile photo", type: "media", media: "image" },
             { key: "color", label: "Theme colour", type: "color" },
             { key: "instagram", label: "Instagram link", type: "url" },
             { key: "youtube", label: "YouTube link", type: "url" },

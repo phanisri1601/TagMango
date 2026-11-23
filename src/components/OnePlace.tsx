@@ -1,4 +1,5 @@
 "use client";
+import { BRAND } from "@/lib/brand";
 import { useEffect, useRef, useState } from "react";
 
 const tools = ["ConvertKit:convertkit", "Razorpay:razorpay", "Stripe:stripe", "FirstPromoter:firstpromoter", "Zoom:zoom", "Slack:slack", "Kajabi:kajabi", "Teachable:teachable", "Mighty Networks:mighty-networks", "Wix:wix", "Lovable:lovable", "Zoho:zoho"].map((x) => {
@@ -130,8 +131,7 @@ export default function OnePlace() {
                 boxShadow: `0 0 ${20 + merge * 50}px ${merge * 12}px rgba(var(--accent-rgb),${0.15 + merge * 0.25})`,
               }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/tagmango/integrations/mango-ai-glyph.svg" alt="" className="recolor h-16 w-16" />
+              <span className="font-display text-[44px] font-bold leading-none text-ink">{BRAND.charAt(0)}</span>
             </div>
           </div>
         </div>

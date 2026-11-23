@@ -1,4 +1,6 @@
 "use client";
+import MediaField from "@/components/dash/MediaField";
+import { isLink } from "@/lib/upload";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { copy, fmtDate, inr, toast, useCollection, useMe, type Row } from "@/lib/client";
@@ -40,7 +42,7 @@ function Phone({ m, tab }: { m: M; tab: (typeof TABS)[number] }) {
           </div>
         ) : (
           <div className="flex-1 overflow-y-auto">
-            {/^https?:\/\//.test(String(m.cover || "")) ? (
+            {isLink(m.cover) ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={String(m.cover)} alt="" className="aspect-video w-full rounded-lg object-cover" />
             ) : (
@@ -86,7 +88,7 @@ function Editor({ initial, onClose }: { initial?: Row; onClose: () => void }) {
       if (m.discountPrice && Number(m.discountPrice) >= p) return toast("Discounted price must be lower than the selling price", "err");
     }
     if (m.redirectUrl && !/^https?:\/\//.test(String(m.redirectUrl))) return toast("Redirect URL must start with http(s)://", "err");
-    if (m.cover && !/^https?:\/\//.test(String(m.cover))) return toast("Mango cover must be an image URL starting with http(s)://", "err");
+    if (m.cover && !isLink(m.cover)) return toast("Mango cover must be an uploaded image or a link starting with http(s)://", "err");
     const dup = col.rows.some((r) => String(r.title).toLowerCase() === title.toLowerCase() && r.id !== initial?.id);
     if (dup) return toast("A mango with this title already exists", "err");
     setBusy(true);
@@ -124,8 +126,8 @@ function Editor({ initial, onClose }: { initial?: Row; onClose: () => void }) {
           {tab === "Mango details" && (
             <div className="animate-soft-fade space-y-4 rounded-[10px] border border-[#ededed] bg-white p-5">
               <div className="relative"><input className={inputCls} placeholder="Mango title" maxLength={100} value={String(m.title || "")} onChange={(e) => set("title", e.target.value)} /><span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] text-[#9b9bab]">{String(m.title || "").length} / 100</span></div>
-              <Field label="Mango cover" hint="Images should be horizontal, at least 1280x720px. Paste an image URL (or upload one in Cloud).">
-                <input className={inputCls} placeholder="https://…/cover.jpg" value={String(m.cover || "")} onChange={(e) => set("cover", e.target.value)} />
+              <Field label="Mango cover" hint="Images should be horizontal, at least 1280x720px. Upload an image from your computer, or paste an image link.">
+                <MediaField kind="image" value={String(m.cover || "")} onChange={(v) => set("cover", v)} placeholder="https://…/cover.jpg" />
               </Field>
               <Field label="Mango description"><textarea className={`${areaCls} min-h-32`} placeholder="Add Mango description here..." value={String(m.description || "")} onChange={(e) => set("description", e.target.value)} /></Field>
               <Field label="Mango type">

@@ -7,8 +7,10 @@ import { rowsOf } from "@/lib/adminData";
 export async function GET() {
   if (!(await requireAdmin())) return deny();
   const db = await loadSnap(["withdrawals", "reports"]);
+  const kyc = db.users.filter((u) => u.kyc && (u.kyc.status === "pending" || u.kyc.status === "reviewed")).length;
   return NextResponse.json({
     withdrawals: rowsOf(db, "withdrawals").filter((w) => (w.status || "Processing") === "Processing").length,
     reports: rowsOf(db, "reports").filter((r) => !r.resolved).length,
+    kyc,
   });
 }

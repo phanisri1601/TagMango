@@ -72,9 +72,9 @@ export default function Hero() {
         </ul>
       </div>
 
-      {/* Mango badge sitting on the seam */}
+      {/* Scroll cue sitting on the seam */}
       <div className="pointer-events-none absolute -bottom-[31px] left-1/2 z-20 flex size-16 -translate-x-1/2 items-center justify-center rounded-full bg-[radial-gradient(64px_1006.5px_at_100%_50%,var(--ac1)_0%,var(--ac2)_50%,var(--ac3)_100%)] shadow-[0_0_40px_8px_rgba(var(--accent-rgb),0.45)]">
-        <img src={`${A}/hero/mango-icon.svg`} alt="" className="recolor h-full w-full" />
+        <svg viewBox="0 0 24 24" className="h-6 w-6 text-white" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 5v14M6 13l6 6 6-6" /></svg>
       </div>
     </section>
   );

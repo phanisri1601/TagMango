@@ -358,3 +358,47 @@ export const fill = (tpl: string, vars: Record<string, string | undefined>) => t
 export const PLATFORMS = ["Instagram", "YouTube", "LinkedIn", "Facebook", "WhatsApp", "Other"] as const;
 
 export const DEFAULT_CONSENT = "Your answers will be used to prepare for our conversation.";
+
+/* ------------------------------------------------------------------ custom workflows (made by the coach) */
+
+/** Moments a custom workflow can start from, in plain words. */
+export const TRIGGERS: [Milestone, string][] = [
+  ["captured", "Someone gives their details"],
+  ["half", "Someone half-fills a form"],
+  ["resource", "Someone gets the free resource"],
+  ["pattern", "Someone completes the Pattern Check"],
+  ["mcRegistered", "Someone registers for the masterclass"],
+  ["mcAttended", "Someone attends the masterclass"],
+  ["mcMissed", "Someone misses the masterclass"],
+  ["applied", "Someone sends an application"],
+  ["callBooked", "Someone books a discovery call"],
+  ["callAttended", "A discovery call takes place"],
+  ["callNoShow", "Someone misses their call"],
+  ["callDone", "A call is marked done"],
+  ["enrolStarted", "Someone starts checkout"],
+  ["paid", "Someone pays"],
+  ["declined", "Someone says no"],
+  ["missedClass", "A learner misses a class"],
+  ["completed", "A learner completes the programme"],
+  ["testimonial", "A learner gives a testimonial"],
+  ["refunded", "Someone is refunded"],
+];
+
+/** Words you can drop into a message; each is replaced with the person's own details. */
+export const FLOW_VARS: [string, string][] = [
+  ["first", "First name"], ["name", "Full name"], ["coach", "Your name"], ["programme", "Programme name"],
+  ["quiz_link", "Pattern Check link"], ["mc_link", "Masterclass link"], ["book_link", "Call booking link"], ["enrol_link", "Enrol link"],
+  ["portal_link", "Learner portal link"], ["pattern", "Their pattern"], ["resource_link", "Free resource link"], ["testimonial_link", "Testimonial link"],
+];
+
+export type CustomStep = { channel: "email" | "whatsapp"; at: number; subject?: string; body: string };
+export type CustomFlow = { id: string; name: string; trigger: Milestone; steps: CustomStep[]; stopOn: Milestone[]; sales: boolean; goal: Milestone | null; enabled: boolean };
+
+/** A custom workflow in the same shape as the built-in ones, so one engine runs both. Its id is "c_" plus the saved id. */
+export function customToDef(d: CustomFlow): FlowDef {
+  const label = TRIGGERS.find(([k]) => k === d.trigger)?.[1] || d.trigger;
+  return {
+    id: `c_${d.id}`, n: 100, name: d.name, trigger: label, goal: d.goal || null, stopOn: d.stopOn || [], sales: !!d.sales,
+    steps: (d.steps || []).map((s, i) => ({ key: `s${i + 1}`, channel: s.channel, at: Math.max(0, Number(s.at) || 0), subject: s.subject, body: s.body })),
+  };
+}

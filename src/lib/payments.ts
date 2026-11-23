@@ -1,4 +1,5 @@
 import "server-only";
+import { after } from "next/server";
 import { id, now, store } from "./db";
 import { automatedEmail } from "./automation";
 import { sendWhatsApp } from "./messaging";
@@ -26,11 +27,14 @@ export async function completeSale(saleId: string, paymentId: string, method?: s
   const first = await store.tx(async (t) => {
     const s = await t.get("sales", saleId);
     if (!s || s.status === "Success" || s.status === "Refunded") return false;
-    t.update("sales", saleId, { status: "Success", rzpPaymentId: paymentId, paidAt: now(), ...(method ? { method: `Razorpay · ${method}` } : {}) });
+    t.update("sales", saleId, { invoiceNo: `INV-${new Date().toISOString().slice(2,7).replace("-","")}-${saleId.slice(0, 6).toUpperCase()}`, status: "Success", rzpPaymentId: paymentId, paidAt: now(), ...(method ? { method: `Razorpay · ${method}` } : {}) });
     for (const l of await t.find("leads", [["userId", s.userId], ["type", "dropoff"], ["email", s.email]])) if (l.mango === s.mango) t.delete("leads", l.id);
     return true;
   });
-  if (first) await afterSuccess(saleId);
+  if (first) {
+    // The buyer should not wait for emails, WhatsApp and portal set-up (a slow step could outlast the host's time limit and make a paid order look failed).
+    try { after(() => afterSuccess(saleId).catch(() => {})); } catch { await afterSuccess(saleId); }
+  }
   return first;
 }
 

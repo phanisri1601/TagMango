@@ -22,9 +22,6 @@ export default function Pricing() {
             segments={[{ text: "The Last Pricing Page", br: true }, { text: "Before Your First Launch", gradient: true }]}
           />
           <p className="animate-rise relative mt-5 text-white/70 md:text-lg" style={{ ["--delay" as string]: "0.5s" }}>Pick your setup, power it with a plan. Simple.</p>
-          <p style={{ ["--delay" as string]: "0.6s" }} className="ai-border animate-rise relative mx-auto mt-6 w-fit rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
-            ✨ AI features just landed — add them to any plan. Yes, even Basic.
-          </p>
         </section>
         <PricingPlans />
         <Faq />

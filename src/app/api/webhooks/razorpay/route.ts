@@ -4,6 +4,8 @@ import { completeSale, failSale } from "@/lib/payments";
 import { verifyWebhook } from "@/lib/razorpay";
 
 /** Razorpay → us, for payments that finish after the browser closed. Set RAZORPAY_WEBHOOK_SECRET and add this URL in the Razorpay dashboard. */
+export const maxDuration = 60;
+
 export async function POST(req: Request) {
   const raw = await req.text();
   if (!verifyWebhook(raw, req.headers.get("x-razorpay-signature") || "")) return NextResponse.json({ error: "Bad signature" }, { status: 401 });
