@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Funnel from "@/components/Funnel";
+import MeetHer from "@/components/MeetHer";
 import PatternDemo from "@/components/PatternDemo";
 import ProductTabs from "@/components/ProductTabs";
 import DropOff from "@/components/DropOff";
@@ -16,6 +17,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <MeetHer />
         <Funnel />
         <PatternDemo />
         <ProductTabs />

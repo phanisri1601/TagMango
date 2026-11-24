@@ -14,11 +14,24 @@ export default async function About() {
       <Section>
         <Label>About</Label>
         <H1 className="mt-4">About {coach}</H1>
-        <div className="mt-8 max-w-2xl space-y-5 text-[18px] font-light leading-relaxed text-[#5c5a55]">
+        <div className="mt-6 grid items-center gap-8 md:grid-cols-[auto_minmax(0,1fr)] md:gap-14">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/nitienaa-rao.webp" alt={coach} width={1168} height={1336} className="aspect-[4/5] w-full max-w-[400px] border border-[#141413] object-cover object-top md:h-[min(48vh,440px)] md:w-auto md:max-w-none" />
+          <div className="max-w-[520px]">
+            <p className="text-[28px] leading-tight text-[#141413]" style={{ fontFamily: "var(--font-vietnam), system-ui, sans-serif" }}>Hello, I&apos;m {coach}.</p>
+            <p className="mt-1 text-[15px] text-[#5c5a55]">Transformational Identity Mentor</p>
+            <p className="mt-5 text-[18px] font-light leading-relaxed text-[#5c5a55]">Twenty-plus years in boardrooms and high-performance rooms. Now she helps capable people see the pattern that keeps them stuck, and change it.</p>
+            <dl className="mt-7 grid grid-cols-3 gap-4 border-t border-[#141413] pt-5">
+              {[["20+", "years in brand and communications"], ["₹170 Cr+", "growth capital raised as co-founder"], ["3", "institutions: Harvard, IIM Bangalore, Symbiosis"]].map(([v, l]) => (
+                <div key={v}><dt className="text-[26px] leading-none text-[#141413]">{v}</dt><dd className="mt-2 text-[12.5px] leading-snug text-[#5c5a55]">{l}</dd></div>
+              ))}
+            </dl>
+          </div>
+        </div>
+        <div className="mt-12 max-w-2xl space-y-5 text-[18px] font-light leading-relaxed text-[#5c5a55]">
           <p>{coach} works with people who are capable, well-liked and still stuck in a loop: the same reaction, the same regret, a different day.</p>
           <p>Her work starts from a simple idea. Most of what we call personality is a set of patterns that formed for good reasons and now run without a vote. When a pattern has a name, it loses some of its grip.</p>
           <p>{g?.programme || "THE HUMAN OS™"} is the programme built from that idea: a six-week path from seeing the pattern to changing how you respond.</p>
-          <p className="text-[14px] text-[#5c5a55]">Draft copy. Replace this text with your own bio and photograph.</p>
         </div>
         <div className="mt-8 flex gap-3"><Button href="/stories">Stories and proof</Button><Button href="/programme" variant="outline">The programme</Button></div>
       </Section>
