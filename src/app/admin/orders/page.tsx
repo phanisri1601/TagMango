@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { downloadCsv, inr, toast } from "@/lib/client";
 import { adminAct, useAdminData } from "@/lib/adminClient";
 import type { AOrder } from "@/lib/adminTypes";
@@ -10,6 +10,7 @@ import { ErrorBox, PageHead, day } from "@/components/admin/ui";
 export default function Orders() {
   const { data, loading, error, reload } = useAdminData<{ orders: AOrder[]; creators: { id: string; name: string }[] }>("/api/admin/orders");
   const [q, setQ] = useState("");
+  useEffect(() => { const v = new URLSearchParams(window.location.search).get("q"); if (v) setQ(v); }, []);
   const [status, setStatus] = useState("All statuses");
   const [creator, setCreator] = useState("All creators");
   const [range, setRange] = useState<[string, string]>(["", ""]);

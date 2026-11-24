@@ -1,6 +1,6 @@
 import "server-only";
 import { NextResponse } from "next/server";
-import { currentUser } from "./auth";
+import { currentUser, impersonation, IMP_BLOCK } from "./auth";
 import { asUser, id as newId, now, store, type User } from "./db";
 import { hasFeature } from "./plans";
 import { runBroadcasts } from "./cron";
@@ -19,6 +19,7 @@ export async function resolve(collection: string, op: "r" | "c" | "u" | "d"): Pr
   const rule = Object.prototype.hasOwnProperty.call(RULES, collection) ? RULES[collection] : null;
   if (!rule) return NextResponse.json({ error: "Unknown collection" }, { status: 404 });
   if (!rule.ops.includes(op)) return NextResponse.json({ error: "Not allowed" }, { status: 405 });
+  if (op !== "r" && collection === "withdrawals" && (await impersonation())) return NextResponse.json({ error: IMP_BLOCK }, { status: 403 });
   if (op !== "r" && rule.gate && !hasFeature(me, rule.gate)) return NextResponse.json({ error: "Upgrade your plan to use this feature" }, { status: 403 });
   return { me, rule, coll: collection };
 }

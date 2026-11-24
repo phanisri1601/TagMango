@@ -273,6 +273,12 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   return (
     <MeContext.Provider value={{ me, setMe: (m: Me) => setMeRaw((p) => ({ ...p, ...m }) as Me) }}>
       <div className="font-app min-h-screen bg-white text-[#0f0f0f]">
+        {me.impersonating && (
+          <div className="sticky top-0 z-[60] flex flex-wrap items-center justify-center gap-3 bg-[#141413] px-4 py-2 text-[13px] text-white">
+            <span>You are viewing as <b>{me.name}</b>. Bank, KYC, plan, password and withdrawal changes are turned off.</span>
+            <button className="rounded-md bg-white px-3 py-1 font-medium text-[#141413]" onClick={async () => { await fetch("/api/admin/stop-impersonation", { method: "POST" }); window.location.href = "/admin/creators"; }}>Return to admin</button>
+          </div>
+        )}
         {promo && <PromoStrip onClose={() => { setPromo(false); try { localStorage.setItem("tm:promo-closed", "1"); } catch {} }} />}
         <Header onMenu={() => setMenu(true)} />
         <div className="flex">

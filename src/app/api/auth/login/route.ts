@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { findUserByEmail, findUserByPhone, MAX_PW_FAILS, normEmail, normPhone, PW_LOCK_MS, startSession, verifyPassword } from "@/lib/auth";
+import { landingFor, findUserByEmail, findUserByPhone, MAX_PW_FAILS, normEmail, normPhone, PW_LOCK_MS, startSession, verifyPassword } from "@/lib/auth";
 import { isAdminEmail } from "@/lib/admin";
 import { store } from "@/lib/db";
 
@@ -26,5 +26,5 @@ export async function POST(req: Request) {
   if (user.suspended) return NextResponse.json({ error: "This account has been suspended. Please contact support." }, { status: 403 });
   if (user.pwFails || user.pwLockUntil) await store.write([{ type: "update", coll: "users", id: user.id, patch: { pwFails: 0, pwLockUntil: 0 } }]);
   await startSession(user.id, body.admin ? { hours: 8 } : undefined);
-  return NextResponse.json({ ok: true, next: body.admin ? "/admin" : "/web/dashboard/getstarted" });
+  return NextResponse.json({ ok: true, next: landingFor(user, Boolean(body.admin), isAdminEmail(user.email)) });
 }

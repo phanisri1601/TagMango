@@ -32,7 +32,7 @@ export default function LoginForm() {
 
   function go(next: string) {
     const back = params.get("afterLoginRedirectTo");
-    router.push(back && /^\/(web\/dashboard|admin|reviewer|portal)(\/|$)/.test(back) && !back.startsWith("//") && (!admin || back.startsWith("/admin")) ? back : next);
+    router.push(back && /^\/(web\/dashboard|admin|reviewer|portal|learn)(\/|$)/.test(back) && !back.startsWith("//") && (!admin || back.startsWith("/admin")) ? back : next);
     router.refresh();
   }
 

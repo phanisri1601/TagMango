@@ -5,7 +5,7 @@ export const ROW_COLLECTIONS = [
   "mangoes", "courses", "workshops", "events", "bookings", "sales", "withdrawals", "pages", "sites", "leads",
   "broadcasts", "banners", "coupons", "unsubscribed", "paths", "waTemplates", "certificates", "affiliates",
   "badges", "team", "cloud", "invoices", "reports", "blocked", "customers", "posts", "comments", "messages",
-  "notifications", "views", "outbox",
+  "notifications", "views", "outbox", "planOrders", "courseProgress",
   // growth funnel + learning portal
   "growth", "crm", "masterclasses", "slots", "trackedLinks", "linkClicks", "flows", "flowRuns", "msgLog", "testimonials", "socialStats",
   "lessons", "classes", "assignments", "submissions", "enrolments", "updates", "blogPosts", "certIssues", "customFlows",

@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { currentUser, hashPassword, passwordProblem, verifyPassword } from "@/lib/auth";
+import { currentUser, hashPassword, impersonation, IMP_BLOCK, passwordProblem, verifyPassword } from "@/lib/auth";
 import { store } from "@/lib/db";
 
 /** Set or change the password of the signed-in user. Changing an existing password needs the current one. */
 export async function POST(req: Request) {
   const me = await currentUser();
   if (!me) return NextResponse.json({ error: "Please sign in" }, { status: 401 });
+  if (await impersonation()) return NextResponse.json({ error: IMP_BLOCK }, { status: 403 });
   const body = await req.json().catch(() => ({}));
   const bad = passwordProblem(String(body.password || ""), String(body.confirm ?? ""));
   if (bad) return NextResponse.json({ error: bad }, { status: 400 });

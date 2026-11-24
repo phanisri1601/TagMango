@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const PRIVATE = ["/admin/:path*", "/admin", "/reviewer", "/web/:path*", "/login", "/signup/:path*", "/signup", "/api/:path*", "/invoice/:path*", "/portal"];
+const PRIVATE = ["/admin/:path*", "/admin", "/reviewer", "/web/:path*", "/login", "/signup/:path*", "/signup", "/api/:path*", "/invoice/:path*", "/portal", "/learn/:path*", "/learn"];
 
 const nextConfig: NextConfig = {
   // Lets a second dev server (e.g. an automated test run) use its own build folder instead of corrupting .next
@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
       { source: "/web/login", destination: "/login", permanent: true },
       { source: "/web/sign-up", destination: "/signup", permanent: true },
       { source: "/web/sign-up/about", destination: "/signup/about", permanent: true },
+      { source: "/web/sign-up/choose", destination: "/signup/choose", permanent: true },
     ];
   },
   async rewrites() {
@@ -20,6 +21,7 @@ const nextConfig: NextConfig = {
       { source: "/login", destination: "/web/login" },
       { source: "/signup", destination: "/web/sign-up" },
       { source: "/signup/about", destination: "/web/sign-up/about" },
+      { source: "/signup/choose", destination: "/web/sign-up/choose" },
       { source: "/admin/login", destination: "/web/login?as=admin" },
       { source: "/store/:id", destination: "/web/lite/store/:id" },
     ];

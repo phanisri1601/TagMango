@@ -31,6 +31,13 @@ export function passwordProblem(pw: string, confirm?: string) {
   if (confirm !== undefined && pw !== confirm) return "The two passwords do not match";
   return null;
 }
+/** The first page a person should see after signing in, from the account type they chose. */
+export function landingFor(u: { email: string; accountType?: string }, adminLogin = false, isAdmin = false) {
+  if (adminLogin) return "/admin";
+  if (u.accountType === "learner") return "/learn";
+  if (u.accountType === "creator") return "/web/dashboard/getstarted";
+  return isAdmin ? "/admin" : "/signup/choose";
+}
 export const MAX_PW_FAILS = 5;
 export const PW_LOCK_MS = 15 * 60 * 1000;
 
@@ -103,17 +110,17 @@ export async function createUser(input: { name: string; email: string; phone: st
 
 /* ------------------------------------------------------------------ sessions */
 
-export async function startSession(userId: string, opts?: { hours?: number }) {
+export async function startSession(userId: string, opts?: { hours?: number; impersonatedBy?: string }) {
   const token = crypto.randomBytes(32).toString("hex");
   const h = await headers();
   const sid = sha(token);
   await store.tx(async (t) => {
     const [user, mine] = await Promise.all([t.get("users", userId), t.find("sessions", [["userId", userId]])]);
     const at = now();
-    t.set("sessions", sid, { userId, createdAt: at, lastSeen: at, userAgent: h.get("user-agent") || "Unknown device", ip: (h.get("x-forwarded-for") || "").split(",")[0].trim() || "127.0.0.1" });
+    t.set("sessions", sid, { userId, createdAt: at, lastSeen: at, userAgent: h.get("user-agent") || "Unknown device", ip: (h.get("x-forwarded-for") || "").split(",")[0].trim() || "127.0.0.1", ...(opts?.impersonatedBy && { impersonatedBy: opts.impersonatedBy }) });
     // "Manage Login Sessions" device limit: keep only the newest (limit - 1) existing sessions plus this one
     const limit = Number(asUser(user)?.settings?.maxDevices || 0);
-    if (limit > 0) {
+    if (limit > 0 && !opts?.impersonatedBy) {
       const sorted = (mine as unknown as Session[]).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
       for (const s of sorted.slice(0, Math.max(0, sorted.length - (limit - 1)))) t.delete("sessions", s.id);
     }
@@ -125,6 +132,18 @@ export async function startSession(userId: string, opts?: { hours?: number }) {
     path: "/",
     maxAge: opts?.hours ? opts.hours * 3600 : 60 * 60 * 24 * 30,
   });
+}
+
+/** Cookie that keeps the admin's own session while they are viewing as a creator. */
+export const RETURN_COOKIE = "tm_admin_return";
+export const IMP_BLOCK = "This is turned off while you are viewing as a creator. Return to admin first.";
+
+/** Set when the current session was opened by an admin through "view as this creator". */
+export async function impersonation(): Promise<{ by: string } | null> {
+  const token = await currentToken();
+  if (!token) return null;
+  const s = await store.get("sessions", sha(token));
+  return s?.impersonatedBy ? { by: String(s.impersonatedBy) } : null;
 }
 
 export async function endSession() {

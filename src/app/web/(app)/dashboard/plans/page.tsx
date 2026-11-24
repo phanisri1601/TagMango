@@ -1,10 +1,21 @@
 "use client";
 import { useState } from "react";
-import { patchMe, toast, useMe } from "@/lib/client";
+import { api, patchMe, toast, useMe, type Me } from "@/lib/client";
+import { BRAND } from "@/lib/brand";
 import { Btn, Modal } from "@/components/dash/kit";
 import { Icon } from "@/components/dash/icons";
 import { PLAN_ORDER, type Plan } from "@/components/dash/nav";
 import { COMPARE, PLAN_CARDS } from "@/lib/planInfo";
+
+declare global { interface Window { Razorpay?: new (o: Record<string, unknown>) => { open(): void; on(ev: string, cb: (r: { error?: { description?: string } }) => void): void } } }
+const loadRzp = () => new Promise<boolean>((res) => {
+  if (window.Razorpay) return res(true);
+  const el = document.createElement("script");
+  el.src = "https://checkout.razorpay.com/v1/checkout.js";
+  el.onload = () => res(true);
+  el.onerror = () => res(false);
+  document.body.appendChild(el);
+});
 
 export default function Plans() {
   const { me, setMe } = useMe();
@@ -12,14 +23,53 @@ export default function Plans() {
   const [busy, setBusy] = useState(false);
   const cur = PLAN_ORDER.indexOf(me.plan);
 
+  const goingDown = confirm !== null && confirm !== "freedom" && PLAN_ORDER.indexOf(confirm) < cur;
+  const price = confirm === "freedom" ? 24999 : confirm ? Number((PLAN_CARDS.find((c) => c.id === confirm)?.price || "0").replace(/[^0-9]/g, "")) : 0;
+
+  async function refreshMe() {
+    const r = await api<{ user: Me }>("/api/me");
+    setMe(r.user);
+    return r.user;
+  }
+
   async function apply() {
     if (!confirm) return;
     setBusy(true);
     try {
-      const r = await patchMe(confirm === "freedom" ? { whiteLabel: true } : { plan: confirm });
-      setMe(r.user);
-      toast(confirm === "freedom" ? "Freedom Setup activated (test mode)" : `You're now on ${PLAN_CARDS.find((p) => p.id === confirm)!.name} (test mode)`);
-      setConfirm(null);
+      if (goingDown) {
+        const r = await patchMe({ plan: confirm });
+        setMe(r.user);
+        toast(`You're now on ${PLAN_CARDS.find((p) => p.id === confirm)!.name}`);
+        setConfirm(null);
+        return;
+      }
+      const o = await api<{ test?: boolean; keyId: string; orderId: string; amount: number; name: string; email: string; phone: string; item: string; testKey: boolean }>("/api/plan/checkout", "POST", confirm === "freedom" ? { kind: "freedom" } : { plan: confirm });
+      if (o.test) {
+        const r = await patchMe(confirm === "freedom" ? { whiteLabel: true } : { plan: confirm });
+        setMe(r.user);
+        toast("Plan changed (local test mode, no payment)");
+        setConfirm(null);
+        return;
+      }
+      if (!(await loadRzp())) throw new Error("Could not load the payment window. Check your internet and try again.");
+      await new Promise<void>((resolve, reject) => {
+        const rzp = new window.Razorpay!({
+          key: o.keyId, order_id: o.orderId, amount: o.amount, currency: "INR", name: BRAND, description: o.item,
+          prefill: { name: o.name, email: o.email, contact: o.phone }, theme: { color: "#141413" },
+          handler: async (res: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
+            try {
+              await api("/api/plan/verify", "POST", { orderId: res.razorpay_order_id, paymentId: res.razorpay_payment_id, signature: res.razorpay_signature });
+              await refreshMe();
+              toast(confirm === "freedom" ? "Payment received. Freedom Setup is active." : `Payment received. You're now on ${PLAN_CARDS.find((p) => p.id === confirm)!.name}.`);
+              setConfirm(null);
+              resolve();
+            } catch (e) { reject(e); }
+          },
+          modal: { ondismiss: () => resolve() },
+        });
+        rzp.on("payment.failed", (f) => reject(new Error(f.error?.description || "The payment failed. No money was taken.")));
+        rzp.open();
+      });
     } catch (e) {
       toast((e as Error).message, "err");
     } finally {
@@ -84,8 +134,8 @@ export default function Plans() {
 
       {confirm && (
         <Modal title={confirm === "freedom" ? "Get Freedom Setup" : `Switch to ${PLAN_CARDS.find((p) => p.id === confirm)!.name}`} onClose={() => setConfirm(null)}>
-          <p className="text-[14px] text-[#4a4a59]">Test mode: no payment is taken. {confirm === "freedom" ? "This unlocks custom domain linking in Platform Settings." : "Your plan changes immediately and features unlock or lock to match. Anything above the new plan's limits stays, but you cannot add more."}</p>
-          <div className="mt-5 flex justify-end gap-2"><Btn variant="outline" onClick={() => setConfirm(null)}>Cancel</Btn><Btn onClick={apply} disabled={busy}>{busy ? "Please wait…" : "Confirm"}</Btn></div>
+          <p className="text-[14px] text-[#4a4a59]">{goingDown ? "" : `You will pay ₹${price.toLocaleString("en-IN")} + 18% GST (₹${Math.round(price * 1.18).toLocaleString("en-IN")} in total) securely through Razorpay. `}{confirm === "freedom" ? "This unlocks custom domain linking in Platform Settings." : "Your plan changes immediately and features unlock or lock to match. Anything above the new plan's limits stays, but you cannot add more."}</p>
+          <div className="mt-5 flex justify-end gap-2"><Btn variant="outline" onClick={() => setConfirm(null)}>Cancel</Btn><Btn onClick={apply} disabled={busy}>{busy ? "Please wait…" : goingDown ? "Confirm" : "Pay and upgrade"}</Btn></div>
         </Modal>
       )}
     </div>

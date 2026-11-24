@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { inr, toast } from "@/lib/client";
+import { api, inr, toast } from "@/lib/client";
 import { adminAct, useAdminData } from "@/lib/adminClient";
 import type { ACreatorDetail } from "@/lib/adminTypes";
 import { PLAN_LABEL, PLAN_ORDER, type Plan } from "@/components/dash/nav";
@@ -104,6 +104,15 @@ export default function CreatorDrawer({ id, onClose }: { id: string; onClose: ()
               </div>
             </div>
           </Section>
+
+          {!u.isAdmin && !u.suspended && (
+            <Section title="Support">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="max-w-md text-[13px] text-[#6b6b7b]">Open this creator&apos;s dashboard exactly as they see it, to help with a problem. It lasts 2 hours, is written to the audit log, and bank, KYC, plan, password and withdrawal changes stay off.</p>
+                <Btn variant="outline" disabled={busy} onClick={async () => { setBusy(true); try { const r = await api<{ next: string }>(`/api/admin/users/${u.id}/impersonate`, "POST"); window.location.href = r.next; } catch (e) { toast((e as Error).message, "err"); setBusy(false); } }}>View as {u.name.split(" ")[0]}</Btn>
+              </div>
+            </Section>
+          )}
 
           <Section title="Account status">
             {u.isAdmin ? <p className="text-[13px] text-[#6b6b7b]">Admin accounts can&apos;t be suspended or deleted.</p> : u.suspended ? (

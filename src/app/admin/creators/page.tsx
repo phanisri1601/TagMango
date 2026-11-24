@@ -1,10 +1,12 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ago, downloadCsv, inr } from "@/lib/client";
 import { useAdminData } from "@/lib/adminClient";
 import type { AUser } from "@/lib/adminTypes";
 import { PLAN_ORDER } from "@/components/dash/nav";
-import { Btn, DataTable, EmptySearch, Panel, Pill, Search, Select, StatCard, type Col } from "@/components/dash/kit";
+import { Btn, DataTable, EmptySearch, Field, Modal, Panel, Pill, Search, Select, StatCard, areaCls, inputCls, type Col } from "@/components/dash/kit";
+import { adminAct } from "@/lib/adminClient";
+import { toast } from "@/lib/client";
 import CreatorDrawer from "@/components/admin/CreatorDrawer";
 import { ErrorBox, Initial, PageHead, PlanBadge, day } from "@/components/admin/ui";
 
@@ -14,6 +16,25 @@ export default function Creators() {
   const [plan, setPlan] = useState("All plans");
   const [status, setStatus] = useState("All statuses");
   const [open, setOpen] = useState<string | null>(null);
+  const [sel, setSel] = useState<string[]>([]);
+  const [bulk, setBulk] = useState<null | "suspend" | "unsuspend" | "notify">(null);
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.get("open")) setOpen(sp.get("open"));
+    if (sp.get("q")) setQ(sp.get("q") || "");
+  }, []);
+  async function runBulk() {
+    if (!bulk) return;
+    setBusy(true);
+    try {
+      const r = await adminAct<{ done: number; skipped: number }>("POST", "/api/admin/users/bulk", { ids: sel, action: bulk, reason: text, message: text });
+      toast(`${r.done} creator(s) updated${r.skipped ? `, ${r.skipped} skipped (admins or already in that state)` : ""}`);
+      setBulk(null); setText(""); setSel([]);
+    } catch (e) { toast((e as Error).message, "err"); }
+    setBusy(false);
+  }
 
   const rows = useMemo(
     () =>
@@ -77,8 +98,31 @@ export default function Creators() {
           <Select value={status} onChange={setStatus} options={["All statuses", "Active", "Suspended", "KYC pending", "Has sales", "Admins"]} />
           <span className="text-[13px] text-[#6b6b7b]">{rows.length} shown</span>
         </div>
-        <div className="mt-3"><DataTable cols={cols} rows={rows} loading={loading} empty={<EmptySearch title="No creators match" text="Try clearing the filters." />} /></div>
+        {sel.length > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg bg-[#141413] px-4 py-2.5 text-[13px] text-white">
+            <b>{sel.length} selected</b>
+            <span className="ml-auto flex flex-wrap gap-2">
+              <button className="rounded-md bg-white/15 px-3 py-1.5 hover:bg-white/25" onClick={() => { setText(""); setBulk("notify"); }}>Send message</button>
+              <button className="rounded-md bg-white/15 px-3 py-1.5 hover:bg-white/25" onClick={() => { setText(""); setBulk("suspend"); }}>Suspend</button>
+              <button className="rounded-md bg-white/15 px-3 py-1.5 hover:bg-white/25" onClick={() => { setText(""); setBulk("unsuspend"); }}>Reinstate</button>
+              <button className="rounded-md bg-white/15 px-3 py-1.5 hover:bg-white/25" onClick={() => { const pick = rows.filter((u) => sel.includes(u.id)); downloadCsv("selected-creators.csv", ["Name", "Email", "Phone", "Plan", "Orders", "GMV"], pick.map((u) => [u.name, u.email, u.phone, u.plan, u.stats.orders, u.stats.gmv])); }}>Export</button>
+              <button className="rounded-md px-3 py-1.5 text-white/70 hover:text-white" onClick={() => setSel([])}>Clear</button>
+            </span>
+          </div>
+        )}
+        <div className="mt-3"><DataTable cols={cols} rows={rows} loading={loading} selectable selected={sel} onSelect={setSel} empty={<EmptySearch title="No creators match" text="Try clearing the filters." />} /></div>
       </Panel>
+      {bulk && (
+        <Modal title={bulk === "notify" ? `Message ${sel.length} creator(s)` : bulk === "suspend" ? `Suspend ${sel.length} creator(s)` : `Reinstate ${sel.length} creator(s)`} onClose={() => setBulk(null)}>
+          {bulk === "unsuspend" ? <p className="text-[14px] text-[#4a4a59]">They can sign in again straight away, and each one is told their account is back.</p> : (
+            <Field label={bulk === "notify" ? "Message (shown in their notifications)" : "Reason (recorded in the audit log)"}>
+              {bulk === "notify" ? <textarea className={`${areaCls} min-h-24`} maxLength={500} value={text} onChange={(e) => setText(e.target.value)} /> : <input className={inputCls} maxLength={200} value={text} onChange={(e) => setText(e.target.value)} />}
+            </Field>
+          )}
+          {bulk === "suspend" && <p className="mt-2 text-[12.5px] text-[#6b6b7b]">Suspended creators are signed out everywhere. Admin accounts are never suspended.</p>}
+          <div className="mt-5 flex justify-end gap-2"><Btn variant="outline" onClick={() => setBulk(null)}>Cancel</Btn><Btn variant={bulk === "suspend" ? "danger" : "orange"} disabled={busy || (bulk !== "unsuspend" && !text.trim())} onClick={runBulk}>{busy ? "Please wait…" : bulk === "notify" ? "Send" : bulk === "suspend" ? "Suspend" : "Reinstate"}</Btn></div>
+        </Modal>
+      )}
       {open && <CreatorDrawer id={open} onClose={() => setOpen(null)} />}
     </>
   );

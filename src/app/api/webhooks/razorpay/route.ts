@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { store } from "@/lib/db";
 import { completeSale, failSale } from "@/lib/payments";
 import { verifyWebhook } from "@/lib/razorpay";
+import { applyPlanOrder } from "@/lib/planPayments";
 
 /** Razorpay → us, for payments that finish after the browser closed. Set RAZORPAY_WEBHOOK_SECRET and add this URL in the Razorpay dashboard. */
 export const maxDuration = 60;
@@ -12,6 +13,8 @@ export async function POST(req: Request) {
   const ev = JSON.parse(raw) as { event: string; payload?: { payment?: { entity?: { id: string; order_id: string; method?: string; error_description?: string } }; refund?: { entity?: { payment_id: string } } } };
   const pay = ev.payload?.payment?.entity;
   if (pay?.order_id) {
+    const [planOrder] = await store.find("planOrders", [["rzpOrderId", pay.order_id]], { limit: 1 });
+    if (planOrder && (ev.event === "payment.captured" || ev.event === "order.paid")) await applyPlanOrder(String(planOrder.id), pay.id, pay.method);
     const [sale] = await store.find("sales", [["rzpOrderId", pay.order_id]], { limit: 1 });
     if (sale) {
       if (ev.event === "payment.captured" || ev.event === "order.paid") await completeSale(String(sale.id), pay.id, pay.method);

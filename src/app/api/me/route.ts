@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { asUser, id, now, PLANS, store, type Kyc, type Plan } from "@/lib/db";
-import { currentUser, selfView } from "@/lib/auth";
+import { currentUser, selfView, impersonation, IMP_BLOCK } from "@/lib/auth";
 import { isAdminUser } from "@/lib/admin";
 import { hasFeature, kycAutoApprove, testBilling } from "@/lib/plans";
 
@@ -29,7 +29,7 @@ const str = (v: unknown, max: number) => String(v ?? "").trim().slice(0, max);
 export async function GET() {
   const user = await currentUser();
   if (!user) return NextResponse.json({ error: "Not logged in" }, { status: 401 });
-  return NextResponse.json({ user: view(user) });
+  return NextResponse.json({ user: { ...view(user), ...((await impersonation()) && { impersonating: true }) } });
 }
 
 /** Update profile fields: name, about, bank, kyc (submit), settings (whitelisted, merged), plan / whiteLabel (test billing only). */
@@ -37,11 +37,14 @@ export async function PATCH(req: Request) {
   const me = await currentUser();
   if (!me) return NextResponse.json({ error: "Not logged in" }, { status: 401 });
   const body = await req.json().catch(() => ({}));
+  if ((body.bank || body.kyc || body.plan !== undefined || body.whiteLabel !== undefined) && (await impersonation())) return NextResponse.json({ error: IMP_BLOCK }, { status: 403 });
   try {
     const user = await store.tx(async (t) => {
       const u = asUser(await t.get("users", me.id));
       if (!u) throw new Error("Account not found");
       const patch: Record<string, unknown> = {};
+
+      if (body.accountType === "creator" || body.accountType === "learner") patch.accountType = body.accountType;
 
       if (typeof body.name === "string" && body.name.trim()) patch.name = str(body.name, 80);
 
@@ -109,14 +112,15 @@ export async function PATCH(req: Request) {
         patch.settings = settings;
       }
 
+      const goingDown = body.plan !== undefined && body.whiteLabel !== true && (PLANS as readonly string[]).indexOf(String(body.plan)) < (PLANS as readonly string[]).indexOf(u.plan || "basic");
       if (body.plan !== undefined || body.whiteLabel === true) {
-        if (!testBilling()) throw new Error("Plan changes need a payment — contact support to upgrade");
+        if (!testBilling() && !goingDown) throw new Error("Upgrades are paid for online. Use the Upgrade button on the Plans page.");
         if (body.plan !== undefined) {
           if (!(PLANS as readonly string[]).includes(body.plan)) throw new Error("Unknown plan");
           const plan = body.plan as Plan;
           if (plan !== (u.plan || "basic")) {
             patch.plan = plan;
-            t.set("invoices", id(), { userId: u.id, createdAt: now(), number: `TM-${Date.now().toString().slice(-8)}`, product: `${plan[0].toUpperCase() + plan.slice(1)} plan`, amount: Math.round(PLAN_PRICE[plan] * 1.18), status: "Paid (test)" });
+            t.set("invoices", id(), { userId: u.id, createdAt: now(), number: `TM-${Date.now().toString().slice(-8)}`, product: `${plan[0].toUpperCase() + plan.slice(1)} plan`, amount: goingDown ? 0 : Math.round(PLAN_PRICE[plan] * 1.18), status: goingDown ? "Plan changed" : "Paid (test)" });
           }
         }
         if (body.whiteLabel === true && !u.whiteLabel) {

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { downloadCsv } from "@/lib/client";
 import { useAdminData } from "@/lib/adminClient";
 import { Btn, DataTable, EmptySearch, Panel, Pill, Search, StatCard, Tabs, type Col } from "@/components/dash/kit";
@@ -13,6 +13,7 @@ export default function Learners() {
   const { data: d, loading, error, reload } = useAdminData<{ learners: L[]; certificates: C[]; totals: Record<string, number> }>("/api/admin/programme");
   const [tab, setTab] = useState<(typeof TABS)[number]>("Learners");
   const [q, setQ] = useState("");
+  useEffect(() => { const v = new URLSearchParams(window.location.search).get("q"); if (v) setQ(v); }, []);
   const match = (s: string) => s.toLowerCase().includes(q.toLowerCase());
   const learners = useMemo(() => (d?.learners || []).filter((l) => match(`${l.name} ${l.email} ${l.phone}`)), [d, q]); // eslint-disable-line react-hooks/exhaustive-deps
   const certs = useMemo(() => (d?.certificates || []).filter((c) => match(`${c.name} ${c.email} ${c.code}`)), [d, q]); // eslint-disable-line react-hooks/exhaustive-deps

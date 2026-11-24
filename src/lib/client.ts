@@ -8,6 +8,8 @@ export type Me = {
   email: string;
   phone: string;
   about?: { category?: string; audience?: string; goal?: string };
+  accountType?: "creator" | "learner";
+  impersonating?: boolean;
   kycDone?: boolean;
   kyc?: { pan: string; legalName: string; status: "pending" | "assigned" | "reviewed" | "verified" | "rejected" | "resubmit"; note?: string };
   bank?: { holder: string; account: string; ifsc: string };

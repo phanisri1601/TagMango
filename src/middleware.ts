@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED = ["/web/dashboard", "/web/feed", "/web/workshops", "/web/courses", "/web/messages", "/admin", "/reviewer"];
+const PROTECTED = ["/web/dashboard", "/web/feed", "/web/workshops", "/web/courses", "/web/messages", "/admin", "/reviewer", "/learn"];
 
 /**
  * Public addresses (rewritten to the real pages in next.config.ts):
@@ -27,4 +27,4 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/web/:path*", "/admin/:path*", "/admin", "/reviewer", "/login", "/signup", "/signup/:path*"] };
+export const config = { matcher: ["/web/:path*", "/admin/:path*", "/admin", "/reviewer", "/learn", "/learn/:path*", "/login", "/signup", "/signup/:path*"] };

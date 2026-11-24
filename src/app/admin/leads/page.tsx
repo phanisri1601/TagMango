@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { downloadCsv } from "@/lib/client";
 import { useAdminData } from "@/lib/adminClient";
 import { Btn, DataTable, EmptySearch, Panel, Pill, Search, Select, StatCard, Title, type Col } from "@/components/dash/kit";
@@ -18,6 +18,7 @@ type D = {
 export default function Leads() {
   const { data: d, loading, error, reload } = useAdminData<D>("/api/admin/programme");
   const [q, setQ] = useState("");
+  useEffect(() => { const v = new URLSearchParams(window.location.search).get("q"); if (v) setQ(v); }, []);
   const [stage, setStage] = useState("All stages");
   const [src, setSrc] = useState("All sources");
   const rows = useMemo(() => (d?.leads || []).filter((l) => `${l.name} ${l.email} ${l.phone}`.toLowerCase().includes(q.toLowerCase())).filter((l) => stage === "All stages" || l.stageLabel === stage).filter((l) => src === "All sources" || l.source === src), [d, q, stage, src]);

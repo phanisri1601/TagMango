@@ -16,6 +16,7 @@ const GROUPS: { title: string; items: { href: string; label: string; icon: strin
   { title: "Programme", items: [
     { href: "/admin/leads", label: "Leads & funnel", icon: "analytics" },
     { href: "/admin/learners", label: "Learners & certificates", icon: "star" },
+    { href: "/admin/unsubscribes", label: "Unsubscribes", icon: "bell" },
   ] },
   { title: "Money", items: [
     { href: "/admin/orders", label: "Orders", icon: "sales" },
@@ -34,6 +35,36 @@ const GROUPS: { title: string; items: { href: string; label: string; icon: strin
   ] },
 ];
 const NAV = GROUPS.flatMap((g) => g.items);
+
+type Hit = { type: string; label: string; sub: string; href: string };
+
+/** One box that finds creators, orders, leads and learners by name, email or phone. */
+function GlobalSearch() {
+  const router = useRouter();
+  const [q, setQ] = useState("");
+  const [hits, setHits] = useState<Hit[] | null>(null);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (q.trim().length < 2) { setHits(null); return; }
+    const t = setTimeout(() => { api<{ results: Hit[] }>(`/api/admin/search?q=${encodeURIComponent(q.trim())}`).then((r) => setHits(r.results)).catch(() => setHits([])); }, 250);
+    return () => clearTimeout(t);
+  }, [q]);
+  return (
+    <div className="relative w-full max-w-[460px]">
+      <input value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)} onKeyDown={(e) => { if (e.key === "Escape") { setOpen(false); (e.target as HTMLInputElement).blur(); } }} placeholder="Search creators, orders, leads or learners by name, email or phone" aria-label="Search the admin panel" className="h-9 w-full rounded-lg border border-[#e1e1e1] bg-[#f7f7f8] px-3.5 text-[13px] outline-none transition focus:border-[#141413] focus:bg-white" />
+      {open && hits && (
+        <div className="absolute left-0 right-0 top-11 z-50 max-h-[420px] overflow-y-auto rounded-xl border border-[#e1e1e1] bg-white p-1.5 shadow-xl">
+          {hits.length === 0 ? <p className="px-3 py-4 text-center text-[13px] text-[#6b6b7b]">Nothing found for &ldquo;{q}&rdquo;</p> : hits.map((h, i) => (
+            <button key={i} onMouseDown={(e) => { e.preventDefault(); setOpen(false); setQ(""); router.push(h.href); }} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition hover:bg-[#f4f2ed]">
+              <span className="w-[60px] shrink-0 rounded bg-[#141413] px-1.5 py-0.5 text-center text-[10px] font-semibold uppercase tracking-wider text-white">{h.type}</span>
+              <span className="min-w-0"><b className="block truncate text-[13.5px]">{h.label}</b><span className="block truncate text-[12px] text-[#6b6b7b]">{h.sub}</span></span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function Sidebar({ me, open, onClose }: { me: Me; open: boolean; onClose: () => void }) {
   const path = usePathname();
@@ -133,8 +164,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             <button onClick={() => setMenu(true)} aria-label="Open menu"><Icon name="menu" className="h-6 w-6" /></button>
             <span className="font-semibold">Admin</span>
           </header>
-          <div className="sticky top-0 z-20 hidden h-[56px] items-center justify-between border-b border-[#e6e3dc] bg-white/85 px-8 backdrop-blur lg:flex">
-            <p className="text-[13px] text-[#5c5a55]">{NAV.find((n) => (n.href === "/admin" ? path === "/admin" : path.startsWith(n.href)))?.label || "Admin"}</p>
+          <div className="sticky top-0 z-20 hidden h-[56px] items-center justify-between gap-4 border-b border-[#e6e3dc] bg-white/85 px-8 backdrop-blur lg:flex">
+            <GlobalSearch />
+            <p className="hidden shrink-0 text-[13px] text-[#5c5a55] xl:block">{NAV.find((n) => (n.href === "/admin" ? path === "/admin" : path.startsWith(n.href)))?.label || "Admin"}</p>
             <div className="flex items-center gap-3 text-[13px]">
               <a href="/" target="_blank" rel="noreferrer" className="rounded-md border border-[#e1e1e1] px-3 py-1.5 transition hover:border-[#141413]">View website</a>
               <span className="grid h-8 w-8 place-items-center rounded-full bg-[#141413] text-[12px] font-semibold text-white">{me.name.trim()[0]?.toUpperCase() || "A"}</span>

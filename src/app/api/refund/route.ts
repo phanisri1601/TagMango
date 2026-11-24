@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { currentUser } from "@/lib/auth";
+import { currentUser, impersonation, IMP_BLOCK } from "@/lib/auth";
 import { refundSale } from "@/lib/payments";
 import { razorpayConfigured, refundPayment } from "@/lib/razorpay";
 
 /** Creator refunds one of their own orders: refunds at Razorpay (when paid there) and tells the learner. */
 export async function POST(req: Request) {
   const me = await currentUser();
+  if (await impersonation()) return NextResponse.json({ error: IMP_BLOCK }, { status: 403 });
   if (!me) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const b = await req.json().catch(() => ({}));
   try {
