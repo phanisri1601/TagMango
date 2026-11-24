@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
 import { id as newId, now, store } from "@/lib/db";
 import { alertCoach, getGrowth, mark } from "@/lib/growth/core";
-import { certName, emailCertificate, issueCertificate } from "@/lib/certificates";
+import { certName, emailCertificate, findIssued, issueCertificate } from "@/lib/certificates";
 import type { Lead } from "@/lib/growth/model";
 
 const bad = (m: string, status = 400) => NextResponse.json({ error: m }, { status });
@@ -32,15 +32,27 @@ export async function GET(req: Request) {
   const completeCount = lessons.filter((l) => done.includes(l.id)).length + assignments.filter((a) => submitted.has(a.id)).length;
   const completed = total > 0 && completeCount === total;
   let certificateCode: string | undefined;
+  let certificatePending = false;
   if (completed) {
     const tpl = (await store.find("certificates", [["userId", cid]])).find((c) => c.active && c.forKind === "Course completion") || null;
     const printed = await certName(me.email, String(e.name));
-    const r = await issueCertificate(cid, tpl, { name: printed, email: me.email, course: g?.programme || "" });
-    certificateCode = r.code;
-    if (r.fresh) await emailCertificate(cid, me.email, printed, String(tpl?.title || "Certificate of Completion"), r.code, g?.programme || "");
+    const existing = tpl ? await findIssued(cid, String(tpl.id), me.email) : null;
+    if (tpl?.approval && !existing) {
+      // The coach wants to approve each certificate: queue it, and tell the coach once.
+      certificatePending = true;
+      if (!e.certWaitingSince) {
+        await store.write([{ type: "update", coll: "enrolments", id: e.id, patch: { certWaitingSince: now() } }]);
+        await alertCoach(cid, `${printed} has completed the programme and is waiting for your approval to receive a certificate.`);
+      }
+    } else {
+      const r = await issueCertificate(cid, tpl, { name: printed, email: me.email, course: g?.programme || "" });
+      certificateCode = r.code;
+      if (r.fresh) await emailCertificate(cid, me.email, printed, String(tpl?.title || "Certificate of Completion"), r.code, g?.programme || "");
+    }
   }
   return NextResponse.json({
     certificateCode,
+    certificatePending,
     enrolled: true,
     coach: String(g?.coachName || (coach as { name?: string } | null)?.name || "Your coach"),
     programme: g?.programme || "The programme",

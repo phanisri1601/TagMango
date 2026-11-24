@@ -18,6 +18,12 @@ export async function certName(email: string, fallback: string) {
   return String(u?.name || "").trim() || fallback.trim() || email;
 }
 
+/** The code of a certificate already issued to this person from this template, if any. */
+export async function findIssued(creatorId: string, certId: string, email: string) {
+  const [have] = await store.find("certIssues", [["userId", creatorId], ["certId", certId], ["email", email.trim().toLowerCase()]], { limit: 1 });
+  return have ? String(have.code) : null;
+}
+
 /**
  * Issue one certificate to one person (once per template and email). A copy of the wording is saved with it,
  * so editing the template later never changes certificates that were already issued. The person's name is

@@ -21,8 +21,23 @@ export default function Certificates() {
   const [edit, setEdit] = useState<Row | { design: string } | null>(null);
   const [send, setSend] = useState<Row | null>(null);
   const [del, setDel] = useState<Row | null>(null);
+  const [waiting, setWaiting] = useState<{ id: string; email: string; name: string; since: string }[]>([]);
+  const [busyApprove, setBusyApprove] = useState(false);
+  const loadWaiting = () => api<{ rows: typeof waiting }>("/api/certificates/issue?waiting=1").then((r) => setWaiting(r.rows)).catch(() => {});
+  useEffect(() => { loadWaiting(); }, []);
   const [issued, setIssued] = useState<{ cert: Row; rows: Issued[] } | null>(null);
 
+  async function approve(emails: string[]) {
+    const tpl = col.rows.find((r) => r.active && r.approval && r.forKind === "Course completion") || col.rows.find((r) => r.active && r.forKind === "Course completion");
+    if (!tpl) return toast("Create an active Course completion certificate first", "err");
+    setBusyApprove(true);
+    try {
+      const r = await api<{ approved: number }>("/api/certificates/issue", "POST", { certId: tpl.id, approve: true, emails });
+      toast(r.approved ? `Certificate issued to ${r.approved} learner(s)` : "Nothing to approve");
+      await loadWaiting();
+    } catch (e) { toast((e as Error).message, "err"); }
+    setBusyApprove(false);
+  }
   const active = customers.filter((x) => x.status === "Active");
   const recipients = (c: Row) => active.filter((x) => !c.mango || x.mango === c.mango);
   // preview wording uses a real customer's name, so you see exactly what a learner gets
@@ -62,6 +77,19 @@ export default function Certificates() {
           ))}
         </div>
       </Panel>
+      {waiting.length > 0 && (
+        <Panel className="mt-5 border-[#141413] p-5" delay={0.04}>
+          <Title sub="These learners finished every lesson and assignment. Approve to issue and email their certificate." right={<Btn disabled={busyApprove} onClick={() => approve(waiting.map((w) => w.email))}>Approve all ({waiting.length})</Btn>}>Waiting for your approval</Title>
+          <div className="mt-3 divide-y divide-[#ededed]">
+            {waiting.map((w) => (
+              <div key={w.id} className="flex flex-wrap items-center gap-3 py-2.5">
+                <div className="min-w-0 flex-1"><p className="truncate font-medium">{w.name}</p><p className="truncate text-[12px] text-[#5c5a55]">{w.email} · finished {fmtDateTime(w.since)}</p></div>
+                <Btn variant="outline" className="h-8 px-3 text-[13px]" disabled={busyApprove} onClick={() => approve([w.email])}>Approve</Btn>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      )}
       <Panel className="mt-5 p-5" delay={0.06}>
         <Title>Your certificates</Title>
         <div className="mt-4 flex"><Search value={q} onChange={setQ} placeholder="Search by certificate title" /></div>
@@ -92,6 +120,7 @@ export default function Certificates() {
             { key: "mango", label: "Send to customers of", type: "select", options: mangoes, hint: "Leave empty to send to all active customers" },
             { key: "signer", label: "Signed by", required: true },
             { key: "signerTitle", label: "Signer's title", placeholder: "e.g. Founder and Lead Coach", maxLength: 60 },
+            { key: "approval", label: "I approve each certificate (learners who finish wait for my approval)", type: "toggle" },
             { key: "active", label: "Active", type: "toggle" },
           ]}
           initial={{ title: "Certificate of Completion", forKind: "Course completion", signer: me.name, active: true, ...edit, design: normalizeDesign(edit.design) }}

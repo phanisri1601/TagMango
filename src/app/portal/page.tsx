@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 type Sub = { text?: string; link?: string; feedback?: string } | null;
 type P = {
-  enrolled: boolean; name?: string; coach: string; programme: string; kickoff: string; boundaryLine: string; referralLine: string; quizLink: string; progress: number; completed: boolean;
+  enrolled: boolean; name?: string; coach: string; programme: string; kickoff: string; boundaryLine: string; referralLine: string; quizLink: string; progress: number; completed: boolean; certificatePending?: boolean;
   enrolment: { name: string; lessonsDone: string[]; attended: string[]; missed: string[] };
   lessons: { id: string; week: number; title: string; body?: string; videoUrl?: string; fileUrl?: string }[];
   classes: { id: string; week?: number; title: string; startsAt: string; joinLink?: string; recordingUrl?: string; attended: boolean }[];
@@ -61,7 +61,7 @@ export default function Portal() {
         <section className={card}>
           <div className="flex justify-between text-[14px]"><b>Your progress</b><b>{p.progress}%</b></div>
           <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-[#eee]"><div className="h-full rounded-full bg-[#111] transition-all" style={{ width: `${p.progress}%` }} /></div>
-          {p.completed && <div className="mt-3 flex flex-wrap items-center gap-3 rounded-lg bg-[#f4f2ed] p-3 text-[14px]"><span>You have completed the programme.</span><Link className="underline" href="/portal/certificate">View certificate</Link>{p.quizLink && <Link className="underline" href={p.quizLink}>Retake the Pattern Check</Link>}</div>}
+          {p.completed && <div className="mt-3 flex flex-wrap items-center gap-3 rounded-lg bg-[#f4f2ed] p-3 text-[14px]"><span>You have completed the programme.</span>{p.certificatePending ? <span className="font-medium">Your certificate is waiting for your coach&apos;s approval. You will get an email when it is issued.</span> : <Link className="underline" href="/portal/certificate">View certificate</Link>}{p.quizLink && <Link className="underline" href={p.quizLink}>Retake the Pattern Check</Link>}</div>}
         </section>
 
         {p.updates.length > 0 && <section className={card}><h2 className="text-[16px] font-semibold">Announcements</h2><div className="mt-2 space-y-3">{p.updates.slice(0, 3).map((u) => <div key={u.id}><p className="font-medium">{u.title}</p><p className="whitespace-pre-wrap text-[14px] text-[#555]">{u.body}</p></div>)}</div></section>}
