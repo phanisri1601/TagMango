@@ -43,7 +43,11 @@ export default function Navbar({ light = false }: { light?: boolean }) {
           dark ? "border-black/10 bg-white/90 shadow-[0_6px_24px_-12px_rgba(0,0,0,0.25)]" : scrolled ? "border-white/10 bg-[#141413]/[0.97] shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] backdrop-blur-2xl" : "border-white/10 bg-white/[0.06]"
         }`}
       >
-        <Logo dark={dark} className="!text-[22px] shrink-0" />
+        <Logo
+          dark={dark}
+          src="/NR%20-%20Logo%20(2)-Photoroom.png"
+          imageClassName="w-[118px] sm:w-[132px]"
+        />
         <div className="hidden items-center gap-1 md:flex">
           {NAV_GROUPS.map((g) =>
             g.href ? (

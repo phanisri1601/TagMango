@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BRAND } from "@/lib/brand";
+import { Logo } from "@/components/ui";
 
 function MiniDashboard() {
   const side = ["Get Started", "Analytics", "Mangoes", "Products", "Courses", "Workshops", "Sales", "Page Builder", "Customers", "Marketing", "Automation"];
@@ -47,9 +47,7 @@ export default function AuthLayout({ children, step }: { children: React.ReactNo
   return (
     <div className="font-app grid min-h-screen bg-white text-ink lg:grid-cols-[minmax(420px,37%)_1fr]">
       <div className="relative flex flex-col px-6 py-6 sm:px-12 lg:px-[4.5vw]">
-        <Link href="/" aria-label="Home" className="grid h-10 w-10 place-items-center rounded-full bg-[#141413]">
-          <span className="font-display text-[18px] font-bold leading-none text-white">{BRAND.charAt(0)}</span>
-        </Link>
+        <Logo dark imageClassName="w-[132px] sm:w-[150px]" />
         <div className="flex flex-1 flex-col justify-center py-10">{children}</div>
         {!step && (
           <div className="text-[11px] text-ink/60">

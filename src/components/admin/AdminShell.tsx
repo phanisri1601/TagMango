@@ -6,7 +6,7 @@ import { MeContext, api, type Me } from "@/lib/client";
 import { useAdminData } from "@/lib/adminClient";
 import { Icon } from "@/components/dash/icons";
 import Toaster from "@/components/dash/Toaster";
-import { BRAND } from "@/lib/brand";
+import { Logo } from "@/components/ui";
 
 const GROUPS: { title: string; items: { href: string; label: string; icon: string; badge?: "kyc" | "withdrawals" | "reports" }[] }[] = [
   { title: "Platform", items: [
@@ -80,7 +80,7 @@ function Sidebar({ me, open, onClose }: { me: Me; open: boolean; onClose: () => 
       {open && <div className="fixed inset-0 z-40 bg-black/40 lg:hidden" onClick={onClose} />}
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-[248px] flex-col bg-[#0f0f10] text-white transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="flex h-[64px] items-center gap-2.5 border-b border-white/10 px-5">
-          <span className="font-display text-[19px] font-bold tracking-tight text-white">{BRAND}</span>
+          <Logo href="/admin" imageClassName="w-[112px]" />
           <span className="rounded bg-white px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-[#141413]">ADMIN</span>
         </div>
         <nav className="flex-1 overflow-y-auto px-3 py-3">

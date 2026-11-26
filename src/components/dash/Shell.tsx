@@ -1,5 +1,4 @@
 "use client";
-import { BRAND } from "@/lib/brand";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -7,6 +6,7 @@ import { MeContext, api, useCollection, useMe, type Me } from "@/lib/client";
 import { Icon } from "./icons";
 import { dash, isGroup, isLocked, sidebar, topTabs, type NavGroup, type NavLeaf } from "./nav";
 import Toaster from "./Toaster";
+import { Logo } from "@/components/ui";
 
 function useClickOutside(cb: () => void) {
   const ref = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ function Header({ onMenu }: { onMenu: () => void }) {
     <header className="sticky top-0 z-30 flex h-[60px] items-center border-b border-[#e1e1e1] bg-white">
       <div className="flex h-full w-auto shrink-0 items-center px-4 lg:w-[320px] lg:px-6">
         <button className="mr-3 lg:hidden" onClick={onMenu} aria-label="Open menu"><Icon name="menu" className="h-6 w-6" /></button>
-        <Link href={dash("getstarted")} className="font-app text-[24px] font-medium tracking-tight">{BRAND}</Link>
+        <Logo href={dash("getstarted")} dark imageClassName="w-[100px] sm:w-[112px]" />
       </div>
       <nav className="mx-auto hidden h-full md:flex">
         {topTabs.map((t) => {

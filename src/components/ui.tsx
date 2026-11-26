@@ -1,14 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 import { BRAND } from "@/lib/brand";
 
-export function Logo({ className = "", dark = false }: { className?: string; dark?: boolean }) {
-  const words = BRAND.split(" ");
-  const head = words.length > 1 ? words.slice(0, -1).join(" ") + " " : BRAND.slice(0, Math.ceil(BRAND.length / 2));
-  const tail = words.length > 1 ? words[words.length - 1] : BRAND.slice(Math.ceil(BRAND.length / 2));
+export function Logo({
+  className = "",
+  imageClassName = "",
+  dark = false,
+  href = "/",
+  src = "/tagmango/NR%20-%20Logo%20(2).png",
+}: {
+  className?: string;
+  imageClassName?: string;
+  dark?: boolean;
+  href?: string;
+  src?: string;
+}) {
   return (
-    <Link href="/" className={`inline-flex items-center whitespace-pre font-display font-bold tracking-tight ${dark ? "text-ink" : "text-white"} ${className}`} aria-label={`${BRAND} home`}>
-      <span>{head}</span>
-      <span className="text-mango">{tail}</span>
+    <Link href={href} className={`inline-flex shrink-0 items-center ${className}`} aria-label={`${BRAND} home`}>
+      <Image
+        src={src}
+        alt=""
+        width={2170}
+        height={725}
+        className={`block h-auto w-[120px] max-w-full object-contain ${dark ? "invert" : ""} ${imageClassName}`}
+      />
     </Link>
   );
 }

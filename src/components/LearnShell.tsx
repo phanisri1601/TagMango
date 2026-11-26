@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BRAND } from "@/lib/brand";
+import { Logo } from "@/components/ui";
 
 /** Plain page frame for learners: brand, My courses, Programme, and sign out. */
 export default function LearnShell({ children }: { children: React.ReactNode }) {
@@ -12,7 +12,7 @@ export default function LearnShell({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen bg-[#f7f5f0] text-[#141413]">
       <header className="sticky top-0 z-30 border-b border-[#e6e3dc] bg-white/90 backdrop-blur">
         <div className="mx-auto flex h-[60px] max-w-6xl items-center gap-3 px-4">
-          <Link href="/learn" className="font-display text-[21px] font-bold tracking-tight">{BRAND}</Link>
+          <Logo href="/learn" dark imageClassName="w-[104px] sm:w-[116px]" />
           <nav className="ml-4 hidden items-center gap-1 sm:flex">
             {link("/learn", "My courses", path.startsWith("/learn"))}
             {link("/portal", "Programme", false)}
